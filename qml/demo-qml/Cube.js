@@ -3,6 +3,7 @@ var orientation = 0
 var angle = 0
 var origin = undefined
 var selectedFace
+var lock = false
 
 /* Resets the cube's orientation and angle and also restores to default all
 rotation vectors */
@@ -47,12 +48,18 @@ function mapToOrigin(mouse) {
 
 /* Initiates cube rotation */
 function initRotation(mouse) {
+    if (lock)
+        return
+
     origin = mapToOrigin(mouse)
 }
 
 /** Rotates the cube based on current mouse position. Once the cube rotation
 axis is selected, the cube will rotate only around that given axis. */
 function rotate(mouse) {
+    if (lock)
+        return
+
     // first we need to map cursor's (0,0) coordinate, which points to top-left
     // corner cube's origin
     var coords = mapToOrigin(mouse)
@@ -155,6 +162,11 @@ function rotate(mouse) {
 
 /** Call this function when the rotation is done. Returns the selected face */
 function finishRotation() {
+    if (lock)
+        return
+    else
+        lock = true
+
     if (Math.abs(angle) > 45) {
         if (direction == 1) {
             if (orientation == 1)
