@@ -4,16 +4,26 @@ import "Keyboard.js" as KB
 Rectangle {
     id: keyboardComponent
 
-    signal keyPressed(string code, int type)
     property variant layout: KB.layout
+    signal keyPressed(string code, int type)
+    signal closed
 
     color: "lightgray"
     radius: 6
     width: kbd.width + 50
     height: kbd.height + 50
 
-    MouseArea {
-        anchors.fill: parent
+    // just to stop propagation of any mouse events at lower elements
+    MouseArea { anchors.fill: parent }
+
+    Image {
+        anchors { top: parent.top; right: parent.right; margins: 15 }
+        source: "../../resources/icons/shared/close.png"
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: keyboardComponent.closed()
+        }
     }
 
     Column {
@@ -27,20 +37,19 @@ Rectangle {
             model: keyboardComponent.layout.length
 
             delegate: Row {
-                id: keyboardRow
-                property variant rowDescription: keyboardComponent.layout[index]
+                id: keyRow
+                property variant keys: keyboardComponent.layout[index]
 
                 spacing: 15
                 anchors.horizontalCenter: parent.horizontalCenter
 
                 Repeater {
-                    model: keyboardRow.rowDescription.length
-
-                    delegate:  Rectangle {
-                        id: keyDelegate
-                        property variant key: keyboardRow.rowDescription[index]
+                    model: keyRow.keys.length
+                    delegate: Rectangle {
+                        property variant key: keyRow.keys[index]
 
                         border { color: "darkgray"; width: 1 }
+                        height: 64
                         width: {
                             if (key.type == KB.KeyType.CHARACTER)
                                 return 64
@@ -49,19 +58,18 @@ Rectangle {
                             else
                                 return 100
                         }
-                        height: 64
 
-                        color: keyDelegate.key.type == KB.KeyType.CHARACTER ? "white" : "dimgrey"
+                        color: key.type == KB.KeyType.CHARACTER ? "white" : "dimgrey"
 
                         Text {
                             anchors.centerIn: parent
-                            color: keyDelegate.key.type == KB.KeyType.CHARACTER ? "black" : "white"
-                            text: keyboardRow.rowDescription[index].label
+                            color: parent.key.type == KB.KeyType.CHARACTER ? "black" : "white"
+                            text: parent.key.label
                         }
 
                         Image {
                             anchors.centerIn: parent
-                            source: keyboardRow.rowDescription[index].icon
+                            source: parent.key.icon
                         }
 
                         MouseArea {
