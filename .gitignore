@@ -1,5 +1,4 @@
 Makefile
-demo-qml
 demo-qml.pro.user
 *.o
 moc_*
