@@ -4,11 +4,25 @@ Rectangle {
     width: 1024
     height: 768
 
+    EditBox {
+        id: profileBar
+        height: 32
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            topMargin: 15
+            leftMargin: 30
+            rightMargin: 30
+        }
+        onEditRequest: kbdLauncher.processEditRequest(e)
+    }
+
     Rectangle {
         id: view1
         anchors {
             left: parent.left
-            top: parent.top
+            top: profileBar.bottom
             bottom: tagBar.top
             topMargin: 15
             leftMargin: 30
@@ -75,7 +89,7 @@ Rectangle {
 
     Item {
         anchors {
-            top: parent.top
+            top: profileBar.bottom
             bottom: tagBar.top
             left: view1.right
             right: parent.right
@@ -114,5 +128,12 @@ Rectangle {
         }
         height: 64
         border.width: 1
+    }
+
+    KeyboardLauncher {
+        id: kbdLauncher
+        anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom }
+        width: parent.width
+        height: parent.height / 2
     }
 }
