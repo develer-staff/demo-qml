@@ -9,7 +9,39 @@ Item {
     property alias topFace: topFaceLoader.sourceComponent
     property alias bottomFace: bottomFaceLoader.sourceComponent
 
-    signal faceSelected(int val)
+    signal faceSelected(int face)
+
+    function initRotation(mousePos) {
+        Cube.initRotation(mousePos)
+    }
+
+    function rotate(mousePos) {
+        Cube.rotate(mousePos)
+    }
+
+    function finishRotation() {
+        Cube.selectedFace = Cube.finishRotation()
+        switch(Cube.selectedFace) {
+        case 0:
+            container.state = "showFrontFace"
+            break
+
+        case 1:
+            container.state = "showLeftFace"
+            break
+
+        case 2:
+            container.state = "showTopFace"
+            break
+
+        case 3:
+            container.state = "showRightFace"
+            break
+
+        case 4:
+            container.state = "showBottomFace"
+        }
+    }
 
     Item {
         id: container
@@ -155,46 +187,13 @@ Item {
             Transition {
                 SequentialAnimation {
                     PropertyAnimation { properties: "angle,x,y"; duration: 200 }
+                    ScriptAction {
+                        script: {
+                            cube.faceSelected(Cube.selectedFace)
+                        }
+                    }
                 }
             }
         ]
-    }
-
-    MouseArea {
-        anchors.fill: container
-
-        onPressed: {
-            Cube.initRotation(mouse)
-        }
-
-        onReleased: {
-            var face = Cube.finishRotation()
-            console.log("Selected face:", face)
-
-            switch(face) {
-            case 0:
-                container.state = "showFrontFace"
-                break
-
-            case 1:
-                container.state = "showLeftFace"
-                break
-
-            case 2:
-                container.state = "showTopFace"
-                break
-
-            case 3:
-                container.state = "showRightFace"
-                break
-
-            case 4:
-                container.state = "showBottomFace"
-            }
-        }
-
-        onPositionChanged: {
-            Cube.rotate(mouse)
-        }
     }
 }

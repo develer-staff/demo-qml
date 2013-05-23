@@ -9,6 +9,10 @@ Rectangle {
         height: 300
         anchors.centerIn: parent
 
+        onFaceSelected: {
+            console.log("Selected face:", face)
+        }
+
         frontFace: Component {
             Rectangle {
                 color: "red"
@@ -36,6 +40,21 @@ Rectangle {
         bottomFace: Component {
             Rectangle {
                 color: "purple"
+            }
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onPressed: {
+                parent.initRotation(mouse)
+            }
+
+            onPositionChanged: {
+                parent.rotate(mouse)
+            }
+
+            onReleased: {
+                parent.finishRotation()
             }
         }
     }

@@ -2,6 +2,7 @@ var direction = 0
 var orientation = 0
 var angle = 0
 var origin = undefined
+var selectedFace
 
 /* Resets the cube's orientation and angle and also restores to default all
 rotation vectors */
