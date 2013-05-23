@@ -4,58 +4,115 @@ Rectangle {
     width: 1024
     height: 768
 
-    Cube {
-        width: 300
-        height: 300
-        anchors.centerIn: parent
+    Rectangle {
+        id: view1
+        anchors {
+            left: parent.left
+            top: parent.top
+            bottom: tagBar.top
+            topMargin: 15
+            leftMargin: 30
+            rightMargin: 30
+            bottomMargin: 15
+        }
+        width: 650
+        border.width: 1
+        Cube {
+            width: parent.width * 0.8
+            height: parent.height * 0.8
+            anchors.centerIn: parent
 
-        onFaceSelected: {
-            console.log("Selected face:", face)
+            onFaceSelected: {
+                console.log("Selected face:", face)
+            }
+
+            frontFace: Component {
+                Rectangle {
+                    color: "red"
+                }
+            }
+
+            leftFace: Component {
+                Rectangle {
+                    color: "green"
+                }
+            }
+
+            rightFace: Component {
+                Rectangle {
+                    color: "blue"
+                }
+            }
+
+            topFace: Component {
+                Rectangle {
+                    color: "magenta"
+                }
+            }
+
+            bottomFace: Component {
+                Rectangle {
+                    color: "purple"
+                }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                onPressed: {
+                    parent.initRotation(mouse)
+                }
+
+                onPositionChanged: {
+                    parent.rotate(mouse)
+                }
+
+                onReleased: {
+                    parent.finishRotation()
+                }
+            }
+        }
+    }
+
+    Item {
+        anchors {
+            top: parent.top
+            bottom: tagBar.top
+            left: view1.right
+            right: parent.right
+            topMargin: 15
+            bottomMargin: 15
+            leftMargin: 15
+            rightMargin: 30
         }
 
-        frontFace: Component {
-            Rectangle {
-                color: "red"
-            }
+        Rectangle {
+            id: view2
+            width: parent.width
+            height: parent.height / 2 - 7
+            anchors.top: parent.top
+            border.width: 1
         }
 
-        leftFace: Component {
-            Rectangle {
-                color: "green"
-            }
+        Rectangle {
+            id: view3
+            width: parent.width
+            height: parent.height / 2 - 7
+            anchors.bottom: parent.bottom
+            border.width: 1
         }
+    }
 
-        rightFace: Component {
-            Rectangle {
-                color: "blue"
-            }
+    Rectangle {
+        id: tagBar
+        anchors {
+            left: parent.left
+            right: parent.right
+            bottom: parent.bottom
+            leftMargin:30
+            rightMargin: 30
+            bottomMargin: 15
         }
-
-        topFace: Component {
-            Rectangle {
-                color: "magenta"
-            }
-        }
-
-        bottomFace: Component {
-            Rectangle {
-                color: "purple"
-            }
-        }
-
-        MouseArea {
-            anchors.fill: parent
-            onPressed: {
-                parent.initRotation(mouse)
-            }
-
-            onPositionChanged: {
-                parent.rotate(mouse)
-            }
-
-            onReleased: {
-                parent.finishRotation()
-            }
-        }
+        height: 64
+        border.width: 1
     }
 }
