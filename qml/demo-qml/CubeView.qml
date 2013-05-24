@@ -1,7 +1,7 @@
 import QtQuick 2.0
-import Qt.labs.folderlistmodel 2.0
 import "CubeView.js" as CubeView
 import "Cube.js" as Cube
+import "Util.js" as Util
 
 Loader {
     id: loader
@@ -10,30 +10,16 @@ Loader {
 
     property int currentView
     property real currentIndex
+    signal viewUpdateRequest(int prevView, int currView, string image)
 
-    FolderListModel {
-        id: topImagesDir
-        folder: "../../resources/top"
-        nameFilters: ["*.jpg", "*.png"]
-    }
-    FolderListModel {
-        id: sideImagesDir
-        folder: "../../resources/side"
-        nameFilters: ["*.jpg", "*.png"]
-    }
-    FolderListModel {
-        id: frontImagesDir
-        folder: "../../resources/rear"
-        nameFilters: ["*.jpg", "*.png"]
-    }
+    property variant topImagesDir
+    property variant sideImagesDir
+    property variant frontImagesDir
 
-    onCurrentViewChanged: {
-        updateView(currentView, currentIndex)
-    }
-
-    onCurrentIndexChanged: {
-        updateView(currentView, currentIndex)
-    }
+    onCurrentIndexChanged: { console.log(currentIndex); updateView() }
+    onTopImagesDirChanged: updateView()
+    onSideImagesDirChanged: updateView()
+    onFrontImagesDirChanged: updateView()
 
     property string frontImageSrc
     property string leftImageSrc
@@ -41,32 +27,29 @@ Loader {
     property string topImageSrc
     property string bottomImageSrc
 
-    function getImgFile(model) {
-        var path = String(model.folder)
-        var basename = path.split("/")
-        basename = basename[basename.length-1]
+    onFrontImageSrcChanged: console.log(frontImageSrc)
 
-        return path + '/' + basename + Math.round(model.count * currentIndex) + ".jpg"
-    }
+    function updateView() {
+        if (!(loader.topImagesDir && loader.sideImagesDir && loader.frontImagesDir))
+            return
 
-    function updateView(view, index) {
-        switch (view) {
+        switch (loader.currentView) {
         case CubeView.TOP:
-            frontImageSrc = getImgFile(topImagesDir)
-            leftImageSrc = rightImageSrc = getImgFile(sideImagesDir)
-            bottomImageSrc = topImageSrc = getImgFile(frontImagesDir)
+            frontImageSrc = Util.getImgFile(loader.topImagesDir, loader.currentIndex)
+            leftImageSrc = rightImageSrc = Util.getImgFile(loader.sideImagesDir, loader.currentIndex)
+            bottomImageSrc = topImageSrc = Util.getImgFile(loader.frontImagesDir, loader.currentIndex)
             break
 
         case CubeView.SIDE:
-            frontImageSrc = getImgFile(sideImagesDir)
-            leftImageSrc = rightImageSrc = getImgFile(frontImagesDir)
-            bottomImageSrc = topImageSrc = getImgFile(topImagesDir)
+            frontImageSrc = Util.getImgFile(sideImagesDir, loader.currentIndex)
+            leftImageSrc = rightImageSrc = Util.getImgFile(loader.frontImagesDir, loader.currentIndex)
+            bottomImageSrc = topImageSrc = Util.getImgFile(loader.topImagesDir, loader.currentIndex)
             break
 
         case CubeView.FRONT:
-            frontImageSrc = getImgFile(frontImagesDir)
-            leftImageSrc = rightImageSrc = getImgFile(sideImagesDir)
-            bottomImageSrc = topImageSrc = getImgFile(topImagesDir)
+            frontImageSrc = Util.getImgFile(frontImagesDir, loader.currentIndex)
+            leftImageSrc = rightImageSrc = Util.getImgFile(loader.sideImagesDir, loader.currentIndex)
+            bottomImageSrc = topImageSrc = Util.getImgFile(loader.topImagesDir, loader.currentIndex)
             break
         }
     }
@@ -107,6 +90,8 @@ Loader {
 
             onFaceSelected: {
                 loader.sourceComponent = image
+                var prevView = loader.currentView
+
                 switch (face) {
                 case Cube.LEFT:
                 case Cube.RIGHT:
@@ -136,6 +121,9 @@ Loader {
                     }
                     break
                 }
+
+                loader.viewUpdateRequest(prevView, loader.currentView, loader.frontImageSrc)
+                updateView()
             }
         }
     }

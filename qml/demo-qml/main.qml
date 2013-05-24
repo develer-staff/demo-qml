@@ -1,9 +1,27 @@
 import QtQuick 2.0
+import Qt.labs.folderlistmodel 2.0
 import "CubeView.js" as CubeView
+import "Util.js" as Util
 
 Rectangle {
     width: 1024
     height: 768
+
+    FolderListModel {
+        id: topImagesDir
+        folder: "../../resources/top"
+        nameFilters: ["*.jpg", "*.png"]
+    }
+    FolderListModel {
+        id: sideImagesDir
+        folder: "../../resources/side"
+        nameFilters: ["*.jpg", "*.png"]
+    }
+    FolderListModel {
+        id: frontImagesDir
+        folder: "../../resources/rear"
+        nameFilters: ["*.jpg", "*.png"]
+    }
 
     EditBox {
         id: profileBar
@@ -36,8 +54,22 @@ Rectangle {
         CubeView {
             id: cube
             anchors.fill: parent
+            topImagesDir: topImagesDir
+            sideImagesDir: sideImagesDir
+            frontImagesDir: frontImagesDir
             currentView: CubeView.TOP
             currentIndex: 0.1
+
+            onViewUpdateRequest: {
+                var viewports = [view2, view3]
+
+                for (var v = 0; v < 2; v++) {
+                    if (viewports[v].currentView === currView) {
+                        viewports[v].currentView = prevView
+                        viewports[v].image = image
+                    }
+                }
+            }
         }
     }
 
@@ -53,20 +85,34 @@ Rectangle {
             rightMargin: 30
         }
 
-        Rectangle {
+        ImageView {
             id: view2
             width: parent.width
             height: parent.height / 2 - 7
             anchors.top: parent.top
-            border.width: 1
+            currentView: CubeView.SIDE
+            image: Util.getImgFile(sideImagesDir, cube.currentIndex)
+
+            Rectangle {
+                anchors.fill: parent
+                color: Qt.rgba(0, 0, 0, 0)
+                border.width: 1
+            }
         }
 
-        Rectangle {
+        ImageView {
             id: view3
             width: parent.width
             height: parent.height / 2 - 7
             anchors.bottom: parent.bottom
-            border.width: 1
+            currentView: CubeView.FRONT
+            image: Util.getImgFile(frontImagesDir, cube.currentIndex)
+
+            Rectangle {
+                anchors.fill: parent
+                color: Qt.rgba(0, 0, 0, 0)
+                border.width: 1
+            }
         }
     }
 
