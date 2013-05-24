@@ -23,6 +23,9 @@ Loader {
             sourceComponent = kbd
             state = ""
         }
+        else if (target === tgt) {
+            return
+        }
         else {
             target.unsetFocus()
         }

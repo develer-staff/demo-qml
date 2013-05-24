@@ -29,8 +29,7 @@ Rectangle {
     Column {
         id: kbd
         spacing: 15
-        x: (parent.width - width) / 2
-        y: (parent.height - height) / 2
+        anchors.centerIn: keyboardComponent
 
         Repeater {
             id: keyLayout
@@ -52,7 +51,7 @@ Rectangle {
                         border { color: "darkgray"; width: 1 }
                         height: 64
                         width: {
-                            if (key.type == KB.KeyType.CHARACTER)
+                            if (key.type === KB.KeyType.CHARACTER)
                                 return 64
                             else if (key.type === KB.KeyType.SPACE)
                                 return 500
