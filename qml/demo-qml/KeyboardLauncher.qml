@@ -11,7 +11,10 @@ Loader {
         id: kbd
         Keyboard {
             onKeyPressed: keyboardLauncher.processKey(code, type)
-            onClosed: keyboardLauncher.state = "hide"
+            onClosed: {
+                target.unsetFocus()
+                keyboardLauncher.state = "hide"
+            }
         }
     }
 
@@ -55,7 +58,6 @@ Loader {
         onRunningChanged: {
             if (!running && keyboardLauncher.height == 0) {
                 keyboardLauncher.sourceComponent = undefined
-                target.unsetFocus()
             }
         }
 

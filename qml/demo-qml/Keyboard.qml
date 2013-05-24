@@ -100,7 +100,6 @@ Rectangle {
                                 PropertyChanges { target: keyRect; color: "gainsboro" }
                                 PropertyChanges { target: keyLabel; color: "black" }
                             }
-
                         ]
 
                         transitions: [
