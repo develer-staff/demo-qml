@@ -20,6 +20,10 @@ Loader {
             sourceComponent = kbd
             state = ""
         }
+        else {
+            target.unsetFocus()
+        }
+
         target = tgt
     }
 

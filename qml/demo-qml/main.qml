@@ -113,6 +113,13 @@ Rectangle {
             height: parent.height / 2 - 7
             anchors.bottom: parent.bottom
             border.width: 1
+
+            EditBox {
+                width: parent.width
+                anchors.top: parent.top
+                height: 32
+                onEditRequest: kbdLauncher.processEditRequest(e)
+            }
         }
     }
 

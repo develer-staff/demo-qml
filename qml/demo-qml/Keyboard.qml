@@ -46,6 +46,7 @@ Rectangle {
                 Repeater {
                     model: keyRow.keys.length
                     delegate: Rectangle {
+                        id: keyRect
                         property variant key: keyRow.keys[index]
 
                         border { color: "darkgray"; width: 1 }
@@ -53,17 +54,18 @@ Rectangle {
                         width: {
                             if (key.type == KB.KeyType.CHARACTER)
                                 return 64
-                            else if (key.type == KB.KeyType.SPACE)
+                            else if (key.type === KB.KeyType.SPACE)
                                 return 500
                             else
                                 return 100
                         }
 
-                        color: key.type == KB.KeyType.CHARACTER ? "white" : "dimgrey"
+                        color: key.type === KB.KeyType.CHARACTER ? "white" : "dimgrey"
 
                         Text {
+                            id: keyLabel
                             anchors.centerIn: parent
-                            color: parent.key.type == KB.KeyType.CHARACTER ? "black" : "white"
+                            color: parent.key.type === KB.KeyType.CHARACTER ? "black" : "white"
                             text: parent.key.label
                         }
 
@@ -75,9 +77,39 @@ Rectangle {
                         MouseArea {
                             anchors.fill: parent
                             onPressed: {
+                                if (parent.key.type === KB.KeyType.CHARACTER)
+                                    parent.state = "charKeyPressed"
+                                else
+                                    parent.state = "ctrlKeyPressed"
                                 keyboardComponent.keyPressed(parent.key.code, parent.key.type)
                             }
+
+                            onReleased: {
+                                parent.state = ""
+                            }
                         }
+
+                        states: [
+                            State {
+                                name: "charKeyPressed"
+                                PropertyChanges { target: keyRect; color: "gray" }
+                                PropertyChanges { target: keyLabel; color: "white" }
+                            },
+                            State {
+                                name: "ctrlKeyPressed"
+                                PropertyChanges { target: keyRect; color: "gainsboro" }
+                                PropertyChanges { target: keyLabel; color: "black" }
+                            }
+
+                        ]
+
+                        transitions: [
+                            Transition {
+                                to: "charKeyPressed,ctrlKeyPressed"
+                                reversible: true
+                                PropertyAnimation { property: "color"; duration: 50 }
+                            }
+                        ]
                     }
                 }
             }
