@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import "CubeView.js" as CubeView
 
 Rectangle {
     width: 1024
@@ -31,59 +32,12 @@ Rectangle {
         }
         width: 650
         border.width: 1
-        Cube {
-            width: parent.width * 0.8
-            height: parent.height * 0.8
-            anchors.centerIn: parent
 
-            onFaceSelected: {
-                console.log("Selected face:", face)
-            }
-
-            frontFace: Component {
-                Rectangle {
-                    color: "red"
-                }
-            }
-
-            leftFace: Component {
-                Rectangle {
-                    color: "green"
-                }
-            }
-
-            rightFace: Component {
-                Rectangle {
-                    color: "blue"
-                }
-            }
-
-            topFace: Component {
-                Rectangle {
-                    color: "magenta"
-                }
-            }
-
-            bottomFace: Component {
-                Rectangle {
-                    color: "purple"
-                }
-            }
-
-            MouseArea {
-                anchors.fill: parent
-                onPressed: {
-                    parent.initRotation(mouse)
-                }
-
-                onPositionChanged: {
-                    parent.rotate(mouse)
-                }
-
-                onReleased: {
-                    parent.finishRotation()
-                }
-            }
+        CubeView {
+            id: cube
+            anchors.fill: parent
+            currentView: CubeView.TOP
+            currentIndex: 0.1
         }
     }
 
@@ -113,13 +67,6 @@ Rectangle {
             height: parent.height / 2 - 7
             anchors.bottom: parent.bottom
             border.width: 1
-
-            EditBox {
-                width: parent.width
-                anchors.top: parent.top
-                height: 32
-                onEditRequest: kbdLauncher.processEditRequest(e)
-            }
         }
     }
 
