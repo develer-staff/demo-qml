@@ -22,23 +22,23 @@ Item {
     function finishRotation() {
         Cube.selectedFace = Cube.finishRotation()
         switch(Cube.selectedFace) {
-        case 0:
+        case Cube.FRONT:
             container.state = "showFrontFace"
             break
 
-        case 1:
+        case Cube.LEFT:
             container.state = "showLeftFace"
             break
 
-        case 2:
+        case Cube.TOP:
             container.state = "showTopFace"
             break
 
-        case 3:
+        case Cube.RIGHT:
             container.state = "showRightFace"
             break
 
-        case 4:
+        case Cube.BOTTOM:
             container.state = "showBottomFace"
         }
     }

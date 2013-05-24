@@ -1,3 +1,9 @@
+var FRONT = 0
+var LEFT = 1
+var TOP = 2
+var RIGHT = 3
+var BOTTOM = 4
+
 var direction = 0
 var orientation = 0
 var angle = 0
@@ -170,17 +176,17 @@ function finishRotation() {
     if (Math.abs(angle) > 45) {
         if (direction == 1) {
             if (orientation == 1)
-                return 3
+                return RIGHT
             else
-                return 1
+                return LEFT
         }
         else {
             if (orientation == 1)
-                return 2
+                return TOP
             else
-                return 4
+                return BOTTOM
         }
     }
     else
-        return 0
+        return FRONT
 }
