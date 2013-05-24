@@ -5,18 +5,15 @@ Rectangle {
     property alias text: textLabel.text
     signal editRequest(variant e)
 
-    radius: 10
     color: "darkgray"
     border.width: 0
 
     function setFocus() {
-        textLabel.color = "white"
-        editBox.color = "dimgray"
+        state = "focused"
     }
 
     function unsetFocus() {
-        textLabel.color = "dimgray"
-        editBox.color = "darkgray"
+        state = ""
     }
 
     MouseArea {
@@ -32,6 +29,18 @@ Rectangle {
         anchors { fill: parent; leftMargin: 5; rightMargin: 5 }
         verticalAlignment: Text.AlignVCenter
         clip: true
-        color: "gray"
+        color: "dimgray"
+    }
+
+    states: State {
+        name: "focused"
+        PropertyChanges { target: editBox; color: "dimgray" }
+        PropertyChanges { target: textLabel; color: "white" }
+    }
+
+    transitions: Transition {
+        to: "focused"
+        reversible: true
+        PropertyAnimation { property: "color"; duration: 200 }
     }
 }
