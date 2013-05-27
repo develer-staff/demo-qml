@@ -58,7 +58,7 @@ Rectangle {
             sideImagesDir: sideImagesDir
             frontImagesDir: frontImagesDir
             currentView: CubeView.TOP
-            currentIndex: 0.1
+            currentIndex: 0.5
 
             onViewUpdateRequest: {
                 var viewports = [view2, view3]

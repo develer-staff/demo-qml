@@ -16,10 +16,20 @@ Loader {
     property variant sideImagesDir
     property variant frontImagesDir
 
-    onCurrentIndexChanged: { console.log(currentIndex); updateView() }
-    onTopImagesDirChanged: updateView()
-    onSideImagesDirChanged: updateView()
-    onFrontImagesDirChanged: updateView()
+    onCurrentIndexChanged: updateView()
+
+    Connections {
+        target: topImagesDir
+        onCountChanged: updateView();
+    }
+    Connections {
+        target: sideImagesDir
+        onCountChanged: updateView();
+    }
+    Connections {
+        target: frontImagesDir
+        onCountChanged: updateView();
+    }
 
     property string frontImageSrc
     property string leftImageSrc
@@ -27,12 +37,9 @@ Loader {
     property string topImageSrc
     property string bottomImageSrc
 
-    onFrontImageSrcChanged: console.log(frontImageSrc)
+    Component.onCompleted: updateView()
 
     function updateView() {
-        if (!(loader.topImagesDir && loader.sideImagesDir && loader.frontImagesDir))
-            return
-
         switch (loader.currentView) {
         case CubeView.TOP:
             frontImageSrc = Util.getImgFile(loader.topImagesDir, loader.currentIndex)
