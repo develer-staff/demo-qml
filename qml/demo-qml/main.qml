@@ -39,6 +39,9 @@ Rectangle {
 
     Rectangle {
         id: view1
+        color: '#b6b7bd'
+        radius: 10
+
         anchors {
             left: parent.left
             top: profileBar.bottom
@@ -48,8 +51,8 @@ Rectangle {
             rightMargin: 30
             bottomMargin: 15
         }
-        width: 650
-        border.width: 1
+        height: 653
+        width: 653
 
         CubeView {
             id: cube

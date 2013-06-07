@@ -64,32 +64,52 @@ Loader {
     Component {
         id: cube
         Cube {
-            frontFace: Component {
+            frontFace: Rectangle {
+                color: '#f4f4f4'
+                border.color: '#fefefe'
+                border.width: 3
                 Image {
+                    anchors.fill: parent
                     fillMode: Image.PreserveAspectFit
                     source: loader.frontImageSrc
                 }
             }
-            leftFace: Component {
+            leftFace: Rectangle {
+                color: '#f4f4f4'
+                border.color: '#fefefe'
+                border.width: 3
                 Image {
+                    anchors.fill: parent
                     fillMode: Image.PreserveAspectFit
                     source: loader.leftImageSrc
                 }
             }
-            rightFace: Component {
+            rightFace: Rectangle {
+                color: '#f4f4f4'
+                border.color: '#fefefe'
+                border.width: 3
                 Image {
+                    anchors.fill: parent
                     fillMode: Image.PreserveAspectFit
                     source: loader.rightImageSrc
                 }
             }
-            topFace: Component {
+            topFace: Rectangle {
+                color: '#f4f4f4'
+                border.color: '#fefefe'
+                border.width: 3
                 Image {
+                    anchors.fill: parent
                     fillMode: Image.PreserveAspectFit
                     source: loader.topImageSrc
                 }
             }
-            bottomFace: Component {
+            bottomFace: Rectangle {
+                color: '#f4f4f4'
+                border.color: '#fefefe'
+                border.width: 3
                 Image {
+                    anchors.fill: parent
                     fillMode: Image.PreserveAspectFit
                     source: loader.bottomImageSrc
                 }
@@ -137,9 +157,16 @@ Loader {
 
     Component {
         id: image
-        Image {
-            source: loader.frontImageSrc
-            fillMode: Image.PreserveAspectFit
+        Rectangle {
+            color: "#f4f4f4"
+            border.width: 3
+            border.color: "transparent"
+            radius: 10
+            Image {
+                anchors.fill: parent
+                source: loader.frontImageSrc
+                fillMode: Image.PreserveAspectFit
+            }
         }
     }
 
@@ -158,12 +185,5 @@ Loader {
         onReleased: {
             loader.item.finishRotation(mouse)
         }
-    }
-
-    Rectangle {
-        z: 2
-        anchors.fill: parent
-        color: Qt.rgba(0, 0, 0, 0)
-        border.width: 1
     }
 }
