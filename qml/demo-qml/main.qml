@@ -10,17 +10,17 @@ Rectangle {
     FolderListModel {
         id: topImagesDir
         folder: "../../resources/top"
-        nameFilters: ["*.jpg", "*.png"]
+        nameFilters: ["*.png"]
     }
     FolderListModel {
         id: sideImagesDir
         folder: "../../resources/side"
-        nameFilters: ["*.jpg", "*.png"]
+        nameFilters: ["*.png"]
     }
     FolderListModel {
         id: frontImagesDir
         folder: "../../resources/rear"
-        nameFilters: ["*.jpg", "*.png"]
+        nameFilters: ["*.png"]
     }
 
     EditBox {
