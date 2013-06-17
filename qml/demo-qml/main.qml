@@ -39,8 +39,11 @@ Rectangle {
 
     Rectangle {
         id: view1
-        color: '#b6b7bd'
         radius: 10
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#b6b7bd" }
+            GradientStop { position: 1.0; color: "#dee0e5" }
+        }
 
         anchors {
             left: parent.left

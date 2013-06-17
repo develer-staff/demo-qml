@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtGraphicalEffects 1.0
 import "CubeView.js" as CubeView
 import "Cube.js" as Cube
 import "Util.js" as Util
@@ -116,6 +117,9 @@ Loader {
             }
 
             onFaceSelected: {
+                start_gradient.visible = false;
+                end_gradient.visible = false;
+
                 loader.sourceComponent = image
                 var prevView = loader.currentView
 
@@ -152,6 +156,73 @@ Loader {
                 loader.viewUpdateRequest(prevView, loader.currentView, loader.frontImageSrc)
                 updateView()
             }
+            onRotated: {
+                // params: direction, amount
+
+                // Adjust the amount if negative (movement bottom -> top or right -> left)
+                if (amount < 0) {
+                    amount = 650 + amount;
+                }
+                else if (amount == 0) {
+                    amount = 650;
+                }
+
+                // clamp 0 <= value <= 650
+                amount > 650 ? 650 : amount;
+                amount < 0 ? 0 : amount;
+
+                var alpha_end = amount / 650;
+                var alpha_start = 1.0 - alpha_end;
+
+                if (direction == 1) { // x-axis
+                    start_gradient.visible = true;
+                    start_gradient.start = Qt.point(0, 0);
+                    start_gradient.end = Qt.point(amount, 0);
+                    start_gradient.gradient.stops[0].color.a = alpha_start;
+
+                    end_gradient.visible = true;
+                    end_gradient.start = Qt.point(amount, 0);
+                    end_gradient.end = Qt.point(650, 0);
+                    end_gradient.gradient.stops[1].color.a = alpha_end;
+                }
+                else if (direction == 2) { // y-axis
+                    start_gradient.visible = true;
+                    start_gradient.start = Qt.point(0, 0);
+                    start_gradient.end = Qt.point(0, amount);
+                    start_gradient.gradient.stops[0].color.a = alpha_start;
+
+                    end_gradient.visible = true;
+                    end_gradient.start = Qt.point(0, amount);
+                    end_gradient.end = Qt.point(0, 650);
+                    end_gradient.gradient.stops[1].color.a = alpha_end;
+                }
+                else {
+                    start_gradient.visible = false;
+                    end_gradient.visible = false;
+                }
+            }
+        }
+    }
+
+    LinearGradient {
+        id: start_gradient
+        z: 100
+        visible: false
+        anchors.fill: parent
+        gradient: Gradient {
+            GradientStop { position: 0.50; color: "#b6b7bd" }
+            GradientStop { position: 1.0; color: "transparent" }
+        }
+    }
+
+    LinearGradient {
+        id: end_gradient
+        z: 100
+        visible: false
+        anchors.fill: parent
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "transparent" }
+            GradientStop { position: 0.50; color: "#dee0e5" }
         }
     }
 

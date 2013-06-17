@@ -10,13 +10,16 @@ Item {
     property alias bottomFace: bottomFaceLoader.sourceComponent
 
     signal faceSelected(int face)
+    signal rotated(int direction, double amount)
 
     function initRotation(mousePos) {
         Cube.initRotation(mousePos)
     }
 
     function rotate(mousePos) {
-        Cube.rotate(mousePos)
+        var rotation_data = Cube.rotate(mousePos)
+        if (rotation_data)
+            cube.rotated(rotation_data.direction, rotation_data.amount)
     }
 
     function finishRotation() {
@@ -186,7 +189,7 @@ Item {
         transitions: [
             Transition {
                 SequentialAnimation {
-                    PropertyAnimation { properties: "angle,x,y"; duration: 200 }
+                    PropertyAnimation { properties: "angle,x,y"; duration: 100 }
                     ScriptAction {
                         script: {
                             cube.faceSelected(Cube.selectedFace)
