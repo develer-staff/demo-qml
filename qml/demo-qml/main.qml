@@ -76,6 +76,24 @@ Image {
         nameFilters: ["*.png"]
     }
 
+    Column {
+        id: imageControls
+        anchors {
+            left: background.left
+            leftMargin: 10
+            top: background.top
+            topMargin: 100
+        }
+        spacing: 20
+        Knob {
+            label: "Brigthness"
+        }
+
+        Knob {
+            label: "Contrast"
+        }
+    }
+
     Image {
         id: view1
 
@@ -83,8 +101,8 @@ Image {
         anchors {
             top: background.top
             topMargin: 100
-            left: background.left
-            leftMargin: 50
+            left: imageControls.right
+            leftMargin: 10
         }
         clip: true
 
