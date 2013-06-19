@@ -86,10 +86,12 @@ Image {
         }
         spacing: 20
         Knob {
+            id: brightnessKnob
             label: "Brigthness"
         }
 
         Knob {
+            id: contrastKnob
             label: "Contrast"
         }
     }
@@ -114,6 +116,9 @@ Image {
             frontImagesDir: frontImagesDir
             currentView: CubeView.TOP
             currentIndex: 0.5
+
+            brightness: brightnessKnob.percentage
+            contrast: contrastKnob.percentage
 
             onViewUpdateRequest: {
                 var viewports = [view2, view3]

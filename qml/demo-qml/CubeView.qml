@@ -13,6 +13,9 @@ Loader {
     property real currentIndex
     signal viewUpdateRequest(int prevView, int currView, string image)
 
+    property real brightness: 0
+    property real contrast: 0
+
     property variant topImagesDir
     property variant sideImagesDir
     property variant frontImagesDir
@@ -233,6 +236,13 @@ Loader {
             anchors.fill: parent
             source: loader.frontImageSrc
             fillMode: Image.PreserveAspectFit
+
+            BrightnessContrast {
+                anchors.fill: parent
+                source: parent
+                brightness: loader.brightness
+                contrast: loader.contrast
+            }
         }
     }
 
