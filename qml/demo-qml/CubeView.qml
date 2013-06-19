@@ -161,17 +161,17 @@ Loader {
 
                 // Adjust the amount if negative (movement bottom -> top or right -> left)
                 if (amount < 0) {
-                    amount = 650 + amount;
+                    amount = loader.width + amount;
                 }
                 else if (amount == 0) {
-                    amount = 650;
+                    amount = loader.width;
                 }
 
                 // clamp 0 <= value <= 650
-                amount > 650 ? 650 : amount;
-                amount < 0 ? 0 : amount;
+                amount = amount > loader.width ? loader.width : amount;
+                amount = amount < 0 ? 0 : amount;
 
-                var alpha_end = amount / 650;
+                var alpha_end = amount / loader.width;
                 var alpha_start = 1.0 - alpha_end;
 
                 if (direction == 1) { // x-axis
@@ -182,7 +182,7 @@ Loader {
 
                     end_gradient.visible = true;
                     end_gradient.start = Qt.point(amount, 0);
-                    end_gradient.end = Qt.point(650, 0);
+                    end_gradient.end = Qt.point(loader.width, 0);
                     end_gradient.gradient.stops[1].color.a = alpha_end;
                 }
                 else if (direction == 2) { // y-axis
@@ -193,7 +193,7 @@ Loader {
 
                     end_gradient.visible = true;
                     end_gradient.start = Qt.point(0, amount);
-                    end_gradient.end = Qt.point(0, 650);
+                    end_gradient.end = Qt.point(0, loader.width);
                     end_gradient.gradient.stops[1].color.a = alpha_end;
                 }
                 else {
