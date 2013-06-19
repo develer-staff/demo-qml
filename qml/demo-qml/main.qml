@@ -188,6 +188,12 @@ Image {
             right: parent.right
             rightMargin: 10
         }
+
+        Button {
+            icon: "../../resources/icons/add.png"
+            anchors.centerIn: parent
+            onClicked: console.log("Add marker!")
+        }
     }
 
     KeyboardLauncher {
