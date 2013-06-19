@@ -80,6 +80,8 @@ Image {
         anchors {
             left: background.left
             leftMargin: 10
+            right: view1.left
+            rightMargin: 10
             top: background.top
             topMargin: 100
         }
@@ -87,11 +89,33 @@ Image {
         Knob {
             id: brightnessKnob
             label: "Brigthness"
+            anchors.horizontalCenter: parent.horizontalCenter
         }
 
         Knob {
             id: contrastKnob
             label: "Contrast"
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+    }
+
+    Column {
+        anchors {
+            bottom: view1.bottom
+            left: background.left
+            leftMargin: 10
+            right: view1.left
+            rightMargin: 10
+        }
+
+        Pad {
+            anchors.horizontalCenter: parent.horizontalCenter
+        }
+        Text {
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: qsTr("Rotation")
+            font.pixelSize: 16
+            color: "#939393"
         }
     }
 
@@ -102,8 +126,8 @@ Image {
         anchors {
             top: background.top
             topMargin: 100
-            left: imageControls.right
-            leftMargin: 10
+            left: background.left
+            leftMargin: 150
         }
         clip: true
 
