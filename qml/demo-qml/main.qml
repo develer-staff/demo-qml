@@ -26,6 +26,10 @@ Image {
             verticalCenter: logo.verticalCenter
         }
 
+        width: 360; height: 78
+        border.left: 38; border.top: 39
+        border.right: 38; border.bottom: 39
+
         Text {
             id: text1
             anchors.horizontalCenter: patientInfo.horizontalCenter
@@ -53,11 +57,6 @@ Image {
             text: qsTr("Male, 35 yo")
             font.pixelSize: 16
         }
-
-
-        width: 360; height: 78
-        border.left: 38; border.top: 39
-        border.right: 38; border.bottom: 39
     }
 
     FolderListModel {
