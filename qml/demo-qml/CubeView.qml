@@ -228,16 +228,11 @@ Loader {
 
     Component {
         id: image
-        Rectangle {
-            color: "#f4f4f4"
-            border.width: 3
-            border.color: "transparent"
-            radius: 10
-            Image {
-                anchors.fill: parent
-                source: loader.frontImageSrc
-                fillMode: Image.PreserveAspectFit
-            }
+
+        Image {
+            anchors.fill: parent
+            source: loader.frontImageSrc
+            fillMode: Image.PreserveAspectFit
         }
     }
 
