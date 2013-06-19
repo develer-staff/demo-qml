@@ -3,9 +3,62 @@ import Qt.labs.folderlistmodel 2.0
 import "CubeView.js" as CubeView
 import "Util.js" as Util
 
-Rectangle {
-    width: 1024
-    height: 768
+Image {
+    id: background
+    source: "../../resources/icons/bg.png"
+
+    Image {
+        id: logo
+        source: "../../resources/icons/logo01.png"
+        anchors {
+            top: background.top
+            topMargin: 20
+            left: background.left
+            leftMargin: 20
+        }
+    }
+
+    BorderImage {
+        id: patientInfo
+        source: "../../resources/icons/s.png"
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            verticalCenter: logo.verticalCenter
+        }
+
+        Text {
+            id: text1
+            anchors.horizontalCenter: patientInfo.horizontalCenter
+            anchors.top: patientInfo.top
+            anchors.topMargin: 5
+            color: "#939393"
+            text: Qt.formatDate(new Date(), "dddd, MMMM d, yyyy")
+            font.pointSize: 16
+        }
+
+        Text {
+            id: text2
+            x: 27
+            y: 36
+            color: "#0254cd"
+            text: "Mario Rossi"
+            font.pixelSize: 28
+        }
+
+        Text {
+            id: text3
+            anchors.right: parent.right
+            anchors.rightMargin: 20
+            anchors.verticalCenter: text2.verticalCenter
+            text: qsTr("Male, 35 yo")
+            font.pixelSize: 16
+        }
+
+
+        width: 360; height: 78
+        border.left: 38; border.top: 39
+        border.right: 38; border.bottom: 39
+    }
 
     FolderListModel {
         id: topImagesDir
@@ -23,39 +76,17 @@ Rectangle {
         nameFilters: ["*.png"]
     }
 
-    EditBox {
-        id: profileBar
-        height: 32
-        anchors {
-            top: parent.top
-            left: parent.left
-            right: parent.right
-            topMargin: 15
-            leftMargin: 30
-            rightMargin: 30
-        }
-        onEditRequest: kbdLauncher.processEditRequest(e)
-    }
-
-    Rectangle {
+    Image {
         id: view1
-        radius: 10
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: "#b6b7bd" }
-            GradientStop { position: 1.0; color: "#dee0e5" }
-        }
 
+        source: "../../resources/icons/bigbox.png"
         anchors {
-            left: parent.left
-            top: profileBar.bottom
-            bottom: tagBar.top
-            topMargin: 15
-            leftMargin: 30
-            rightMargin: 30
-            bottomMargin: 15
+            top: background.top
+            topMargin: 100
+            left: background.left
+            leftMargin: 50
         }
-        height: 653
-        width: 653
+        clip: true
 
         CubeView {
             id: cube
@@ -79,61 +110,38 @@ Rectangle {
         }
     }
 
-    Item {
+    Image {
+        source: "../../resources/icons/bigbox_bg.png"
+        anchors.centerIn: view1
+        anchors.verticalCenterOffset: 2
+        z: view1.z - 1
+    }
+
+    Column {
         anchors {
-            top: profileBar.bottom
-            bottom: tagBar.top
-            left: view1.right
-            right: parent.right
-            topMargin: 15
-            bottomMargin: 15
-            leftMargin: 15
+            top: background.top
+            right: background.right
+            topMargin: 100
             rightMargin: 30
         }
+        spacing: 18
 
         ImageView {
             id: view2
-            width: parent.width
-            height: parent.height / 2 - 7
-            anchors.top: parent.top
             currentView: CubeView.SIDE
             image: Util.getImgFile(sideImagesDir, cube.currentIndex)
+        }
 
-            Rectangle {
-                anchors.fill: parent
-                color: Qt.rgba(0, 0, 0, 0)
-                border.width: 1
-            }
+        Image {
+            source: "../../resources/icons/orizzontale.png"
+            anchors.horizontalCenter: parent.horizontalCenter
         }
 
         ImageView {
             id: view3
-            width: parent.width
-            height: parent.height / 2 - 7
-            anchors.bottom: parent.bottom
             currentView: CubeView.FRONT
             image: Util.getImgFile(frontImagesDir, cube.currentIndex)
-
-            Rectangle {
-                anchors.fill: parent
-                color: Qt.rgba(0, 0, 0, 0)
-                border.width: 1
-            }
         }
-    }
-
-    Rectangle {
-        id: tagBar
-        anchors {
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-            leftMargin:30
-            rightMargin: 30
-            bottomMargin: 15
-        }
-        height: 64
-        border.width: 1
     }
 
     KeyboardLauncher {
