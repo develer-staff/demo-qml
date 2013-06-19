@@ -168,14 +168,23 @@ Image {
             top: background.top
             right: background.right
             topMargin: 100
-            rightMargin: 30
+            rightMargin: 50
         }
         spacing: 18
 
-        ImageView {
-            id: view2
-            currentView: CubeView.SIDE
-            image: Util.getImgFile(sideImagesDir, cube.currentIndex)
+        Row {
+            spacing: 20
+            ImageView {
+                id: view2
+                currentView: CubeView.SIDE
+                image: Util.getImgFile(sideImagesDir, cube.currentIndex)
+            }
+
+            VerticalLaser {
+                anchors.verticalCenter: view2.verticalCenter
+                percentage: .3
+                //onPercentageChangedByUser: console.log("percentage changed: " + newPercentage)
+            }
         }
 
         Image {
@@ -183,10 +192,18 @@ Image {
             anchors.horizontalCenter: parent.horizontalCenter
         }
 
-        ImageView {
-            id: view3
-            currentView: CubeView.FRONT
-            image: Util.getImgFile(frontImagesDir, cube.currentIndex)
+        Row {
+            spacing: 20
+            ImageView {
+                id: view3
+                currentView: CubeView.FRONT
+                image: Util.getImgFile(frontImagesDir, cube.currentIndex)
+            }
+
+            VerticalLaser {
+                anchors.verticalCenter: view3.verticalCenter
+                percentage: .5
+            }
         }
     }
 
