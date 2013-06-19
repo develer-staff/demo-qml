@@ -14,7 +14,7 @@ Image {
             top: background.top
             topMargin: 20
             left: background.left
-            leftMargin: 20
+            leftMargin: 10
         }
     }
 
@@ -163,6 +163,30 @@ Image {
             id: view3
             currentView: CubeView.FRONT
             image: Util.getImgFile(frontImagesDir, cube.currentIndex)
+        }
+    }
+
+    BorderImage {
+        id: markersInfo
+        source: "../../resources/icons/s.png"
+        anchors {
+            bottom: parent.bottom
+            bottomMargin: 6
+            left: parent.left
+            leftMargin: 10
+        }
+
+        width: 910; height: 78
+        border.left: 38; border.top: 39
+        border.right: 38; border.bottom: 39
+    }
+
+    Image {
+        source: "../../resources/icons/s.png"
+        anchors {
+            verticalCenter: markersInfo.verticalCenter
+            right: parent.right
+            rightMargin: 10
         }
     }
 
