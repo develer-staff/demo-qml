@@ -18,6 +18,7 @@ Item {
         Image {
             source: "../../resources/icons/incavo.png"
             anchors.top: knobBase.top
+            anchors.topMargin: 2
             anchors.horizontalCenter: knobBase.horizontalCenter
             rotation: -knobBase.rotation
         }
