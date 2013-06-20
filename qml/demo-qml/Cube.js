@@ -4,6 +4,9 @@ var TOP = 2
 var RIGHT = 3
 var BOTTOM = 4
 
+var DIRECTION_X = 1
+var DIRECTION_Y = 2
+
 var direction = 0
 var orientation = 0
 var angle = 0
@@ -81,9 +84,9 @@ function rotate(mouse) {
         var dy = Math.abs(coords[1] - origin[1])
 
         if (dy > dx)
-            direction = 2
+            direction = DIRECTION_Y
         else
-            direction = 1
+            direction = DIRECTION_X
 
         rotation_data.direction = direction;
     }
@@ -98,7 +101,7 @@ function rotate(mouse) {
         // based on the direction and orientation values, the faces to be
         // rotated are determined dynamically and the rotation vectors of the
         // front face are updated accordingly
-        if (direction == 1) {
+        if (direction == DIRECTION_X) {
             delta = coords[0] - origin[0]
             a = 90 * delta / container.width
 
@@ -160,7 +163,7 @@ function rotate(mouse) {
             reset()
         }
         else {
-            if (direction == 1) {
+            if (direction == DIRECTION_X) {
                 face.x += delta
                 nextFace.x += delta
                 rotation_data.amount = face.x;
@@ -187,7 +190,7 @@ function finishRotation() {
         lock = true
 
     if (Math.abs(angle) > 45) {
-        if (direction == 1) {
+        if (direction == DIRECTION_X) {
             if (orientation == 1)
                 return RIGHT
             else

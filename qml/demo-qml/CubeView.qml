@@ -177,7 +177,7 @@ Loader {
                 var alpha_end = amount / loader.width;
                 var alpha_start = 1.0 - alpha_end;
 
-                if (direction == 1) { // x-axis
+                if (direction === Cube.DIRECTION_X) {
                     start_gradient.visible = true;
                     start_gradient.start = Qt.point(0, 0);
                     start_gradient.end = Qt.point(amount, 0);
@@ -188,7 +188,7 @@ Loader {
                     end_gradient.end = Qt.point(loader.width, 0);
                     end_gradient.gradient.stops[1].color.a = alpha_end;
                 }
-                else if (direction == 2) { // y-axis
+                else if (direction === Cube.DIRECTION_Y) {
                     start_gradient.visible = true;
                     start_gradient.start = Qt.point(0, 0);
                     start_gradient.end = Qt.point(0, amount);
