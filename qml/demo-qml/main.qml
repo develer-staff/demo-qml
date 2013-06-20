@@ -215,35 +215,112 @@ Image {
         }
     }
 
-    BorderImage {
-        id: markersInfo
-        source: "../../resources/icons/s.png"
+    Item {
+        id: markersArea
         anchors {
             bottom: parent.bottom
             bottomMargin: 6
             left: parent.left
             leftMargin: 10
-        }
-
-        width: 910; height: 78
-        border.left: 38; border.top: 39
-        border.right: 38; border.bottom: 39
-    }
-
-    Image {
-        source: "../../resources/icons/s.png"
-        anchors {
-            verticalCenter: markersInfo.verticalCenter
             right: parent.right
-            rightMargin: 10
+        }
+        height: 78
+
+        BorderImage {
+            id: markersInfo
+            source: "../../resources/icons/s.png"
+
+            width: 910;
+            border.left: 38; border.top: 39
+            border.right: 38; border.bottom: 39
+            opacity: 1
         }
 
-        Button {
-            icon: "../../resources/icons/add.png"
-            anchors.centerIn: parent
-            onClicked: console.log("Add marker!")
+        Image {
+            opacity: markersInfo.opacity
+            source: "../../resources/icons/s.png"
+            anchors {
+                verticalCenter: markersInfo.verticalCenter
+                right: parent.right
+                rightMargin: 10
+            }
+
+            Button {
+                icon: "../../resources/icons/add.png"
+                anchors.centerIn: parent
+                onClicked: markersArea.state = "editMarker"
+            }
+        }
+
+        Image {
+            id: markerDescription
+            source: "../../resources/icons/descrizione_bg.png"
+            opacity: 0
+
+            TextInput {
+                visible: markersArea.state == "editMarker"
+                anchors.fill: parent
+                text: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
+                font.pixelSize: 16
+                wrapMode: TextInput.WordWrap
+                color: "#939393"
+            }
+        }
+
+        BorderImage {
+            source: "../../resources/icons/s.png"
+
+            anchors {
+                left: markerDescription.right
+                leftMargin: 10
+                right: parent.right
+                rightMargin: 10
+            }
+
+            border.left: 38; border.top: 39
+            border.right: 38; border.bottom: 39
+            opacity: markerDescription.opacity
+
+            Row {
+                visible: markersArea.state == "editMarker"
+                spacing: 15
+                anchors {
+                    verticalCenter: parent.verticalCenter
+                    left: parent.left
+                    leftMargin: 10
+                }
+
+                Button {
+                    icon: "../../resources/icons/001.png"
+                }
+                Button {
+                    icon: "../../resources/icons/002.png"
+                    onClicked: markersArea.state = ""
+                }
+                Button {
+                    icon: "../../resources/icons/003.png"
+                }
+                Button {
+                    icon: "../../resources/icons/004.png"
+                }
+            }
+        }
+
+        states: State {
+            name: "editMarker"
+            PropertyChanges { target: markersInfo; opacity: 0 }
+            PropertyChanges { target: markerDescription; opacity: 1 }
+        }
+
+        transitions: Transition {
+            SequentialAnimation {
+                NumberAnimation { target: markersInfo; property: "opacity"; duration: 200 }
+                NumberAnimation { target: markerDescription; property: "opacity"; duration: 200 }
+            }
         }
     }
+
+
 
     KeyboardLauncher {
         id: kbdLauncher
