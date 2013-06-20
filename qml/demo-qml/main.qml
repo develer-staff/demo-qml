@@ -185,7 +185,7 @@ Image {
                 image: Util.getImgFile(sideImagesDir, cube.currentIndex)
             }
 
-            VerticalLaser {
+            HorizontalLaser {
                 anchors.verticalCenter: view2.verticalCenter
                 percentage: .3
                 //onPercentageChangedByUser: console.log("percentage changed: " + newPercentage)
@@ -205,7 +205,7 @@ Image {
                 image: Util.getImgFile(frontImagesDir, cube.currentIndex)
             }
 
-            VerticalLaser {
+            HorizontalLaser {
                 anchors.verticalCenter: view3.verticalCenter
                 percentage: .5
             }
