@@ -41,6 +41,11 @@ Loader {
     property string topImageSrc
     property string bottomImageSrc
 
+    function selectCubeFace(face) {
+        loader.sourceComponent = cube
+        loader.item.goToFace(face)
+    }
+
     Component.onCompleted: updateView()
 
     function updateView() {
@@ -159,43 +164,43 @@ Loader {
                 loader.viewUpdateRequest(prevView, loader.currentView, loader.frontImageSrc)
                 updateView()
             }
-            onRotated: {
+            onRotationPositionChanged: {
                 // params: direction, amount
 
                 // Adjust the amount if negative (movement bottom -> top or right -> left)
-                if (amount < 0) {
-                    amount = loader.width + amount;
+                if (rotationPosition < 0) {
+                    rotationPosition = loader.width + rotationPosition;
                 }
-                else if (amount == 0) {
-                    amount = loader.width;
+                else if (rotationPosition == 0) {
+                    rotationPosition = loader.width;
                 }
 
                 // clamp 0 <= value <= 650
-                amount = amount > loader.width ? loader.width : amount;
-                amount = amount < 0 ? 0 : amount;
+                rotationPosition = rotationPosition > loader.width ? loader.width : rotationPosition;
+                rotationPosition = rotationPosition < 0 ? 0 : rotationPosition;
 
-                var alpha_end = amount / loader.width;
+                var alpha_end = rotationPosition / loader.width;
                 var alpha_start = 1.0 - alpha_end;
 
-                if (direction === Cube.DIRECTION_X) {
+                if (rotationDirection === Cube.DIRECTION_X) {
                     start_gradient.visible = true;
                     start_gradient.start = Qt.point(0, 0);
-                    start_gradient.end = Qt.point(amount, 0);
+                    start_gradient.end = Qt.point(rotationPosition, 0);
                     start_gradient.gradient.stops[0].color.a = alpha_start;
 
                     end_gradient.visible = true;
-                    end_gradient.start = Qt.point(amount, 0);
+                    end_gradient.start = Qt.point(rotationPosition, 0);
                     end_gradient.end = Qt.point(loader.width, 0);
                     end_gradient.gradient.stops[1].color.a = alpha_end;
                 }
-                else if (direction === Cube.DIRECTION_Y) {
+                else if (rotationDirection === Cube.DIRECTION_Y) {
                     start_gradient.visible = true;
                     start_gradient.start = Qt.point(0, 0);
-                    start_gradient.end = Qt.point(0, amount);
+                    start_gradient.end = Qt.point(0, rotationPosition);
                     start_gradient.gradient.stops[0].color.a = alpha_start;
 
                     end_gradient.visible = true;
-                    end_gradient.start = Qt.point(0, amount);
+                    end_gradient.start = Qt.point(0, rotationPosition);
                     end_gradient.end = Qt.point(0, loader.width);
                     end_gradient.gradient.stops[1].color.a = alpha_end;
                 }

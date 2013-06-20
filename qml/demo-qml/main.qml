@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import Qt.labs.folderlistmodel 2.0
 import "CubeView.js" as CubeView
+import "Cube.js" as Cube
 import "Util.js" as Util
 
 Image {
@@ -110,6 +111,10 @@ Image {
 
         Pad {
             anchors.horizontalCenter: parent.horizontalCenter
+            onTopClicked: cube.selectCubeFace(Cube.TOP)
+            onLeftClicked: cube.selectCubeFace(Cube.LEFT)
+            onBottomClicked: cube.selectCubeFace(Cube.BOTTOM)
+            onRightClicked: cube.selectCubeFace(Cube.RIGHT)
         }
         Text {
             anchors.horizontalCenter: parent.horizontalCenter

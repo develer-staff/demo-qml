@@ -7,6 +7,9 @@ var BOTTOM = 4
 var DIRECTION_X = 1
 var DIRECTION_Y = 2
 
+var ORIENTATION_NEGATIVE = 1
+var ORIENTATION_POSITIVE = 2
+
 var direction = 0
 var orientation = 0
 var angle = 0
@@ -47,8 +50,34 @@ function reset() {
 
 function getOrientation(delta) {
     if (delta < 0)
-        return 1
-    return 2
+        return ORIENTATION_NEGATIVE
+    return ORIENTATION_POSITIVE
+}
+
+function setFrontFaceRotation(direction, orientation) {
+    frontFaceRot.axis.x = direction === DIRECTION_Y
+    frontFaceRot.axis.y = direction === DIRECTION_X
+
+    if (direction === DIRECTION_X) {
+        if (orientation === 1) {
+            frontFaceRot.origin.x = frontFaceContainer.width
+            frontFaceRot.origin.y = frontFaceContainer.height / 2
+        }
+        else {
+            frontFaceRot.origin.x = 0
+            frontFaceRot.origin.y = frontFaceContainer.height / 2
+        }
+    }
+    else {
+        if (orientation === 1) {
+            frontFaceRot.origin.x = frontFaceContainer.width / 2
+            frontFaceRot.origin.y = 0
+        }
+        else {
+            frontFaceRot.origin.x = frontFaceContainer.width / 2
+            frontFaceRot.origin.y = frontFaceContainer.height
+        }
+    }
 }
 
 function mapToOrigin(mouse) {
@@ -69,11 +98,6 @@ function rotate(mouse) {
     if (lock)
         return
 
-    var rotation_data = {
-        direction: 0,
-        amount: 0
-    };
-
     // first we need to map cursor's (0,0) coordinate, which points to top-left
     // corner cube's origin
     var coords = mapToOrigin(mouse)
@@ -88,7 +112,7 @@ function rotate(mouse) {
         else
             direction = DIRECTION_X
 
-        rotation_data.direction = direction;
+        rotationDirection = direction;
     }
     // the actual rotation is performed in this section
     else {
@@ -96,7 +120,7 @@ function rotate(mouse) {
         var faceRot = frontFaceRot
         var nextFace, nextFaceRot, a, o, delta
 
-        rotation_data.direction = direction;
+        rotationDirection = direction;
 
         // based on the direction and orientation values, the faces to be
         // rotated are determined dynamically and the rotation vectors of the
@@ -166,20 +190,18 @@ function rotate(mouse) {
             if (direction == DIRECTION_X) {
                 face.x += delta
                 nextFace.x += delta
-                rotation_data.amount = face.x;
+                rotationPosition = face.x;
             }
             else {
                 face.y += -delta
                 nextFace.y += delta
-                rotation_data.amount = face.y
+                rotationPosition = face.y
             }
 
             faceRot.angle += a
             nextFaceRot.angle += a
         }
     }
-
-    return rotation_data;
 }
 
 /** Call this function when the rotation is done. Returns the selected face */

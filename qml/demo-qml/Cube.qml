@@ -9,17 +9,56 @@ Item {
     property alias topFace: topFaceLoader.sourceComponent
     property alias bottomFace: bottomFaceLoader.sourceComponent
 
+    property int rotationDirection: 0
+    property real rotationPosition: 0
+
     signal faceSelected(int face)
-    signal rotated(int direction, double amount)
 
     function initRotation(mousePos) {
         Cube.initRotation(mousePos)
     }
 
     function rotate(mousePos) {
-        var rotation_data = Cube.rotate(mousePos)
-        if (rotation_data)
-            cube.rotated(rotation_data.direction, rotation_data.amount)
+        Cube.rotate(mousePos)
+    }
+
+    function goToFace(cubeFace) {
+        Cube.selectedFace = cubeFace
+        var state = ""
+        var direction = 0
+        var orientation = 0
+
+        switch(Cube.selectedFace) {
+        case Cube.LEFT:
+            direction = Cube.DIRECTION_X
+            orientation = Cube.ORIENTATION_POSITIVE
+            state = "showLeftFace"
+            break
+
+        case Cube.TOP:
+            direction = Cube.DIRECTION_Y
+            orientation = Cube.ORIENTATION_NEGATIVE
+            state = "showTopFace"
+            break
+
+        case Cube.RIGHT:
+            direction = Cube.DIRECTION_X
+            orientation = Cube.ORIENTATION_NEGATIVE
+            state = "showRightFace"
+            break
+
+        case Cube.BOTTOM:
+            direction = Cube.DIRECTION_Y
+            orientation = Cube.ORIENTATION_POSITIVE
+            state = "showBottomFace"
+        default:
+            return
+        }
+
+        rotationDirection = direction
+        // make sure we first init the rotation and then change state
+        Cube.setFrontFaceRotation(direction, orientation)
+        container.state = state
     }
 
     function finishRotation() {
@@ -58,6 +97,8 @@ Item {
             Loader { id: frontFaceLoader; anchors.fill: parent }
 
             transform: Rotation { id: frontFaceRot; axis.z: 0 }
+            onXChanged: rotationPosition = x
+            onYChanged: rotationPosition = y
         }
 
         Item {
@@ -189,7 +230,7 @@ Item {
         transitions: [
             Transition {
                 SequentialAnimation {
-                    PropertyAnimation { properties: "angle,x,y"; duration: 100 }
+                    PropertyAnimation { properties: "angle,x,y"; duration: 1000 }
                     ScriptAction {
                         script: {
                             cube.faceSelected(Cube.selectedFace)
