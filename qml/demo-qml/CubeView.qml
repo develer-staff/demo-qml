@@ -42,7 +42,7 @@ Loader {
     property string bottomImageSrc
 
     function selectCubeFace(face) {
-        loader.sourceComponent = cube
+        loader.sourceComponent = cubeComponent
         loader.item.goToFace(face)
     }
 
@@ -71,7 +71,7 @@ Loader {
     }
 
     Component {
-        id: cube
+        id: cubeComponent
         Cube {
             frontFace: Rectangle {
                 color: '#f4f4f4'
@@ -255,7 +255,7 @@ Loader {
         anchors.fill: parent
 
         onPressed: {
-            loader.sourceComponent = cube
+            loader.sourceComponent = cubeComponent
             loader.item.initRotation(mouse)
         }
 
