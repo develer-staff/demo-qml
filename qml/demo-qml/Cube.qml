@@ -51,6 +51,7 @@ Item {
             direction = Cube.DIRECTION_Y
             orientation = Cube.ORIENTATION_POSITIVE
             state = "showBottomFace"
+            break
         default:
             return
         }
