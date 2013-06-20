@@ -186,15 +186,18 @@ Image {
             }
 
             HorizontalLaser {
+                visible: false
                 anchors.verticalCenter: view2.verticalCenter
                 percentage: .3
                 //onPercentageChangedByUser: console.log("percentage changed: " + newPercentage)
             }
         }
 
-        Image {
-            source: "../../resources/icons/orizzontale.png"
-            anchors.horizontalCenter: parent.horizontalCenter
+        VerticalLaser {
+            z:1
+            cursorOnTop: false
+            anchors.left: parent.left
+            anchors.leftMargin: 14.5
         }
 
         Row {
