@@ -248,7 +248,11 @@ Image {
             Button {
                 icon: "../../resources/icons/add.png"
                 anchors.centerIn: parent
-                onClicked: markersArea.state = "editMarker"
+                onClicked: {
+                    var markerId = cube.addMarker()
+                    cube.editMarker(markerId)
+                    markersArea.state = "editMarker"
+                }
             }
         }
 
@@ -295,7 +299,10 @@ Image {
                 }
                 Button {
                     icon: "../../resources/icons/002.png"
-                    onClicked: markersArea.state = ""
+                    onClicked: {
+                        cube.cancelMarkerEdit()
+                        markersArea.state = ""
+                    }
                 }
                 Button {
                     icon: "../../resources/icons/003.png"

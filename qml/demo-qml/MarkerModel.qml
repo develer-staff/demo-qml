@@ -8,12 +8,6 @@ ListModel {
     readonly property int type3: 3
     readonly property int type4: 4
 
-    property Component markerComponent: Component {
-        Image {
-            property bool __markerComponent: true
-        }
-    }
-
     function typeToImage(t) {
         switch (t) {
         case type1:
@@ -29,11 +23,11 @@ ListModel {
     }
 
     Component.onCompleted: {
-        append({"face": CubeView.FRONT, "type": type2, "x": 100, "y": 100})
-        append({"face": CubeView.FRONT, "type": type3, "x": 400, "y": 200})
-        append({"face": CubeView.SIDE, "type": type1, "x": 250, "y": 200})
-        append({"face": CubeView.TOP, "type": type4, "x": 400, "y": 300})
-        append({"face": CubeView.TOP, "type": type2, "x": 250, "y": 400})
+        append({"markerId": 1, "face": CubeView.FRONT, "type": type2, "x": 100, "y": 100})
+        append({"markerId": 2, "face": CubeView.FRONT, "type": type3, "x": 400, "y": 200})
+        append({"markerId": 3, "face": CubeView.SIDE, "type": type1, "x": 250, "y": 200})
+        append({"markerId": 4, "face": CubeView.TOP, "type": type4, "x": 400, "y": 300})
+        append({"markerId": 5, "face": CubeView.TOP, "type": type2, "x": 250, "y": 400})
     }
 }
 

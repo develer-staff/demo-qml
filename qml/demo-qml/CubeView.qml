@@ -85,17 +85,79 @@ Loader {
         }
     }
 
+    function addMarker() {
+        // 52 is the size of the marker
+        var markerId = markerModel.count + 1
+        markerModel.append({"markerId": markerId, "face": loader.currentView, "type": markerModel.type1,
+                            "x": (loader.width - 52) / 2, "y": (loader.height - 52) / 2})
+        return markerId
+    }
+
+    property Item _editMarker
+
+    function editMarker(markerId) {
+        for (var k = 0; k < loader.item.children.length; k++)
+            if (loader.item.children[k].__markerComponent) {
+                if (loader.item.children[k].markerId != markerId)
+                    loader.item.children[k].opacity = .25
+                else {
+                    _editMarker = loader.item.children[k]
+                    _editMarker.movable = true
+                }
+            }
+    }
+
+    function cancelMarkerEdit() {
+        for (var i = 0; i < markerModel.count; i++)
+            if (markerModel.get(i).markerId == _editMarker.markerId) {
+                markerModel.setProperty(i, "x", _editMarker.x)
+                markerModel.setProperty(i, "y", _editMarker.y)
+            }
+
+        _editMarker.movable = false
+        _editMarker = null
+
+        for (var k = 0; k < loader.item.children.length; k++)
+            if (loader.item.children[k].__markerComponent)
+                loader.item.children[k].opacity = 1
+    }
+
+    Component {
+        id: markerComponent
+        Image {
+            property bool __markerComponent: true
+            property int markerId: -1
+            property bool movable: false
+
+            Behavior on opacity {
+                NumberAnimation { duration: 100 }
+            }
+
+            MouseArea {
+                anchors.fill: parent
+                visible: parent.movable
+                drag.target: parent
+                drag.axis: Drag.XAndYAxis
+                drag.minimumX: 0
+                drag.minimumY: 0
+                drag.maximumX: loader.width - parent.width
+                drag.maximumY: loader.height - parent.height
+            }
+        }
+    }
+
     MarkerModel {
         id: markerModel
 
         function createMarkers(faces) {
             for (var i = 0; i < count; i++) {
                 var model = get(i)
-                var markerProperties = {"source": typeToImage(model.type), "x": model.x, "y": model.y}
+                var markerProperties = {"markerId": model.markerId, "source": typeToImage(model.type),
+                                        "x": model.x, "y": model.y}
 
                 for (var j = 0; j < faces.length; j++)
                     if (model.face == faces[j].face)
-                        markerModel.markerComponent.createObject(faces[j], markerProperties)
+                        markerComponent.createObject(faces[j], markerProperties)
             }
         }
 
@@ -292,6 +354,7 @@ Loader {
 
     MouseArea {
         anchors.fill: parent
+        visible: !loader._editMarker
 
         onPressed: {
             loader.sourceComponent = cubeComponent
