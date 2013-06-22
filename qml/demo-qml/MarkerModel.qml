@@ -22,6 +22,14 @@ ListModel {
         }
     }
 
+    function markersInFace(face) {
+        var a = []
+        for (var i = 0; i < count; i++)
+            if (get(i).face == face)
+                a.push(get(i))
+        return a
+    }
+
     Component.onCompleted: {
         append({"markerId": 1, "face": CubeView.FRONT, "type": type2, "x": 100, "y": 100})
         append({"markerId": 2, "face": CubeView.FRONT, "type": type3, "x": 400, "y": 200})

@@ -85,6 +85,8 @@ Loader {
         }
     }
 
+    property alias markerModel: markerModel
+
     function addMarker() {
         // 52 is the size of the marker
         var markerId = markerModel.count + 1

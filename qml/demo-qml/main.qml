@@ -234,6 +234,26 @@ Image {
             border.left: 38; border.top: 39
             border.right: 38; border.bottom: 39
             opacity: 1
+
+            Row {
+                anchors {
+                    left: parent.left
+                    leftMargin: 10
+                    verticalCenter: parent.verticalCenter
+                }
+                spacing: 15
+
+                Repeater {
+                    model: cube.markerModel.markersInFace(cube.currentView)
+                    delegate: Button {
+                        icon: cube.markerModel.typeToImage(modelData.type)
+                        onClicked: {
+                            cube.editMarker(modelData.markerId)
+                            markersArea.state = "editMarker"
+                        }
+                    }
+                }
+            }
         }
 
         Image {
