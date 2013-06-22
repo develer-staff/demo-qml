@@ -3,11 +3,11 @@ import "Cube.js" as Cube
 Item {
     id: cube
 
-    property alias frontFace: frontFaceLoader.sourceComponent
-    property alias rightFace: rightFaceLoader.sourceComponent
-    property alias leftFace: leftFaceLoader.sourceComponent
-    property alias topFace: topFaceLoader.sourceComponent
-    property alias bottomFace: bottomFaceLoader.sourceComponent
+    property alias frontFaceLoader: frontFaceLoader
+    property alias rightFaceLoader: rightFaceLoader
+    property alias leftFaceLoader: leftFaceLoader
+    property alias topFaceLoader: topFaceLoader
+    property alias bottomFaceLoader: bottomFaceLoader
 
     property int rotationDirection: 0
     property real rotationPosition: 0

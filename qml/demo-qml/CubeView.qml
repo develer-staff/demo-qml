@@ -41,6 +41,12 @@ Loader {
     property string topImageSrc
     property string bottomImageSrc
 
+    property int frontCubeFace: CubeView.FRONT
+    property int leftCubeFace: CubeView.SIDE
+    property int rightCubeFace: CubeView.SIDE
+    property int topCubeFace: CubeView.TOP
+    property int bottomCubeFace: CubeView.TOP
+
     function selectCubeFace(face) {
         loader.sourceComponent = cubeComponent
         loader.item.goToFace(face)
@@ -54,18 +60,27 @@ Loader {
             frontImageSrc = Util.getImgFile(loader.topImagesDir, loader.currentIndex)
             leftImageSrc = rightImageSrc = Util.getImgFile(loader.sideImagesDir, loader.currentIndex)
             bottomImageSrc = topImageSrc = Util.getImgFile(loader.frontImagesDir, loader.currentIndex)
+            frontCubeFace = CubeView.TOP
+            leftCubeFace = rightCubeFace = CubeView.SIDE
+            bottomCubeFace = topCubeFace = CubeView.FRONT
             break
 
         case CubeView.SIDE:
             frontImageSrc = Util.getImgFile(sideImagesDir, loader.currentIndex)
             leftImageSrc = rightImageSrc = Util.getImgFile(loader.frontImagesDir, loader.currentIndex)
             bottomImageSrc = topImageSrc = Util.getImgFile(loader.topImagesDir, loader.currentIndex)
+            frontCubeFace = CubeView.SIDE
+            leftCubeFace = rightCubeFace = CubeView.FRONT
+            bottomCubeFace = topCubeFace = CubeView.TOP
             break
 
         case CubeView.FRONT:
             frontImageSrc = Util.getImgFile(frontImagesDir, loader.currentIndex)
             leftImageSrc = rightImageSrc = Util.getImgFile(loader.sideImagesDir, loader.currentIndex)
             bottomImageSrc = topImageSrc = Util.getImgFile(loader.topImagesDir, loader.currentIndex)
+            frontCubeFace = CubeView.FRONT
+            leftCubeFace = rightCubeFace = CubeView.SIDE
+            bottomCubeFace = topCubeFace = CubeView.TOP
             break
         }
     }
@@ -73,55 +88,48 @@ Loader {
     Component {
         id: cubeComponent
         Cube {
-            frontFace: Rectangle {
-                color: '#f4f4f4'
-                border.color: '#fefefe'
-                border.width: 3
-                Image {
-                    anchors.fill: parent
-                    fillMode: Image.PreserveAspectFit
-                    source: loader.frontImageSrc
+
+            MarkerModel {
+                id: markerModel
+                Component.onCompleted: createMarkers()
+
+                function createMarkers() {
+                    for (var i = 0; i < count; i++) {
+                        var model = get(i)
+                        var markerProperties = {"source": typeToImage(model.type), "x": model.x, "y": model.y}
+                        var faceLoaders = [frontFaceLoader, leftFaceLoader, rightFaceLoader,
+                                           topFaceLoader, bottomFaceLoader]
+
+                        for (var j = 0; j < faceLoaders.length; j++)
+                            if (model.face == faceLoaders[j].item.face)
+                                markerModel.markerComponent.createObject(faceLoaders[j].item, markerProperties)
+                    }
                 }
             }
-            leftFace: Rectangle {
-                color: '#f4f4f4'
-                border.color: '#fefefe'
-                border.width: 3
-                Image {
-                    anchors.fill: parent
-                    fillMode: Image.PreserveAspectFit
-                    source: loader.leftImageSrc
-                }
+
+            frontFaceLoader.sourceComponent: CubeFace {
+                source: loader.frontImageSrc
+                face: loader.frontCubeFace
             }
-            rightFace: Rectangle {
-                color: '#f4f4f4'
-                border.color: '#fefefe'
-                border.width: 3
-                Image {
-                    anchors.fill: parent
-                    fillMode: Image.PreserveAspectFit
-                    source: loader.rightImageSrc
-                }
+
+            leftFaceLoader.sourceComponent: CubeFace {
+                source: loader.leftImageSrc
+                face: loader.leftCubeFace
             }
-            topFace: Rectangle {
-                color: '#f4f4f4'
-                border.color: '#fefefe'
-                border.width: 3
-                Image {
-                    anchors.fill: parent
-                    fillMode: Image.PreserveAspectFit
-                    source: loader.topImageSrc
-                }
+
+            rightFaceLoader.sourceComponent: CubeFace {
+                source: loader.rightImageSrc
+                face: loader.rightCubeFace
             }
-            bottomFace: Rectangle {
-                color: '#f4f4f4'
-                border.color: '#fefefe'
-                border.width: 3
-                Image {
-                    anchors.fill: parent
-                    fillMode: Image.PreserveAspectFit
-                    source: loader.bottomImageSrc
-                }
+
+            topFaceLoader.sourceComponent: CubeFace {
+                source: loader.topImageSrc
+                face: loader.topCubeFace
+            }
+
+            bottomFaceLoader.sourceComponent: CubeFace {
+                source: loader.bottomImageSrc
+                face: loader.bottomCubeFace
             }
 
             onFaceSelected: {
