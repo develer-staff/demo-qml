@@ -35,11 +35,11 @@ Loader {
         onCountChanged: updateView();
     }
 
-    property string frontImageSrc
-    property string leftImageSrc
-    property string rightImageSrc
-    property string topImageSrc
-    property string bottomImageSrc
+    property url frontImageSrc
+    property url leftImageSrc
+    property url rightImageSrc
+    property url topImageSrc
+    property url bottomImageSrc
 
     property int frontCubeFace: CubeView.FRONT
     property int leftCubeFace: CubeView.SIDE
