@@ -9,7 +9,9 @@ ListModel {
     readonly property int type4: 4
 
     property Component markerComponent: Component {
-        Image { }
+        Image {
+            property bool __markerComponent: true
+        }
     }
 
     function typeToImage(t) {

@@ -85,26 +85,42 @@ Loader {
         }
     }
 
+    MarkerModel {
+        id: markerModel
+
+        function createMarkers(faces) {
+            for (var i = 0; i < count; i++) {
+                var model = get(i)
+                var markerProperties = {"source": typeToImage(model.type), "x": model.x, "y": model.y}
+
+                for (var j = 0; j < faces.length; j++)
+                    if (model.face == faces[j].face)
+                        markerModel.markerComponent.createObject(faces[j], markerProperties)
+            }
+        }
+
+        onCountChanged: loader.item.loadMarkers()
+    }
+
     Component {
         id: cubeComponent
+
         Cube {
+            Component.onCompleted: loadMarkers()
 
-            MarkerModel {
-                id: markerModel
-                Component.onCompleted: createMarkers()
+            function loadMarkers() {
+                var faces = [frontFaceLoader.item, leftFaceLoader.item, rightFaceLoader.item,
+                             topFaceLoader.item, bottomFaceLoader.item]
 
-                function createMarkers() {
-                    for (var i = 0; i < count; i++) {
-                        var model = get(i)
-                        var markerProperties = {"source": typeToImage(model.type), "x": model.x, "y": model.y}
-                        var faceLoaders = [frontFaceLoader, leftFaceLoader, rightFaceLoader,
-                                           topFaceLoader, bottomFaceLoader]
-
-                        for (var j = 0; j < faceLoaders.length; j++)
-                            if (model.face == faceLoaders[j].item.face)
-                                markerModel.markerComponent.createObject(faceLoaders[j].item, markerProperties)
+                for (var j = 0; j < faces.length; j++)
+                    for (var k = 0; k < faces[j].children.length; k++) {
+                        if (faces[j].children[k].__markerComponent) {
+                            //console.log("DESTROY ITEM:", faces[j].children[k])
+                            faces[j].children[k].destroy()
+                        }
                     }
-                }
+
+                markerModel.createMarkers(faces)
             }
 
             frontFaceLoader.sourceComponent: CubeFace {
@@ -136,7 +152,6 @@ Loader {
                 start_gradient.visible = false;
                 end_gradient.visible = false;
 
-                loader.sourceComponent = image
                 var prevView = loader.currentView
 
                 switch (face) {
@@ -171,6 +186,7 @@ Loader {
 
                 loader.viewUpdateRequest(prevView, loader.currentView, loader.frontImageSrc)
                 updateView()
+                loader.sourceComponent = image
             }
             onRotationPositionChanged: {
                 // params: direction, amount
@@ -246,6 +262,19 @@ Loader {
         id: image
 
         Image {
+            id: staticFace
+            property int face: loader.frontCubeFace
+
+            function loadMarkers() {
+                for (var k = 0; k < staticFace.children.length; k++)
+                    if (staticFace.children[k].__markerComponent) {
+                        //console.log("DESTROY ITEM:", staticFace.children[k])
+                        staticFace.children[k].destroy()
+                    }
+
+                markerModel.createMarkers([staticFace])
+            }
+
             anchors.fill: parent
             source: loader.frontImageSrc
             fillMode: Image.PreserveAspectFit
@@ -256,6 +285,8 @@ Loader {
                 brightness: loader.brightness
                 contrast: loader.contrast
             }
+
+            Component.onCompleted: loadMarkers()
         }
     }
 
