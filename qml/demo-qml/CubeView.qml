@@ -124,6 +124,19 @@ Loader {
                 loader.item.children[k].opacity = 1
     }
 
+    function deleteMarker() {
+        if (!_editMarker)
+            return
+
+        for (var i = 0; i < markerModel.count; i++)
+            if (markerModel.get(i).markerId == _editMarker.markerId) {
+                markerModel.remove(i)
+                _editMarker.destroy()
+                _editMarker = null
+                return
+            }
+    }
+
     Component {
         id: markerComponent
         Image {

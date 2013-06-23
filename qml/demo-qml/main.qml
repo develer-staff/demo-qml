@@ -354,6 +354,10 @@ Image {
                 }
                 Button {
                     icon: "../../resources/icons/003.png"
+                    onClicked: {
+                        cube.deleteMarker()
+                        markersArea.state = ""
+                    }
                 }
                 Button {
                     icon: "../../resources/icons/004.png"
