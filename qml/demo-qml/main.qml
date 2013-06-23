@@ -255,6 +255,25 @@ Image {
                         }
                     }
                 }
+
+                add: Transition {
+                    id: addTransition
+                    property int duration: 180
+
+                    SequentialAnimation {
+                        PropertyAction { property: "scale"; value: addTransition.ViewTransition.index > 0 ? .7 : 1 }
+                        PropertyAction { property: "z"; value: 100 - addTransition.ViewTransition.index }
+                        PauseAnimation { duration: (addTransition.duration + 20)* addTransition.ViewTransition.index }
+                        ParallelAnimation {
+                            NumberAnimation {
+                                property: "x"
+                                from: (Math.max(0, addTransition.ViewTransition.index -1) * 88)
+                                duration: addTransition.duration
+                            }
+                            NumberAnimation { property: "scale"; to: 1; duration: addTransition.duration }
+                        }
+                    }
+                }
             }
         }
 
