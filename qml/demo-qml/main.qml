@@ -249,6 +249,8 @@ Image {
                         icon: cube.markerModel.typeToImage(modelData.type)
                         onClicked: {
                             cube.editMarker(modelData.markerId)
+                            markerDescription.markerId = modelData.markerId
+                            markerDescription.text = cube.markerModel.getMarkerDescription(modelData.markerId)
                             markersArea.state = "editMarker"
                         }
                     }
@@ -271,6 +273,8 @@ Image {
                 onClicked: {
                     var markerId = cube.addMarker()
                     cube.editMarker(markerId)
+                    markerDescription.markerId = markerId
+                    markerDescription.text = cube.markerModel.getMarkerDescription(markerId)
                     markersArea.state = "editMarker"
                 }
             }
@@ -278,13 +282,16 @@ Image {
 
         Image {
             id: markerDescription
+            property alias text: textInput.text
+            property int markerId: -1
+
             source: "../../resources/icons/descrizione_bg.png"
             opacity: 0
 
             TextInput {
+                id: textInput
                 visible: markersArea.state == "editMarker"
                 anchors.fill: parent
-                text: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat."
                 font.pixelSize: 16
                 wrapMode: TextInput.WordWrap
                 color: "#939393"
@@ -320,7 +327,9 @@ Image {
                 Button {
                     icon: "../../resources/icons/002.png"
                     onClicked: {
-                        cube.cancelMarkerEdit()
+                        cube.markerModel.setMarkerDescription(markerDescription.markerId, markerDescription.text)
+                        markerDescription.markerId = -1
+                        cube.editMarkerDone()
                         markersArea.state = ""
                     }
                 }

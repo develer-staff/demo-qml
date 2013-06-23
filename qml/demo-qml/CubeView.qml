@@ -90,7 +90,7 @@ Loader {
     function addMarker() {
         // 52 is the size of the marker
         var markerId = markerModel.count + 1
-        markerModel.append({"markerId": markerId, "face": loader.currentView, "type": markerModel.type1,
+        markerModel.append({"markerId": markerId, "face": loader.currentView, "type": markerModel.type1, "description": "",
                             "x": (loader.width - 52) / 2, "y": (loader.height - 52) / 2})
         return markerId
     }
@@ -109,7 +109,7 @@ Loader {
             }
     }
 
-    function cancelMarkerEdit() {
+    function editMarkerDone() {
         for (var i = 0; i < markerModel.count; i++)
             if (markerModel.get(i).markerId == _editMarker.markerId) {
                 markerModel.setProperty(i, "x", _editMarker.x)
