@@ -256,6 +256,7 @@ Image {
                     model: cube.markerModel.markersInFace(cube.currentView)
                     delegate: Button {
                         icon: cube.markerModel.typeToImage(modelData.type)
+                        iconScale: .7
                         onClicked: {
                             cube.editMarker(modelData.markerId)
                             markerDescription.markerId = modelData.markerId

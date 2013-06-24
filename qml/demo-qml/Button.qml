@@ -6,6 +6,7 @@ Item {
     property url image: "../../resources/icons/btn.png"
     property url pressedImage: "../../resources/icons/btn_highlighted.png"
     property url icon
+    property real iconScale: 1
 
     signal clicked
 
@@ -20,6 +21,7 @@ Item {
     Image {
         anchors.centerIn: bg
         source: button.icon
+        scale: button.iconScale
     }
 
     MouseArea {
