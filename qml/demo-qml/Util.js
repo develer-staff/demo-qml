@@ -6,5 +6,5 @@ function getImgFile(model, index) {
     var basename = path.split("/")
     basename = basename[basename.length-1]
 
-    return path + '/' + basename + Math.round(model.count * index) + ".png"
+    return path + '/' + basename + Math.round(model.count * index) + ".jpg"
 }

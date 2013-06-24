@@ -65,17 +65,17 @@ Image {
     FolderListModel {
         id: topImagesDir
         folder: "../../resources/top"
-        nameFilters: ["*.png"]
+        nameFilters: ["*.jpg"]
     }
     FolderListModel {
         id: sideImagesDir
         folder: "../../resources/side"
-        nameFilters: ["*.png"]
+        nameFilters: ["*.jpg"]
     }
     FolderListModel {
         id: frontImagesDir
         folder: "../../resources/rear"
-        nameFilters: ["*.png"]
+        nameFilters: ["*.jpg"]
     }
 
     Column {
