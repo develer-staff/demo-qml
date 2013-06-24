@@ -231,7 +231,7 @@ Item {
         transitions: [
             Transition {
                 SequentialAnimation {
-                    PropertyAnimation { properties: "angle,x,y"; duration: 1000 }
+                    PropertyAnimation { properties: "angle,x,y"; duration: 150 }
                     ScriptAction {
                         script: {
                             cube.faceSelected(Cube.selectedFace)
