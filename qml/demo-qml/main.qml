@@ -300,7 +300,7 @@ Image {
                 anchors.centerIn: parent
                 onClicked: {
                     var markerId = cube.addMarker()
-                    cube.editMarker(markerId)
+                    cube.editMarker(markerId, true)
                     markerDescription.markerId = markerId
                     markerDescription.text = cube.markerModel.getMarkerDescription(markerId)
                     markersArea.state = "editMarker"
@@ -350,26 +350,36 @@ Image {
                 }
 
                 Button {
-                    icon: "../../resources/icons/001.png"
-                }
-                Button {
-                    icon: "../../resources/icons/002.png"
-                    onClicked: {
-                        cube.markerModel.setMarkerDescription(markerDescription.markerId, markerDescription.text)
-                        markerDescription.markerId = -1
-                        cube.editMarkerDone()
-                        markersArea.state = ""
-                    }
-                }
-                Button {
                     icon: "../../resources/icons/003.png"
                     onClicked: {
                         cube.deleteMarker()
                         markersArea.state = ""
                     }
                 }
+
+
+                Item {
+                    height: 64
+                    width: 64
+                }
+
+                Button {
+                    icon: "../../resources/icons/002.png"
+                    onClicked: {
+                        markerDescription.markerId = -1
+                        cube.cancelEditMarker()
+                        markersArea.state = ""
+                    }
+                }
+
                 Button {
                     icon: "../../resources/icons/004.png"
+                    onClicked: {
+                        cube.markerModel.setMarkerDescription(markerDescription.markerId, markerDescription.text)
+                        markerDescription.markerId = -1
+                        cube.confirmEditMarker()
+                        markersArea.state = ""
+                    }
                 }
             }
         }

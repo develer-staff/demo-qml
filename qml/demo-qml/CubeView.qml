@@ -96,8 +96,11 @@ Loader {
     }
 
     property Item _editMarker
+    property bool _newMarker: false
 
-    function editMarker(markerId) {
+    function editMarker(markerId, newMarker) {
+        _newMarker = (newMarker === true)
+
         for (var k = 0; k < loader.item.children.length; k++)
             if (loader.item.children[k].__markerComponent) {
                 if (loader.item.children[k].markerId != markerId)
@@ -109,7 +112,30 @@ Loader {
             }
     }
 
-    function editMarkerDone() {
+    function cancelEditMarker() {
+        if (_newMarker) { // if the marker is new,  cancel == delete
+            deleteMarker()
+            return
+        }
+
+        // Restore the item position
+        for (var i = 0; i < markerModel.count; i++) {
+            var model = markerModel.get(i)
+            if (model.markerId == _editMarker.markerId) {
+                _editMarker.x = model.x
+                _editMarker.y = model.y
+            }
+        }
+
+        _editMarker.movable = false
+        _editMarker = null
+
+        for (var k = 0; k < loader.item.children.length; k++)
+            if (loader.item.children[k].__markerComponent)
+                loader.item.children[k].opacity = 1
+    }
+
+    function confirmEditMarker() {
         for (var i = 0; i < markerModel.count; i++)
             if (markerModel.get(i).markerId == _editMarker.markerId) {
                 markerModel.setProperty(i, "x", _editMarker.x)
