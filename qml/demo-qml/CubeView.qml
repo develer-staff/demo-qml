@@ -94,9 +94,28 @@ Loader {
     property alias markerModel: markerModel
 
     function addMarker() {
+        var existentMarkers = markerModel.markersInFace(currentView)
+        var types = [markerModel.type1, markerModel.type2, markerModel.type3, markerModel.type4]
+
+        var availableTypes = types.slice()
+        for (var i = 0; i < existentMarkers.length; i++) {
+            var index = availableTypes.indexOf(existentMarkers[i].type)
+            if (index != -1)
+                availableTypes.splice(index, 1)
+        }
+
+        var type
+        if (availableTypes.length > 0)
+            type = availableTypes[0]
+        else {
+            console.warn("No available marker colors")
+            // Select a random type
+            type = types[Math.floor(Math.random() * types.length)]
+        }
+
         // 52 is the size of the marker
         var markerId = markerModel.count + 1
-        markerModel.append({"markerId": markerId, "face": loader.currentView, "type": markerModel.type1, "description": "",
+        markerModel.append({"markerId": markerId, "face": loader.currentView, "type": type, "description": "",
                             "x": (loader.width - 52) / 2, "y": (loader.height - 52) / 2})
         return markerId
     }
