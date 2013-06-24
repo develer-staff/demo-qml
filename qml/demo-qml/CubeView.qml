@@ -11,7 +11,7 @@ Loader {
 
     property int currentView
     property real currentIndex
-    signal viewUpdateRequest(int prevView, int currView, string image)
+    signal viewUpdateRequest(int prevView, int currView, string image, real newIndex)
 
     property real brightness: 0
     property real contrast: 0
@@ -269,8 +269,9 @@ Loader {
 
                 // always use the middle image for views on the right of the GUI
                 var newImage = Util.getImgFile(CubeView._imagesData[prevView], 0.5)
-                loader.viewUpdateRequest(prevView, loader.currentView, newImage)
+                var newIndex = CubeView._facesData[loader.currentView]
                 updateView()
+                loader.viewUpdateRequest(prevView, loader.currentView, newImage, newIndex)
                 loader.sourceComponent = image
             }
             onRotationPositionChanged: {

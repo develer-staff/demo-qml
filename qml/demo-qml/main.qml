@@ -152,6 +152,7 @@ Image {
 
             onViewUpdateRequest: {
                 var viewports = [view2, view3]
+                background.currentIndex = newIndex
 
                 for (var v = 0; v < 2; v++) {
                     if (viewports[v].currentView === currView) {
