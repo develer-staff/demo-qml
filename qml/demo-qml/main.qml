@@ -152,6 +152,7 @@ Image {
 
             onViewUpdateRequest: {
                 var viewports = [view2, view3]
+                background.currentIndex = newIndex
 
                 for (var v = 0; v < 2; v++) {
                     if (viewports[v].currentView === currView) {
@@ -184,7 +185,7 @@ Image {
             ImageView {
                 id: view2
                 currentView: CubeView.SIDE
-                image: Util.getImgFile(sideImagesDir, 0.5)//background.currentIndex)
+                image: Util.getImgFile(sideImagesDir, 0.5)
             }
 
             HorizontalLaser {
@@ -192,7 +193,6 @@ Image {
                 visible: false
                 anchors.verticalCenter: view2.verticalCenter
                 percentage: background.currentIndex
-                //onPercentageChangedByUser: console.log("percentage changed: " + newPercentage)
                 onPercentageChangedByUser: background.currentIndex = newPercentage
             }
         }
@@ -212,7 +212,7 @@ Image {
             ImageView {
                 id: view3
                 currentView: CubeView.FRONT
-                image: Util.getImgFile(frontImagesDir, 0.5)//background.currentIndex)
+                image: Util.getImgFile(frontImagesDir, 0.5)
             }
 
             HorizontalLaser {

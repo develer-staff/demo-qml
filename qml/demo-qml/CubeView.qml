@@ -11,7 +11,7 @@ Loader {
 
     property int currentView
     property real currentIndex
-    signal viewUpdateRequest(int prevView, int currView, string image)
+    signal viewUpdateRequest(int prevView, int currView, string image, real newIndex)
 
     property real brightness: 0
     property real contrast: 0
@@ -20,7 +20,10 @@ Loader {
     property variant sideImagesDir
     property variant frontImagesDir
 
-    onCurrentIndexChanged: updateView()
+    onCurrentIndexChanged: {
+        CubeView._facesData[loader.currentView] = currentIndex
+        changeFrontImage(currentIndex)
+    }
 
     Connections {
         target: topImagesDir
@@ -55,34 +58,37 @@ Loader {
     Component.onCompleted: updateView()
 
     function updateView() {
+        changeFrontImage()
         switch (loader.currentView) {
         case CubeView.TOP:
-            frontImageSrc = Util.getImgFile(loader.topImagesDir, loader.currentIndex)
-            leftImageSrc = rightImageSrc = Util.getImgFile(loader.sideImagesDir, loader.currentIndex)
-            bottomImageSrc = topImageSrc = Util.getImgFile(loader.frontImagesDir, loader.currentIndex)
+            leftImageSrc = rightImageSrc = Util.getImgFile(loader.sideImagesDir, CubeView._facesData[CubeView.SIDE])
+            bottomImageSrc = topImageSrc = Util.getImgFile(loader.frontImagesDir, CubeView._facesData[CubeView.FRONT])
             frontCubeFace = CubeView.TOP
             leftCubeFace = rightCubeFace = CubeView.SIDE
             bottomCubeFace = topCubeFace = CubeView.FRONT
             break
 
         case CubeView.SIDE:
-            frontImageSrc = Util.getImgFile(sideImagesDir, loader.currentIndex)
-            leftImageSrc = rightImageSrc = Util.getImgFile(loader.frontImagesDir, loader.currentIndex)
-            bottomImageSrc = topImageSrc = Util.getImgFile(loader.topImagesDir, loader.currentIndex)
+            leftImageSrc = rightImageSrc = Util.getImgFile(loader.frontImagesDir, CubeView._facesData[CubeView.FRONT])
+            bottomImageSrc = topImageSrc = Util.getImgFile(loader.topImagesDir, CubeView._facesData[CubeView.TOP])
             frontCubeFace = CubeView.SIDE
             leftCubeFace = rightCubeFace = CubeView.FRONT
             bottomCubeFace = topCubeFace = CubeView.TOP
             break
 
         case CubeView.FRONT:
-            frontImageSrc = Util.getImgFile(frontImagesDir, loader.currentIndex)
-            leftImageSrc = rightImageSrc = Util.getImgFile(loader.sideImagesDir, loader.currentIndex)
-            bottomImageSrc = topImageSrc = Util.getImgFile(loader.topImagesDir, loader.currentIndex)
+            leftImageSrc = rightImageSrc = Util.getImgFile(loader.sideImagesDir, CubeView._facesData[CubeView.SIDE])
+            bottomImageSrc = topImageSrc = Util.getImgFile(loader.topImagesDir, CubeView._facesData[CubeView.TOP])
             frontCubeFace = CubeView.FRONT
             leftCubeFace = rightCubeFace = CubeView.SIDE
             bottomCubeFace = topCubeFace = CubeView.TOP
             break
         }
+    }
+
+    function changeFrontImage(index) {
+        var i = index || CubeView._facesData[loader.currentView]
+        frontImageSrc = Util.getImgFile(CubeView._imagesData[loader.currentView], i)
     }
 
     property alias markerModel: markerModel
@@ -287,8 +293,11 @@ Loader {
                     break
                 }
 
-                loader.viewUpdateRequest(prevView, loader.currentView, loader.frontImageSrc)
+                // always use the middle image for views on the right of the GUI
+                var newImage = Util.getImgFile(CubeView._imagesData[prevView], 0.5)
+                var newIndex = CubeView._facesData[loader.currentView]
                 updateView()
+                loader.viewUpdateRequest(prevView, loader.currentView, newImage, newIndex)
                 loader.sourceComponent = image
             }
             onRotationPositionChanged: {

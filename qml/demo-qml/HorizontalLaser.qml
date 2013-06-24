@@ -7,7 +7,6 @@ Image {
     // do not use the percentage property to avoid breaking bindings
     signal percentageChangedByUser(real newPercentage)
 
-
     source: "../../resources/icons/verticale.png"
 
     QtObject {
