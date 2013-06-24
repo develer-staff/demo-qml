@@ -11,6 +11,7 @@ Loader {
 
     property int currentView
     property real currentIndex
+    signal gotoCurrentIndex(real index)
     signal viewUpdateRequest(int prevView, int currView, string image, real newIndex)
 
     property real brightness: 0
@@ -115,13 +116,15 @@ Loader {
 
         // 52 is the size of the marker
         var markerId = markerModel.count + 1
-        markerModel.append({"markerId": markerId, "face": loader.currentView, "type": type, "description": "",
+        markerModel.append({"markerId": markerId, "face": loader.currentView, "type": type,
+                            "description": "", "index": loader.currentIndex,
                             "x": (loader.width - 52) / 2, "y": (loader.height - 52) / 2})
         return markerId
     }
 
     property Item _editMarker
     property bool _newMarker: false
+    property real _previousIndex
 
     function editMarker(markerId, newMarker) {
         _newMarker = (newMarker === true)
@@ -134,6 +137,13 @@ Loader {
                     _editMarker = loader.item.children[k]
                     _editMarker.movable = true
                 }
+            }
+
+        _previousIndex = loader.currentIndex
+        for (var i = 0; i < markerModel.count; i++)
+            if (markerModel.get(i).markerId == _editMarker.markerId) {
+                loader.gotoCurrentIndex(markerModel.get(i).index)
+                break
             }
     }
 
@@ -152,6 +162,7 @@ Loader {
             }
         }
 
+        loader.gotoCurrentIndex(_previousIndex)
         _editMarker.movable = false
         _editMarker = null
 
@@ -167,6 +178,7 @@ Loader {
                 markerModel.setProperty(i, "y", _editMarker.y)
             }
 
+        loader.gotoCurrentIndex(_previousIndex)
         _editMarker.movable = false
         _editMarker = null
 
@@ -184,6 +196,7 @@ Loader {
                 markerModel.remove(i)
                 _editMarker.destroy()
                 _editMarker = null
+                loader.gotoCurrentIndex(_previousIndex)
                 return
             }
     }

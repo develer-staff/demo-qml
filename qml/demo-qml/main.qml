@@ -150,6 +150,18 @@ Image {
             brightness: brightnessKnob.percentage
             contrast: contrastKnob.percentage
 
+            NumberAnimation {
+                id: currentIndexAnimation
+                target: background
+                property: "currentIndex"
+            }
+
+            onGotoCurrentIndex: {
+                currentIndexAnimation.to = index
+                currentIndexAnimation.duration = Math.abs(index - background.currentIndex) * 400
+                currentIndexAnimation.start()
+            }
+
             onViewUpdateRequest: {
                 var viewports = [view2, view3]
                 background.currentIndex = newIndex
