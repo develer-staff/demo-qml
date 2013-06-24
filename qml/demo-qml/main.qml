@@ -6,6 +6,8 @@ import "Util.js" as Util
 
 Image {
     id: background
+
+    property real currentIndex: 0.5
     source: "../../resources/icons/bg.png"
 
     Image {
@@ -143,7 +145,7 @@ Image {
             sideImagesDir: sideImagesDir
             frontImagesDir: frontImagesDir
             currentView: CubeView.TOP
-            currentIndex: 0.5
+            currentIndex: background.currentIndex
 
             brightness: brightnessKnob.percentage
             contrast: contrastKnob.percentage
@@ -182,22 +184,27 @@ Image {
             ImageView {
                 id: view2
                 currentView: CubeView.SIDE
-                image: Util.getImgFile(sideImagesDir, cube.currentIndex)
+                image: Util.getImgFile(sideImagesDir, 0.5)//background.currentIndex)
             }
 
             HorizontalLaser {
+                id: topLaser
                 visible: false
                 anchors.verticalCenter: view2.verticalCenter
-                percentage: .3
+                percentage: background.currentIndex
                 //onPercentageChangedByUser: console.log("percentage changed: " + newPercentage)
+                onPercentageChangedByUser: background.currentIndex = newPercentage
             }
         }
 
         VerticalLaser {
+            id: verticalLaser
             z:1
             cursorOnTop: false
             anchors.left: parent.left
             anchors.leftMargin: 14.5
+            percentage: background.currentIndex
+            onPercentageChangedByUser: background.currentIndex = newPercentage
         }
 
         Row {
@@ -205,12 +212,14 @@ Image {
             ImageView {
                 id: view3
                 currentView: CubeView.FRONT
-                image: Util.getImgFile(frontImagesDir, cube.currentIndex)
+                image: Util.getImgFile(frontImagesDir, 0.5)//background.currentIndex)
             }
 
             HorizontalLaser {
+                id: bottomLaser
                 anchors.verticalCenter: view3.verticalCenter
-                percentage: .5
+                percentage: background.currentIndex
+                onPercentageChangedByUser: background.currentIndex = newPercentage
             }
         }
     }
