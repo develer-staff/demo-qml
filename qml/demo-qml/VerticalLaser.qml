@@ -5,6 +5,10 @@ Image {
     property real percentage: .2
 
     property bool cursorOnTop: true
+    property bool cursorVisible: true
+    property bool doubleCursor: false
+
+    property var cursor: doubleCursor ? doubleCursorImage : cursorImage
 
     // do not use the percentage property to avoid breaking bindings
     signal percentageChangedByUser(real newPercentage)
@@ -25,7 +29,7 @@ Image {
     }
 
     Image {
-        id: cursor
+        id: cursorImage
         source: {
             if (laser.cursorOnTop)
                 return mouseArea.pressed ? "../../resources/icons/laser_verticale_d_on.png" : "../../resources/icons/laser_verticale_d_off.png"
@@ -37,6 +41,7 @@ Image {
             // to align the center of the cursor circle to the center of the laser bar.
             topMargin: -25 + parent.height/ 2
         }
+        visible: laser.cursorVisible && !laser.doubleCursor
 
         MouseArea {
             id: mouseArea
@@ -45,11 +50,36 @@ Image {
             drag.target: parent
             drag.axis: Drag.XAxis
             drag.minimumX: 0
-            drag.maximumX: laser.width - cursor.width
+            drag.maximumX: laser.width - cursorImage.width
 
             onPositionChanged: {
                 if (drag.active)
-                    percentageChangedByUser(privateProps.recalculatePercentage(cursor.x))
+                    percentageChangedByUser(privateProps.recalculatePercentage(cursorImage.x))
+            }
+        }
+    }
+
+    Image {
+        id: doubleCursorImage
+        source: mouseAreaDouble.pressed ? "../../resources/icons/laser_verticale_xl_on.png" : "../../resources/icons/laser_verticale_xl_off.png"
+        visible: laser.cursorVisible && laser.doubleCursor
+
+        anchors {
+            verticalCenter: parent.verticalCenter
+        }
+
+        MouseArea {
+            id: mouseAreaDouble
+            anchors.fill: parent
+
+            drag.target: parent
+            drag.axis: Drag.XAxis
+            drag.minimumX: 0
+            drag.maximumX: laser.width - doubleCursorImage.width
+
+            onPositionChanged: {
+                if (drag.active)
+                    percentageChangedByUser(privateProps.recalculatePercentage(doubleCursorImage.x))
             }
         }
     }
@@ -58,12 +88,12 @@ Image {
         State {
             name: "cursorOnBottom"
             AnchorChanges {
-                target: cursor
+                target: cursorImage
                 anchors.top: undefined
                 anchors.bottom: laser.bottom
             }
             PropertyChanges {
-                target: cursor
+                target: cursorImage
                 anchors.topMargin: 0
                 anchors.bottomMargin: -25 + laser.height / 2
             }
