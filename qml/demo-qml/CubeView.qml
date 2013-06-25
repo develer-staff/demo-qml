@@ -470,7 +470,7 @@ Loader {
             source: loader.topAnimatedImage
             playing: false
             fillMode: Image.PreserveAspectFit
-            visible: true
+            opacity: 1
             anchors.fill: parent
         }
 
@@ -480,7 +480,7 @@ Loader {
             source: loader.sideAnimatedImage
             playing: false
             fillMode: Image.PreserveAspectFit
-            visible: false
+            opacity: 0
             anchors.fill: parent
         }
 
@@ -490,23 +490,23 @@ Loader {
             source: loader.frontAnimatedImage
             playing: false
             fillMode: Image.PreserveAspectFit
-            visible: false
+            opacity: 0
             anchors.fill: parent
         }
 
         states: [
             State {
                 name: "front"
-                PropertyChanges { target:frontAnimatedItem; visible: true }
-                PropertyChanges { target:topAnimatedItem; visible: false }
-                PropertyChanges { target:sideAnimatedItem; visible: false }
+                PropertyChanges { target:frontAnimatedItem; opacity: 1 }
+                PropertyChanges { target:topAnimatedItem; opacity: 0 }
+                PropertyChanges { target:sideAnimatedItem; opacity: 0 }
 
             },
             State {
                 name: "side"
-                PropertyChanges { target:sideAnimatedItem; visible: true }
-                PropertyChanges { target:topAnimatedItem; visible: false }
-                PropertyChanges { target:frontAnimatedItem; visible: false }
+                PropertyChanges { target:sideAnimatedItem; opacity: 1 }
+                PropertyChanges { target:topAnimatedItem; opacity: 0 }
+                PropertyChanges { target:frontAnimatedItem; opacity: 0 }
             }
         ]
 
@@ -520,6 +520,7 @@ Loader {
 
         onPressed: {
             loader.sourceComponent = cubeComponent
+            staticFace.visible = false
             loader.item.initRotation(mouse)
         }
 
@@ -528,6 +529,7 @@ Loader {
         }
 
         onReleased: {
+            staticFace.visible = true
             loader.item.finishRotation(mouse)
         }
     }
