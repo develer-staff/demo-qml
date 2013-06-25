@@ -144,6 +144,11 @@ Image {
             topImagesDir: topImagesDir
             sideImagesDir: sideImagesDir
             frontImagesDir: frontImagesDir
+
+            topAnimatedImage: "../../resources/top.gif"
+            sideAnimatedImage: "../../resources/side.gif"
+            frontAnimatedImage: "../../resources/rear.gif"
+
             currentView: CubeView.TOP
             currentIndex: background.currentIndex
 

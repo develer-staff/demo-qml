@@ -21,6 +21,12 @@ Loader {
     property variant sideImagesDir
     property variant frontImagesDir
 
+    property url topAnimatedImage
+    property url sideAnimatedImage
+    property url frontAnimatedImage
+    property url animatedImageSrc
+
+
     onCurrentIndexChanged: {
         CubeView._facesData[loader.currentView] = currentIndex
         changeFrontImage(currentIndex)
@@ -90,6 +96,13 @@ Loader {
     function changeFrontImage(index) {
         var i = index || CubeView._facesData[loader.currentView]
         frontImageSrc = Util.getImgFile(CubeView._imagesData[loader.currentView], i)
+
+        if (loader.currentView == CubeView.TOP)
+            animatedImageSrc = loader.topAnimatedImage
+        else if (loader.currentView == CubeView.FRONT)
+            animatedImageSrc = loader.frontAnimatedImage
+        else
+            animatedImageSrc = loader.sideAnimatedImage
     }
 
     property alias markerModel: markerModel
@@ -405,14 +418,22 @@ Loader {
     Component {
         id: image
 
-        Image {
+        AnimatedImage {
             id: staticFace
             property int face: loader.frontCubeFace
+
+            function updateCurrentFrame() {
+                currentFrame = Math.min(Math.round(loader.currentIndex * staticFace.frameCount), staticFace.frameCount - 1)
+            }
+
+            Connections {
+                target: loader
+                onCurrentIndexChanged: updateCurrentFrame()
+            }
 
             function loadMarkers() {
                 for (var k = 0; k < staticFace.children.length; k++)
                     if (staticFace.children[k].__markerComponent) {
-                        //console.log("DESTROY ITEM:", staticFace.children[k])
                         staticFace.children[k].destroy()
                     }
 
@@ -420,7 +441,8 @@ Loader {
             }
 
             anchors.fill: parent
-            source: loader.frontImageSrc
+            source: loader.animatedImageSrc
+            playing: false
             fillMode: Image.PreserveAspectFit
 
             BrightnessContrast {
@@ -430,7 +452,10 @@ Loader {
                 contrast: loader.contrast
             }
 
-            Component.onCompleted: loadMarkers()
+            Component.onCompleted: {
+                updateCurrentFrame()
+                loadMarkers()
+            }
         }
     }
 
