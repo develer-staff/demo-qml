@@ -7,7 +7,7 @@ import "Util.js" as Util
 Loader {
     id: loader
     anchors.fill: parent
-    sourceComponent: image
+    sourceComponent: undefined
 
     property int currentView
     property real currentIndex
@@ -59,6 +59,7 @@ Loader {
 
     function selectCubeFace(face) {
         loader.sourceComponent = cubeComponent
+        staticFace.visible = false
         loader.item.goToFace(face)
     }
 
@@ -98,11 +99,11 @@ Loader {
         frontImageSrc = Util.getImgFile(CubeView._imagesData[loader.currentView], i)
 
         if (loader.currentView == CubeView.TOP)
-            animatedImageSrc = loader.topAnimatedImage
+            staticFace.state = ""
         else if (loader.currentView == CubeView.FRONT)
-            animatedImageSrc = loader.frontAnimatedImage
+            staticFace.state = "front"
         else
-            animatedImageSrc = loader.sideAnimatedImage
+            staticFace.state = "side"
     }
 
     property alias markerModel: markerModel
@@ -142,12 +143,13 @@ Loader {
     function editMarker(markerId, newMarker) {
         _newMarker = (newMarker === true)
 
-        for (var k = 0; k < loader.item.children.length; k++)
-            if (loader.item.children[k].__markerComponent) {
-                if (loader.item.children[k].markerId != markerId)
-                    loader.item.children[k].opacity = .25
+        var item = staticFace.getCurrentItem()
+        for (var k = 0; k < item.children.length; k++)
+            if (item.children[k].__markerComponent) {
+                if (item.children[k].markerId != markerId)
+                    item.children[k].opacity = .25
                 else {
-                    _editMarker = loader.item.children[k]
+                    _editMarker = item.children[k]
                     _editMarker.movable = true
                 }
             }
@@ -179,9 +181,10 @@ Loader {
         _editMarker.movable = false
         _editMarker = null
 
-        for (var k = 0; k < loader.item.children.length; k++)
-            if (loader.item.children[k].__markerComponent)
-                loader.item.children[k].opacity = 1
+        var item = staticFace.getCurrentItem()
+        for (var k = 0; k < item.children.length; k++)
+            if (item.children[k].__markerComponent)
+                item.children[k].opacity = 1
     }
 
     function confirmEditMarker() {
@@ -195,9 +198,10 @@ Loader {
         _editMarker.movable = false
         _editMarker = null
 
-        for (var k = 0; k < loader.item.children.length; k++)
-            if (loader.item.children[k].__markerComponent)
-                loader.item.children[k].opacity = 1
+        var item = staticFace.getCurrentItem()
+        for (var k = 0; k < item.children.length; k++)
+            if (item.children[k].__markerComponent)
+                item.children[k].opacity = 1
     }
 
     function deleteMarker() {
@@ -253,7 +257,12 @@ Loader {
             }
         }
 
-        onCountChanged: loader.item.loadMarkers()
+        onCountChanged: {
+            if (loader.item)
+                loader.item.loadMarkers()
+
+            staticFace.loadMarkers()
+        }
     }
 
     Component {
@@ -343,7 +352,8 @@ Loader {
                 var newIndex = CubeView._facesData[loader.currentView]
                 updateView()
                 loader.viewUpdateRequest(prevView, loader.currentView, newImage, newIndex)
-                loader.sourceComponent = image
+                loader.sourceComponent = undefined
+                staticFace.visible = true
             }
             onRotationPositionChanged: {
                 // params: direction, amount
@@ -415,48 +425,93 @@ Loader {
         }
     }
 
-    Component {
-        id: image
+    Item {
+        id: staticFace
+        anchors.fill: parent
+
+        function getCurrentItem() {
+            if (state == "front")
+                return frontAnimatedItem
+            else if (state == "side")
+                return sideAnimatedItem
+
+            return topAnimatedItem
+        }
+
+        function loadMarkers() {
+            var item = getCurrentItem()
+            for (var k = 0; k < item.children.length; k++)
+                if (item.children[k].__markerComponent) {
+                    item.children[k].destroy()
+                }
+
+            markerModel.createMarkers([item])
+        }
+
+        function updateCurrentFrame() {
+            var item = getCurrentItem()
+            item.currentFrame = Math.min(Math.round(loader.currentIndex * item.frameCount), item.frameCount - 1)
+        }
+
+        function updateStaticFace() {
+            updateCurrentFrame()
+            loadMarkers()
+        }
+
+
+        Connections {
+            target: loader
+            onCurrentIndexChanged: staticFace.updateCurrentFrame()
+        }
 
         AnimatedImage {
-            id: staticFace
-            property int face: loader.frontCubeFace
-
-            function updateCurrentFrame() {
-                currentFrame = Math.min(Math.round(loader.currentIndex * staticFace.frameCount), staticFace.frameCount - 1)
-            }
-
-            Connections {
-                target: loader
-                onCurrentIndexChanged: updateCurrentFrame()
-            }
-
-            function loadMarkers() {
-                for (var k = 0; k < staticFace.children.length; k++)
-                    if (staticFace.children[k].__markerComponent) {
-                        staticFace.children[k].destroy()
-                    }
-
-                markerModel.createMarkers([staticFace])
-            }
-
-            anchors.fill: parent
-            source: loader.animatedImageSrc
+            id: topAnimatedItem
+            property int face: CubeView.TOP
+            source: loader.topAnimatedImage
             playing: false
             fillMode: Image.PreserveAspectFit
-
-            BrightnessContrast {
-                anchors.fill: parent
-                source: parent
-                brightness: loader.brightness
-                contrast: loader.contrast
-            }
-
-            Component.onCompleted: {
-                updateCurrentFrame()
-                loadMarkers()
-            }
+            visible: true
+            anchors.fill: parent
         }
+
+        AnimatedImage {
+            id: sideAnimatedItem
+            property int face: CubeView.SIDE
+            source: loader.sideAnimatedImage
+            playing: false
+            fillMode: Image.PreserveAspectFit
+            visible: false
+            anchors.fill: parent
+        }
+
+        AnimatedImage {
+            id: frontAnimatedItem
+            property int face: CubeView.FRONT
+            source: loader.frontAnimatedImage
+            playing: false
+            fillMode: Image.PreserveAspectFit
+            visible: false
+            anchors.fill: parent
+        }
+
+        states: [
+            State {
+                name: "front"
+                PropertyChanges { target:frontAnimatedItem; visible: true }
+                PropertyChanges { target:topAnimatedItem; visible: false }
+                PropertyChanges { target:sideAnimatedItem; visible: false }
+
+            },
+            State {
+                name: "side"
+                PropertyChanges { target:sideAnimatedItem; visible: true }
+                PropertyChanges { target:topAnimatedItem; visible: false }
+                PropertyChanges { target:frontAnimatedItem; visible: false }
+            }
+        ]
+
+        onStateChanged: updateStaticFace()
+        Component.onCompleted: updateStaticFace()
     }
 
     MouseArea {
