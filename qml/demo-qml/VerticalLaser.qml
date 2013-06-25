@@ -9,8 +9,8 @@ Image {
     // do not use the percentage property to avoid breaking bindings
     signal percentageChangedByUser(real newPercentage)
 
-
     source: "../../resources/icons/orizzontale.png"
+    state: laser.cursorOnTop ? "" : "cursorOnBottom"
 
     QtObject {
         id: privateProps
@@ -33,11 +33,9 @@ Image {
                 return mouseArea.pressed ? "../../resources/icons/laser_verticale_u_on.png" : "../../resources/icons/laser_verticale_u_off.png"
         }
         anchors {
-            top: laser.cursorOnTop ? parent.top : undefined
-            bottom: !laser.cursorOnTop ? parent.bottom : undefined
+            top: parent.top
             // to align the center of the cursor circle to the center of the laser bar.
-            topMargin: laser.cursorOnTop ? -25 + parent.height/ 2 : undefined
-            bottomMargin: !laser.cursorOnTop ? -25 + parent.height/ 2 : undefined
+            topMargin: -25 + parent.height/ 2
         }
 
         MouseArea {
@@ -55,6 +53,22 @@ Image {
             }
         }
     }
+
+    states: [
+        State {
+            name: "cursorOnBottom"
+            AnchorChanges {
+                target: cursor
+                anchors.top: undefined
+                anchors.bottom: laser.bottom
+            }
+            PropertyChanges {
+                target: cursor
+                anchors.topMargin: 0
+                anchors.bottomMargin: -25 + laser.height / 2
+            }
+        }
+    ]
 
     onPercentageChanged: cursor.x = privateProps.recalculateCursorPos(laser.percentage)
     Component.onCompleted: cursor.x = privateProps.recalculateCursorPos(laser.percentage)
