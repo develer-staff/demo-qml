@@ -356,11 +356,13 @@ Image {
 
             source: "../../resources/icons/descrizione_bg.png"
             opacity: 0
+            clip: true
 
-            TextInput {
+            TextEdit {
                 id: textInput
                 visible: markersArea.state == "editMarker"
                 anchors.fill: parent
+                anchors.margins: 8
                 font.pixelSize: 16
                 wrapMode: TextInput.WordWrap
                 color: "#939393"
