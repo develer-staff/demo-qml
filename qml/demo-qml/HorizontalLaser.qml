@@ -3,6 +3,7 @@ import QtQuick 2.0
 Image {
     id: laser
     property real percentage: .5
+    property bool cursorVisible: true
 
     // do not use the percentage property to avoid breaking bindings
     signal percentageChangedByUser(real newPercentage)
@@ -29,6 +30,7 @@ Image {
             right: parent.right
             rightMargin: -25 + parent.width / 2 // to align the center of the cursor circle to the center of the laser bar.
         }
+        visible: laser.cursorVisible
 
         MouseArea {
             id: mouseArea

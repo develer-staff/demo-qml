@@ -192,6 +192,10 @@ Image {
         }
         spacing: 18
 
+        // Visibility conditions for lasers
+        // - When TOP is in big box => 2 horizontal lasers
+        // - when SIDE in big box => double vertical laser
+        // - when FRONT in big box => horizontal cursor points to SIDE view
         Row {
             spacing: 20
             ImageView {
@@ -202,7 +206,15 @@ Image {
 
             HorizontalLaser {
                 id: topLaser
-                visible: false
+                cursorVisible: {
+                    if (cube.currentView === CubeView.TOP ||
+                            (verticalLaser.cursorVisible && verticalLaser.cursorOnTop) &&
+                            !verticalLaser.doubleCursor)
+                        return true
+                    else
+                        return false
+                }
+
                 anchors.verticalCenter: view2.verticalCenter
                 percentage: background.currentIndex
                 onPercentageChangedByUser: background.currentIndex = newPercentage
@@ -212,7 +224,9 @@ Image {
         VerticalLaser {
             id: verticalLaser
             z:1
-            cursorOnTop: false
+            cursorOnTop: view3.currentView === CubeView.SIDE ? true : false
+            cursorVisible: cube.currentView === CubeView.SIDE || cube.currentView === CubeView.FRONT
+            doubleCursor: cube.currentView === CubeView.SIDE
             anchors.left: parent.left
             anchors.leftMargin: 14.5
             percentage: background.currentIndex
@@ -229,6 +243,15 @@ Image {
 
             HorizontalLaser {
                 id: bottomLaser
+                cursorVisible: {
+                    if (cube.currentView === CubeView.TOP ||
+                            (verticalLaser.cursorVisible && !verticalLaser.cursorOnTop) &&
+                            !verticalLaser.doubleCursor)
+                        return true
+                    else
+                        return false
+                }
+
                 anchors.verticalCenter: view3.verticalCenter
                 percentage: background.currentIndex
                 onPercentageChangedByUser: background.currentIndex = newPercentage
