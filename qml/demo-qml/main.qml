@@ -45,20 +45,12 @@ Image {
 
         Text {
             id: text2
-            x: 27
-            y: 36
+            anchors.horizontalCenter: text1.horizontalCenter
+            anchors.bottom: patientInfo.bottom
+            anchors.bottomMargin: 5
             color: "#0254cd"
-            text: "Mario Rossi"
+            text: "John Smith"
             font.pixelSize: 28
-        }
-
-        Text {
-            id: text3
-            anchors.right: parent.right
-            anchors.rightMargin: 20
-            anchors.verticalCenter: text2.verticalCenter
-            text: qsTr("Male, 35 yo")
-            font.pixelSize: 16
         }
     }
 
