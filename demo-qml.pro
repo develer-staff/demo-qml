@@ -11,6 +11,19 @@ QML_IMPORT_PATH =
 # CONFIG += mobility
 # MOBILITY +=
 
+maliit {
+        CONFIG += link_pkgconfig
+        PKGCONFIG += maliit-framework maliit-plugins
+        QT += dbus gui-private core-private
+
+        # TODO: make the libmaliit-connection a dynamic-link library (to respect the LGPL license)
+        # and use the PKG_CONFIG variables to pass the headers path and the linking options to the compiler.
+        INCLUDEPATH += $${PWD}/maliit-framework/src $${PWD}/maliit-framework/connection
+        LIBS += $${PWD}/maliit-framework/lib/libmaliit-connection.a
+
+        DEFINES += MALIIT
+}
+
 # The .cpp file which was generated for your project. Feel free to hack it.
 SOURCES += main.cpp
 

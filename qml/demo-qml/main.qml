@@ -22,6 +22,8 @@ Image {
         }
     }
 
+
+
     BorderImage {
         id: patientInfo
         source: "../../resources/icons/s.png"
@@ -512,5 +514,32 @@ Image {
         anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom }
         width: parent.width
         height: parent.height / 2
+    }
+
+    Loader {
+        id: keyboardLoader
+        visible: false
+        anchors.fill: parent
+        z: 101
+        source: hasEmbeddedKeyboard ? MInputMethodQuick.qmlFileName : ""
+
+        Connections {
+            id: kbdConn
+            target: hasEmbeddedKeyboard ? MInputMethodQuick : null
+
+            onActiveChanged: {
+                if (MInputMethodQuick.active) {
+                    keyboardLoader.visible = true
+                }
+                else
+                    hideKeyboardTimer.start()
+            }
+        }
+
+        Timer {
+            id: hideKeyboardTimer
+            interval: 500 // the time needed by the keyboard to perform the hide animation
+            onTriggered: keyboardLoader.visible = false
+        }
     }
 }

@@ -3,6 +3,23 @@
 
 #include <QFontDatabase>
 #include <QDebug>
+#include <QQmlEngine>
+#include <QQmlContext>
+
+#if MALIIT
+#include <mimpluginmanager.h>
+#include <minputcontextconnection.h>
+#include <mimserver.h>
+#include <connectionfactory.h>
+#include <unknownplatform.h>
+
+#include <qpa/qplatforminputcontextfactory_p.h>
+#include <qpa/qplatformintegration.h>
+#include <qpa/qplatforminputcontext.h>
+#include <private/qguiapplication_p.h>
+#endif
+
+#include <QDebug>
 
 void loadFonts()
 {
@@ -32,6 +49,24 @@ int main(int argc, char *argv[])
     loadFonts();
 
     QtQuick2ApplicationViewer viewer;
+    viewer.reportContentOrientationChange(Qt::LandscapeOrientation);
+
+#ifdef MALIIT
+    MImServer::configureSettings(MImServer::TemporarySettings);
+    QSharedPointer<MInputContextConnection> icConnection(Maliit::DBus::createInputContextConnectionWithDynamicAddress());
+    QSharedPointer<Maliit::AbstractPlatform> platform(new Maliit::UnknownPlatform);
+    MIMPluginManager pm(icConnection, platform);
+
+    QPlatformIntegration *integration = QGuiApplicationPrivate::platformIntegration();
+
+    integration->setInputContext(QPlatformInputContextFactory::create("maliit"));
+    qDebug() << "inputContext" << integration->inputContext();
+
+    viewer.engine()->rootContext()->setContextProperty("hasEmbeddedKeyboard", QVariant(true));
+#else
+    viewer.engine()->rootContext()->setContextProperty("hasEmbeddedKeyboard", QVariant(false));
+#endif
+
     viewer.setMainQmlFile(QStringLiteral("qml/demo-qml/main.qml"));
     viewer.showExpanded();
 
