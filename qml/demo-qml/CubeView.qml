@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtGraphicalEffects 1.0
 import "CubeView.js" as CubeView
 import "Cube.js" as Cube
 import "Util.js" as Util
@@ -473,6 +474,13 @@ Loader {
 
         onStateChanged: updateStaticFace()
         Component.onCompleted: updateStaticFace()
+    }
+
+    BrightnessContrast {
+        source: staticFace
+        anchors.fill: staticFace
+        brightness: loader.brightness
+        contrast: loader.contrast
     }
 
     MouseArea {
