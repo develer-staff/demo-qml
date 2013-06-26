@@ -110,7 +110,9 @@ Loader {
 
     function addMarker() {
         var existentMarkers = markerModel.markersInFace(currentView)
-        var types = [markerModel.type1, markerModel.type2, markerModel.type3, markerModel.type4]
+        var types = [markerModel.type1, markerModel.type2, markerModel.type3, markerModel.type4,
+                     markerModel.type5, markerModel.type6, markerModel.type7, markerModel.type8,
+                     markerModel.type9, markerModel.type10, markerModel.type11]
 
         var availableTypes = types.slice()
         for (var i = 0; i < existentMarkers.length; i++) {

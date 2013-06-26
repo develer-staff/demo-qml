@@ -7,19 +7,20 @@ ListModel {
     readonly property int type2: 2
     readonly property int type3: 3
     readonly property int type4: 4
+    readonly property int type5: 5
+    readonly property int type6: 6
+    readonly property int type7: 7
+    readonly property int type8: 8
+    readonly property int type9: 9
+    readonly property int type10: 10
+    readonly property int type11: 11
 
     function typeToImage(t) {
-        switch (t) {
-        case type1:
-            return "../../resources/icons/001.png"
-        case type2:
-            return "../../resources/icons/002.png"
-        case type3:
-            return "../../resources/icons/003.png"
-        case type4:
-        default:
-            return "../../resources/icons/004.png"
-        }
+        return "../../resources/icons/0" + (t > 9 ? "" : "0") + t  + ".png"
+    }
+
+    function typeToSmallImage(t) {
+        return "../../resources/icons/0" + (t > 9 ? "" : "0") + t  + "s.png"
     }
 
     function markersInFace(face) {
@@ -58,7 +59,7 @@ ListModel {
                 "x": 250, "y": 200, "description": "Marker 3 description", "index": .4})
         append({"markerId": 4, "face": CubeView.TOP, "type": type4,
                 "x": 400, "y": 300, "description": "Marker 4 description", "index": .5})
-        append({"markerId": 5, "face": CubeView.TOP, "type": type2,
+        append({"markerId": 5, "face": CubeView.TOP, "type": type8,
                 "x": 250, "y": 400, "description": "Marker 5 description", "index": .8})
     }
 }
