@@ -8,8 +8,10 @@ Image {
 
     Image {
         id: img
-        anchors.fill: parent
+        anchors.centerIn: parent
         fillMode: Image.PreserveAspectFit
+        width: 200
+        height: 200
     }
 
     Image {

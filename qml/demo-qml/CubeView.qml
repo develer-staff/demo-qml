@@ -1,12 +1,10 @@
 import QtQuick 2.0
-import QtGraphicalEffects 1.0
 import "CubeView.js" as CubeView
 import "Cube.js" as Cube
 import "Util.js" as Util
 
 Loader {
     id: loader
-    anchors.fill: parent
     sourceComponent: undefined
 
     property int currentView
@@ -26,6 +24,8 @@ Loader {
     property url frontAnimatedImage
     property url animatedImageSrc
 
+    property int rotationPosition: 0
+    property int rotationDirection: 0
 
     onCurrentIndexChanged: {
         CubeView._facesData[loader.currentView] = currentIndex
@@ -312,9 +312,6 @@ Loader {
             }
 
             onFaceSelected: {
-                start_gradient.visible = false;
-                end_gradient.visible = false;
-
                 var prevView = loader.currentView
 
                 switch (face) {
@@ -355,73 +352,8 @@ Loader {
                 loader.sourceComponent = undefined
                 staticFace.visible = true
             }
-            onRotationPositionChanged: {
-                // params: direction, amount
-
-                // Adjust the amount if negative (movement bottom -> top or right -> left)
-                if (rotationPosition < 0) {
-                    rotationPosition = loader.width + rotationPosition;
-                }
-                else if (rotationPosition == 0) {
-                    rotationPosition = loader.width;
-                }
-
-                // clamp 0 <= value <= 650
-                rotationPosition = rotationPosition > loader.width ? loader.width : rotationPosition;
-                rotationPosition = rotationPosition < 0 ? 0 : rotationPosition;
-
-                var alpha_end = rotationPosition / loader.width;
-                var alpha_start = 1.0 - alpha_end;
-
-                if (rotationDirection === Cube.DIRECTION_X) {
-                    start_gradient.visible = true;
-                    start_gradient.start = Qt.point(0, 0);
-                    start_gradient.end = Qt.point(rotationPosition, 0);
-                    start_gradient.gradient.stops[0].color.a = alpha_start;
-
-                    end_gradient.visible = true;
-                    end_gradient.start = Qt.point(rotationPosition, 0);
-                    end_gradient.end = Qt.point(loader.width, 0);
-                    end_gradient.gradient.stops[1].color.a = alpha_end;
-                }
-                else if (rotationDirection === Cube.DIRECTION_Y) {
-                    start_gradient.visible = true;
-                    start_gradient.start = Qt.point(0, 0);
-                    start_gradient.end = Qt.point(0, rotationPosition);
-                    start_gradient.gradient.stops[0].color.a = alpha_start;
-
-                    end_gradient.visible = true;
-                    end_gradient.start = Qt.point(0, rotationPosition);
-                    end_gradient.end = Qt.point(0, loader.width);
-                    end_gradient.gradient.stops[1].color.a = alpha_end;
-                }
-                else {
-                    start_gradient.visible = false;
-                    end_gradient.visible = false;
-                }
-            }
-        }
-    }
-
-    LinearGradient {
-        id: start_gradient
-        z: 100
-        visible: false
-        anchors.fill: parent
-        gradient: Gradient {
-            GradientStop { position: 0.50; color: "#b6b7bd" }
-            GradientStop { position: 1.0; color: "transparent" }
-        }
-    }
-
-    LinearGradient {
-        id: end_gradient
-        z: 100
-        visible: false
-        anchors.fill: parent
-        gradient: Gradient {
-            GradientStop { position: 0.0; color: "transparent" }
-            GradientStop { position: 0.50; color: "#dee0e5" }
+            onRotationPositionChanged: loader.rotationPosition = rotationPosition
+            onRotationDirectionChanged: loader.rotationDirection = rotationDirection
         }
     }
 

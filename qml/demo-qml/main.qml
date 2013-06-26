@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import Qt.labs.folderlistmodel 2.0
+import QtGraphicalEffects 1.0
 import "CubeView.js" as CubeView
 import "Cube.js" as Cube
 import "Util.js" as Util
@@ -128,11 +129,13 @@ Image {
             left: background.left
             leftMargin: 150
         }
-        clip: true
 
         CubeView {
             id: cube
-            anchors.fill: parent
+            anchors.centerIn: parent
+            width: 500
+            height: 500
+            clip: true
             topImagesDir: topImagesDir
             sideImagesDir: sideImagesDir
             frontImagesDir: frontImagesDir
@@ -169,7 +172,76 @@ Image {
                         viewports[v].image = image
                     }
                 }
+
+                end_gradient.visible = false
+                start_gradient.visible = false
             }
+
+            onRotationPositionChanged: {
+                // Adjust the amount if negative (movement bottom -> top or right -> left)
+                if (rotationPosition < 0) {
+                    rotationPosition = view1.width + rotationPosition;
+                }
+                else if (rotationPosition == 0) {
+                    rotationPosition = view1.width;
+                }
+
+                // clamp 0 <= value <= 650
+                rotationPosition = rotationPosition > view1.width ? view1.width : rotationPosition;
+                rotationPosition = rotationPosition < 0 ? 0 : rotationPosition;
+
+                var alpha_end = rotationPosition / view1.width;
+                var alpha_start = 1.0 - alpha_end;
+
+                if (rotationDirection === Cube.DIRECTION_X) {
+                    start_gradient.visible = true;
+                    start_gradient.start = Qt.point(0, 0);
+                    start_gradient.end = Qt.point(rotationPosition, 0);
+                    start_gradient.gradient.stops[0].color.a = alpha_start;
+
+                    end_gradient.visible = true;
+                    end_gradient.start = Qt.point(rotationPosition, 0);
+                    end_gradient.end = Qt.point(view1.width, 0);
+                    end_gradient.gradient.stops[1].color.a = alpha_end;
+                }
+                else if (rotationDirection === Cube.DIRECTION_Y) {
+                    start_gradient.visible = true;
+                    start_gradient.start = Qt.point(0, 0);
+                    start_gradient.end = Qt.point(0, rotationPosition);
+                    start_gradient.gradient.stops[0].color.a = alpha_start;
+
+                    end_gradient.visible = true;
+                    end_gradient.start = Qt.point(0, rotationPosition);
+                    end_gradient.end = Qt.point(0, view1.width);
+                    end_gradient.gradient.stops[1].color.a = alpha_end;
+                }
+                else {
+                    start_gradient.visible = false;
+                    end_gradient.visible = false;
+                }
+            }
+        }
+    }
+
+    LinearGradient {
+        id: start_gradient
+        z: 100
+        visible: false
+        anchors.fill: view1
+        gradient: Gradient {
+            GradientStop { position: 0.50; color: "#b6b7bd" }
+            GradientStop { position: 1.0; color: "transparent" }
+        }
+    }
+
+    LinearGradient {
+        id: end_gradient
+        z: 100
+        visible: false
+        anchors.fill: view1
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "transparent" }
+            GradientStop { position: 0.50; color: "#dee0e5" }
         }
     }
 
