@@ -145,7 +145,7 @@ Image {
             frontAnimatedImage: "../../resources/rear.gif"
 
             currentView: CubeView.TOP
-            currentIndex: background.currentIndex
+            currentIndex: 1 - background.currentIndex
 
             brightness: brightnessKnob.percentage
             contrast: contrastKnob.percentage
@@ -157,14 +157,14 @@ Image {
             }
 
             onGotoCurrentIndex: {
-                currentIndexAnimation.to = index
-                currentIndexAnimation.duration = Math.abs(index - background.currentIndex) * 400
+                currentIndexAnimation.to = 1 - index
+                currentIndexAnimation.duration = Math.abs(index - (1 - background.currentIndex)) * 400
                 currentIndexAnimation.start()
             }
 
             onViewUpdateRequest: {
                 var viewports = [view2, view3]
-                background.currentIndex = newIndex
+                background.currentIndex = 1 - newIndex
 
                 for (var v = 0; v < 2; v++) {
                     if (viewports[v].currentView === currView) {
