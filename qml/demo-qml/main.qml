@@ -457,7 +457,7 @@ Image {
                 }
 
                 Button {
-                    icon: "../../resources/icons/003.png"
+                    icon: "../../resources/icons/remove.png"
                     onClicked: {
                         cube.deleteMarker()
                         markersArea.state = ""
@@ -471,7 +471,7 @@ Image {
                 }
 
                 Button {
-                    icon: "../../resources/icons/002.png"
+                    icon: "../../resources/icons/annulla.png"
                     onClicked: {
                         markerDescription.markerId = -1
                         cube.cancelEditMarker()
@@ -480,7 +480,7 @@ Image {
                 }
 
                 Button {
-                    icon: "../../resources/icons/004.png"
+                    icon: "../../resources/icons/conferma.png"
                     onClicked: {
                         cube.markerModel.setMarkerDescription(markerDescription.markerId, markerDescription.text)
                         markerDescription.markerId = -1
