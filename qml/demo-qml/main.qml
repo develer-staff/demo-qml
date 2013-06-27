@@ -22,8 +22,6 @@ Image {
         }
     }
 
-
-
     BorderImage {
         id: patientInfo
         source: "../../resources/icons/s.png"

@@ -52,7 +52,7 @@ ListModel {
 
     Component.onCompleted: {
         append({"markerId": 1, "face": CubeView.FRONT, "type": type2,
-                "x": 100, "y": 100, "description": "Marker 1 description", "index": .1})
+                "x": 100, "y": 100, "description": "Marker 1 description", "index": .35})
         append({"markerId": 2, "face": CubeView.FRONT, "type": type3,
                 "x": 400, "y": 200, "description": "Marker 2 description", "index": .65})
         append({"markerId": 3, "face": CubeView.SIDE, "type": type1,

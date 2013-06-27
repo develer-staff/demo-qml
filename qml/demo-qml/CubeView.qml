@@ -140,7 +140,6 @@ Loader {
 
     property Item _editMarker
     property bool _newMarker: false
-    property real _previousIndex
 
     function editMarker(markerId, newMarker) {
         _newMarker = (newMarker === true)
@@ -148,15 +147,16 @@ Loader {
         var item = staticFace.getCurrentItem()
         for (var k = 0; k < item.children.length; k++)
             if (item.children[k].__markerComponent) {
-                if (item.children[k].markerId != markerId)
-                    item.children[k].opacity = .25
+                if (item.children[k].markerId != markerId) {
+                    if (item.children[k].opacity == 1)
+                        item.children[k].opacity = .25
+                }
                 else {
                     _editMarker = item.children[k]
                     _editMarker.movable = true
                 }
             }
 
-        _previousIndex = loader.currentIndex
         for (var i = 0; i < markerModel.count; i++)
             if (markerModel.get(i).markerId == _editMarker.markerId) {
                 loader.gotoCurrentIndex(markerModel.get(i).index)
@@ -179,14 +179,13 @@ Loader {
             }
         }
 
-        loader.gotoCurrentIndex(_previousIndex)
         _editMarker.movable = false
         _editMarker = null
 
         var item = staticFace.getCurrentItem()
         for (var k = 0; k < item.children.length; k++)
             if (item.children[k].__markerComponent)
-                item.children[k].opacity = 1
+                item.children[k].opacity = (item.children[k].index == loader.currentIndex) ? 1 : 0
     }
 
     function confirmEditMarker() {
@@ -196,14 +195,13 @@ Loader {
                 markerModel.setProperty(i, "y", _editMarker.y)
             }
 
-        loader.gotoCurrentIndex(_previousIndex)
         _editMarker.movable = false
         _editMarker = null
 
         var item = staticFace.getCurrentItem()
         for (var k = 0; k < item.children.length; k++)
             if (item.children[k].__markerComponent)
-                item.children[k].opacity = 1
+                item.children[k].opacity = (item.children[k].index == loader.currentIndex) ? 1 : 0
     }
 
     function deleteMarker() {
@@ -215,7 +213,6 @@ Loader {
                 markerModel.remove(i)
                 _editMarker.destroy()
                 _editMarker = null
-                loader.gotoCurrentIndex(_previousIndex)
                 return
             }
     }
@@ -226,6 +223,7 @@ Loader {
             property bool __markerComponent: true
             property int markerId: -1
             property bool movable: false
+            property real index
 
             Behavior on opacity {
                 NumberAnimation { duration: 100 }
@@ -251,7 +249,7 @@ Loader {
             for (var i = 0; i < count; i++) {
                 var model = get(i)
                 var markerProperties = {"markerId": model.markerId, "source": typeToImage(model.type),
-                                        "x": model.x, "y": model.y}
+                                        "x": model.x, "y": model.y, "index": model.index, "opacity": model.index == loader.currentIndex ? 1 : 0}
 
                 for (var j = 0; j < faces.length; j++)
                     if (model.face == faces[j].face)
@@ -273,6 +271,22 @@ Loader {
         Cube {
             Component.onCompleted: loadMarkers()
 
+            Connections {
+                target: loader
+                onCurrentIndexChanged: updateMarkersVisibility()
+            }
+
+            function updateMarkersVisibility() {
+
+                var faces = [frontFaceLoader.item, leftFaceLoader.item, rightFaceLoader.item,
+                             topFaceLoader.item, bottomFaceLoader.item]
+
+                for (var j = 0; j < faces.length; j++)
+                    for (var k = 0; k < faces[j].children.length; k++)
+                        if (faces[j].children[k].__markerComponent)
+                            faces[j].children[k].opacity = (faces[j].children[k].index == loader.currentIndex) ? 1 : 0
+            }
+
             function loadMarkers() {
                 var faces = [frontFaceLoader.item, leftFaceLoader.item, rightFaceLoader.item,
                              topFaceLoader.item, bottomFaceLoader.item]
@@ -286,6 +300,7 @@ Loader {
                     }
 
                 markerModel.createMarkers(faces)
+                updateMarkersVisibility()
             }
 
             frontFaceLoader.sourceComponent: CubeFace {
@@ -380,6 +395,7 @@ Loader {
                 }
 
             markerModel.createMarkers([item])
+            staticFace.updateMarkersVisibility()
         }
 
         function updateCurrentFrame() {
@@ -392,10 +408,21 @@ Loader {
             loadMarkers()
         }
 
+        function updateMarkersVisibility() {
+            var item = getCurrentItem()
+            for (var k = 0; k < item.children.length; k++)
+                if (item.children[k].__markerComponent) {
+                    item.children[k].opacity = (item.children[k].index == loader.currentIndex) ? 1 : 0
+                }
+        }
+
 
         Connections {
             target: loader
-            onCurrentIndexChanged: staticFace.updateCurrentFrame()
+            onCurrentIndexChanged: {
+                staticFace.updateCurrentFrame()
+                staticFace.updateMarkersVisibility()
+            }
         }
 
         AnimatedImage {
