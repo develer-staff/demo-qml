@@ -3,6 +3,7 @@ import QtQuick 2.0
 Image {
     property int currentView
     property alias image: img.source
+    property bool verticalLaser: false
 
     source: "../../resources/icons/box.png"
 
@@ -19,5 +20,10 @@ Image {
         anchors.centerIn: parent
         anchors.verticalCenterOffset: 2
         z: parent.z - 1
+    }
+
+    Image {
+        anchors.fill: parent
+        source: verticalLaser ? "../../resources/icons/notches_vert.png" : "../../resources/icons/notches_oriz.png"
     }
 }

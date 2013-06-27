@@ -299,6 +299,7 @@ Image {
                 id: view2
                 currentView: CubeView.SIDE
                 image: Util.getImgFile(sideImagesDir, 0.5)
+                verticalLaser: verticalLaser.cursorVisible && (verticalLaser.doubleCursor || !verticalLaser.cursorOnTop)
             }
 
             HorizontalLaser {
@@ -336,6 +337,7 @@ Image {
                 id: view3
                 currentView: CubeView.FRONT
                 image: Util.getImgFile(frontImagesDir, 0.5)
+                verticalLaser: verticalLaser.cursorVisible && (verticalLaser.doubleCursor || verticalLaser.cursorOnTop)
             }
 
             HorizontalLaser {

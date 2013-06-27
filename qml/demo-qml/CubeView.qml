@@ -456,6 +456,18 @@ Loader {
             anchors.fill: parent
         }
 
+        Image {
+            anchors.bottom: parent.bottom
+            anchors.horizontalCenter: parent.horizontalCenter
+            source: "../../resources/icons/notches_oriz_xl.png"
+        }
+
+        Image {
+            anchors.right: parent.right
+            anchors.verticalCenter: parent.verticalCenter
+            source: "../../resources/icons/notches_vert_xl.png"
+        }
+
         states: [
             State {
                 name: "front"
