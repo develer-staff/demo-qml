@@ -12,13 +12,40 @@ Image {
     source: "../../resources/icons/bg.png"
 
     Image {
-        id: logo
+        id: logoDeveler
         source: "../../resources/icons/logo01.png"
         anchors {
             top: background.top
-            topMargin: 20
+            topMargin: 25
             left: background.left
             leftMargin: 10
+        }
+
+        Text {
+            x: 13
+            y: -16
+            text: "Software design"
+            font.pointSize: 10
+            color: "#c7c8cd"
+        }
+    }
+
+    Image {
+        id: logoEngicam
+        source: "../../resources/icons/logo02.png"
+        anchors {
+            top: background.top
+            topMargin: 25
+            right: background.right
+            rightMargin: 20
+        }
+
+        Text {
+            x: 71
+            y: -14
+            text: "Hardware design"
+            font.pointSize: 10
+            color: "#c7c8cd"
         }
     }
 
@@ -27,7 +54,8 @@ Image {
         source: "../../resources/icons/s.png"
         anchors {
             horizontalCenter: parent.horizontalCenter
-            verticalCenter: logo.verticalCenter
+            top: background.top
+            topMargin: 6
         }
 
         width: 360; height: 78
