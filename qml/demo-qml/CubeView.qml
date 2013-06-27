@@ -493,6 +493,7 @@ Loader {
         anchors.fill: staticFace
         brightness: loader.brightness
         contrast: loader.contrast
+        visible: staticFace.visible
     }
 
     MouseArea {
