@@ -72,7 +72,7 @@ Image {
             font.pointSize: 16
         }
 
-        Text {
+        TextInput {
             id: text2
             anchors.horizontalCenter: text1.horizontalCenter
             anchors.bottom: patientInfo.bottom
@@ -80,6 +80,9 @@ Image {
             color: "#0254cd"
             text: "John Smith"
             font.pixelSize: 28
+            horizontalAlignment: TextInput.AlignHCenter
+            width: parent.width - 46
+            clip: true
         }
     }
 
