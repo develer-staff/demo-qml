@@ -373,7 +373,7 @@ Image {
             id: markersInfo
             source: "../../resources/icons/s.png"
 
-            width: 910;
+            width: 874
             border.left: 38; border.top: 39
             border.right: 38; border.bottom: 39
             opacity: 1
