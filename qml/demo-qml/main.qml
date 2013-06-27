@@ -23,10 +23,10 @@ Image {
 
         Text {
             x: 13
-            y: -16
+            y: -18
             text: "Software design"
             font.pointSize: 10
-            color: "#c7c8cd"
+            color: "#babbc0"
         }
     }
 
@@ -45,7 +45,7 @@ Image {
             y: -14
             text: "Hardware design"
             font.pointSize: 10
-            color: "#c7c8cd"
+            color: "#babbc0"
         }
     }
 
