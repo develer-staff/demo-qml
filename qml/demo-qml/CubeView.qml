@@ -416,7 +416,6 @@ Loader {
                 }
         }
 
-
         Connections {
             target: loader
             onCurrentIndexChanged: {
@@ -425,34 +424,65 @@ Loader {
             }
         }
 
-        AnimatedImage {
+        Item {
             id: topAnimatedItem
             property int face: CubeView.TOP
-            source: loader.topAnimatedImage
-            playing: false
-            fillMode: Image.PreserveAspectFit
+            property alias currentFrame: topAnimatedImage.currentFrame
+            // for mng animated images frame count is not correct, so we set manually
+            property int frameCount: 91
             opacity: 1
             anchors.fill: parent
+
+            AnimatedImage {
+                id: topAnimatedImage
+                source: loader.topAnimatedImage
+                playing: false
+                // the sourceSize of the mng animated image is (0,0), so we manual
+                // align the image to the parent
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: 20
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.horizontalCenterOffset: -42
+            }
         }
 
-        AnimatedImage {
+
+        Item {
             id: sideAnimatedItem
             property int face: CubeView.SIDE
-            source: loader.sideAnimatedImage
-            playing: false
-            fillMode: Image.PreserveAspectFit
+            property alias currentFrame: sideAnimatedImage.currentFrame
+            property int frameCount: 91
             opacity: 0
             anchors.fill: parent
+
+            AnimatedImage {
+                id: sideAnimatedImage
+                source: loader.sideAnimatedImage
+                playing: false
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: 20
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.horizontalCenterOffset: -42
+            }
         }
 
-        AnimatedImage {
+        Item {
             id: frontAnimatedItem
             property int face: CubeView.FRONT
-            source: loader.frontAnimatedImage
-            playing: false
-            fillMode: Image.PreserveAspectFit
+            property alias currentFrame: frontAnimatedImage.currentFrame
+            property int frameCount: 91
             opacity: 0
             anchors.fill: parent
+
+            AnimatedImage {
+                id: frontAnimatedImage
+                source: loader.frontAnimatedImage
+                playing: false
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.verticalCenterOffset: 20
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.horizontalCenterOffset: -42
+            }
         }
 
         Image {

@@ -89,17 +89,17 @@ Image {
     FolderListModel {
         id: topImagesDir
         folder: "../../resources/top"
-        nameFilters: ["*.jpg"]
+        nameFilters: ["*.png"]
     }
     FolderListModel {
         id: sideImagesDir
         folder: "../../resources/side"
-        nameFilters: ["*.jpg"]
+        nameFilters: ["*.png"]
     }
     FolderListModel {
         id: frontImagesDir
         folder: "../../resources/rear"
-        nameFilters: ["*.jpg"]
+        nameFilters: ["*.png"]
     }
 
     Column {
@@ -171,9 +171,9 @@ Image {
             sideImagesDir: sideImagesDir
             frontImagesDir: frontImagesDir
 
-            topAnimatedImage: "../../resources/top.gif"
-            sideAnimatedImage: "../../resources/side.gif"
-            frontAnimatedImage: "../../resources/rear.gif"
+            topAnimatedImage: "../../resources/top/top.mng"
+            sideAnimatedImage: "../../resources/side/side.mng"
+            frontAnimatedImage: "../../resources/rear/rear.mng"
 
             currentView: CubeView.TOP
             currentIndex: 1 - background.currentIndex
