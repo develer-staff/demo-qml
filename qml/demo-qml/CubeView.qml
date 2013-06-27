@@ -127,8 +127,7 @@ Loader {
             type = availableTypes[0]
         else {
             console.warn("No available marker colors")
-            // Select a random type
-            type = types[Math.floor(Math.random() * types.length)]
+            return -1
         }
 
         // 52 is the size of the marker

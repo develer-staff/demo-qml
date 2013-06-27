@@ -434,10 +434,12 @@ Image {
                 anchors.centerIn: parent
                 onClicked: {
                     var markerId = cube.addMarker()
-                    cube.editMarker(markerId, true)
-                    markerDescription.markerId = markerId
-                    markerDescription.text = cube.markerModel.getMarkerDescription(markerId)
-                    background.state = "editMarker"
+                    if (markerId > 0) {
+                        cube.editMarker(markerId, true)
+                        markerDescription.markerId = markerId
+                        markerDescription.text = cube.markerModel.getMarkerDescription(markerId)
+                        background.state = "editMarker"
+                    }
                 }
             }
         }
