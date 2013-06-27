@@ -392,7 +392,7 @@ Image {
                             cube.editMarker(modelData.markerId)
                             markerDescription.markerId = modelData.markerId
                             markerDescription.text = cube.markerModel.getMarkerDescription(modelData.markerId)
-                            markersArea.state = "editMarker"
+                            background.state = "editMarker"
                         }
                     }
                 }
@@ -435,10 +435,20 @@ Image {
                     cube.editMarker(markerId, true)
                     markerDescription.markerId = markerId
                     markerDescription.text = cube.markerModel.getMarkerDescription(markerId)
-                    markersArea.state = "editMarker"
+                    background.state = "editMarker"
                 }
             }
         }
+    }
+
+    Item {
+        anchors {
+            left: parent.left
+            leftMargin: 10
+            right: parent.right
+        }
+        height: 78
+        y: Math.min(keyboardLoader.item.keyboardY, 768)- 6 - 78
 
         Image {
             id: markerDescription
@@ -451,7 +461,7 @@ Image {
 
             TextEdit {
                 id: textInput
-                visible: markersArea.state == "editMarker"
+                visible: background.state == "editMarker"
                 anchors.fill: parent
                 anchors.margins: 8
                 font.pixelSize: 16
@@ -475,7 +485,7 @@ Image {
             opacity: markerDescription.opacity
 
             Row {
-                visible: markersArea.state == "editMarker"
+                visible: background.state == "editMarker"
                 spacing: 15
                 anchors {
                     verticalCenter: parent.verticalCenter
@@ -487,7 +497,7 @@ Image {
                     icon: "../../resources/icons/remove.png"
                     onClicked: {
                         cube.deleteMarker()
-                        markersArea.state = ""
+                        background.state = ""
                     }
                 }
 
@@ -502,7 +512,7 @@ Image {
                     onClicked: {
                         markerDescription.markerId = -1
                         cube.cancelEditMarker()
-                        markersArea.state = ""
+                        background.state = ""
                     }
                 }
 
@@ -512,27 +522,25 @@ Image {
                         cube.markerModel.setMarkerDescription(markerDescription.markerId, markerDescription.text)
                         markerDescription.markerId = -1
                         cube.confirmEditMarker()
-                        markersArea.state = ""
+                        background.state = ""
                     }
                 }
             }
         }
-
-        states: State {
-            name: "editMarker"
-            PropertyChanges { target: markersInfo; opacity: 0 }
-            PropertyChanges { target: markerDescription; opacity: 1 }
-        }
-
-        transitions: Transition {
-            SequentialAnimation {
-                NumberAnimation { target: markersInfo; property: "opacity"; duration: 200 }
-                NumberAnimation { target: markerDescription; property: "opacity"; duration: 200 }
-            }
-        }
     }
 
+    states: State {
+        name: "editMarker"
+        PropertyChanges { target: markersInfo; opacity: 0 }
+        PropertyChanges { target: markerDescription; opacity: 1 }
+    }
 
+    transitions: Transition {
+        SequentialAnimation {
+            NumberAnimation { target: markersInfo; property: "opacity"; duration: 200 }
+            NumberAnimation { target: markerDescription; property: "opacity"; duration: 200 }
+        }
+    }
 
     KeyboardLauncher {
         id: kbdLauncher
