@@ -441,14 +441,18 @@ Image {
         }
     }
 
-    Item {
+    Rectangle {
+        id: markerBackground
         anchors {
             left: parent.left
             leftMargin: 10
             right: parent.right
+            rightMargin: 10
         }
-        height: 78
-        y: Math.min(keyboardLoader.item.keyboardY, 768)- 6 - 78
+        opacity: 0
+        height: 84
+        color: "#f5f6f8"
+        y: (hasEmbeddedKeyboard ? keyboardLoader.item.keyboardY : 768)- 84
 
         Image {
             id: markerDescription
@@ -456,7 +460,7 @@ Image {
             property int markerId: -1
 
             source: "../../resources/icons/descrizione_bg.png"
-            opacity: 0
+            opacity: markerBackground.opacity
             clip: true
 
             TextEdit {
@@ -497,6 +501,7 @@ Image {
                     icon: "../../resources/icons/remove.png"
                     onClicked: {
                         cube.deleteMarker()
+                        Qt.inputMethod.hide()
                         background.state = ""
                     }
                 }
@@ -512,6 +517,7 @@ Image {
                     onClicked: {
                         markerDescription.markerId = -1
                         cube.cancelEditMarker()
+                        Qt.inputMethod.hide()
                         background.state = ""
                     }
                 }
@@ -522,6 +528,7 @@ Image {
                         cube.markerModel.setMarkerDescription(markerDescription.markerId, markerDescription.text)
                         markerDescription.markerId = -1
                         cube.confirmEditMarker()
+                        Qt.inputMethod.hide()
                         background.state = ""
                     }
                 }
@@ -532,15 +539,27 @@ Image {
     states: State {
         name: "editMarker"
         PropertyChanges { target: markersInfo; opacity: 0 }
-        PropertyChanges { target: markerDescription; opacity: 1 }
+        PropertyChanges { target: markerBackground; opacity: 1 }
     }
 
-    transitions: Transition {
-        SequentialAnimation {
-            NumberAnimation { target: markersInfo; property: "opacity"; duration: 200 }
-            NumberAnimation { target: markerDescription; property: "opacity"; duration: 200 }
+    transitions: [
+        Transition {
+            from: ""
+            to: "editMarker"
+            SequentialAnimation {
+                NumberAnimation { target: markersInfo; property: "opacity"; duration: 200 }
+                NumberAnimation { target: markerBackground; property: "opacity"; duration: 200 }
+            }
+        },
+        Transition {
+            from: "editMarker"
+            to: ""
+            SequentialAnimation {
+                NumberAnimation { target: markerBackground; property: "opacity"; duration: 200 }
+                NumberAnimation { target: markersInfo; property: "opacity"; duration: 200 }
+            }
         }
-    }
+    ]
 
     KeyboardLauncher {
         id: kbdLauncher
