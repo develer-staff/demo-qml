@@ -147,8 +147,11 @@ Loader {
         for (var k = 0; k < highResolutionFace.children.length; k++)
             if (highResolutionFace.children[k].__markerComponent) {
                 if (highResolutionFace.children[k].markerId != markerId) {
-                    if (highResolutionFace.children[k].opacity == 1)
-                        highResolutionFace.children[k].opacity = .25
+                    if (highResolutionFace.children[k].opacity == 1) {
+                        highResolutionFace.children[k].opacityAnimation.enabled = true
+                        highResolutionFace.children[k].opacity = .5
+                        highResolutionFace.children[k].opacityAnimation.enabled = false
+                    }
                 }
                 else {
                     _editMarker = highResolutionFace.children[k]
@@ -183,7 +186,7 @@ Loader {
 
         for (var k = 0; k < highResolutionFace.children.length; k++)
             if (highResolutionFace.children[k].__markerComponent)
-                highResolutionFace.children[k].opacity = (highResolutionFace.children[k].index == loader.currentIndex) ? 1 : 0
+                highResolutionFace.children[k].opacity = markerIsVisible(highResolutionFace.children[k].index) ? 1 : 0
     }
 
     function confirmEditMarker() {
@@ -225,8 +228,11 @@ Loader {
             property int markerId: -1
             property bool movable: false
             property real index
+            property alias opacityAnimation: opacityBehavior
 
             Behavior on opacity {
+                id: opacityBehavior
+                enabled: false
                 NumberAnimation { duration: 100 }
             }
 
