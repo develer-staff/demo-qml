@@ -376,10 +376,17 @@ Loader {
         }
     }
 
+    Image {
+        id: staticFaceBg
+        source: "../../resources/icons/bigbox.png"
+        visible: staticFace.visible
+
+        anchors.centerIn: parent
+    }
 
     Item {
         id: staticFace
-        anchors.fill: parent
+        anchors.fill: staticFaceBg
 
         function getCurrentItem() {
             if (state == "front")
@@ -497,18 +504,6 @@ Loader {
             Component.onCompleted: parent.preLoadFrames(frontAnimatedItem)
         }
 
-        Image {
-            anchors.bottom: parent.bottom
-            anchors.horizontalCenter: parent.horizontalCenter
-            source: "../../resources/icons/notches_oriz_xl.png"
-        }
-
-        Image {
-            anchors.right: parent.right
-            anchors.verticalCenter: parent.verticalCenter
-            source: "../../resources/icons/notches_vert_xl.png"
-        }
-
         states: [
             State {
                 name: "front"
@@ -527,6 +522,22 @@ Loader {
 
         onStateChanged: updateStaticFace()
         Component.onCompleted: updateStaticFace()
+    }
+
+    Image {
+        anchors.bottom: staticFaceBg.bottom
+        anchors.bottomMargin: 16
+        anchors.horizontalCenter: staticFaceBg.horizontalCenter
+        source: "../../resources/icons/notches_oriz_xl.png"
+        visible: staticFace.visible
+    }
+
+    Image {
+        anchors.right: staticFaceBg.right
+        anchors.rightMargin: 26
+        anchors.verticalCenter: staticFaceBg.verticalCenter
+        source: "../../resources/icons/notches_vert_xl.png"
+        visible: staticFace.visible
     }
 
 

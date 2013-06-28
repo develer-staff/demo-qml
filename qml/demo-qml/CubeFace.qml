@@ -1,27 +1,29 @@
 import QtQuick 2.0
 
 
-Rectangle {
+Image {
     property alias source: image.source
     property int face
 
-    color: '#f4f4f4'
-    border.color: '#fefefe'
-    border.width: 3
+    source: "../../resources/icons/bigbox.png"
     Image {
         id: image
-        anchors.fill: parent
+        width: 500
+        height: 500
+        anchors.centerIn: parent
         fillMode: Image.PreserveAspectFit
     }
 
     Image {
         anchors.bottom: parent.bottom
+        anchors.bottomMargin: 16
         anchors.horizontalCenter: parent.horizontalCenter
         source: "../../resources/icons/notches_oriz_xl.png"
     }
 
     Image {
         anchors.right: parent.right
+        anchors.rightMargin: 26
         anchors.verticalCenter: parent.verticalCenter
         source: "../../resources/icons/notches_vert_xl.png"
     }

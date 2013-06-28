@@ -152,24 +152,22 @@ Image {
         }
     }
 
-    Image {
+    Item {
         id: view1
 
-        source: "../../resources/icons/bigbox.png"
         anchors {
             top: background.top
             topMargin: globalTopMargin
             left: background.left
             leftMargin: 150
         }
+        width: 516
+        height: 516
         z: 1
 
         CubeView {
             id: cube
-            anchors.centerIn: parent
-            width: 500
-            height: 500
-            clip: true
+            anchors.fill: parent
             topImagesDir: topImagesDir
             sideImagesDir: sideImagesDir
             frontImagesDir: frontImagesDir
