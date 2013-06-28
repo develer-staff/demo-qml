@@ -564,7 +564,7 @@ Loader {
             anchors.margins: -parent.anchors.margins
 
             visible: true
-            source: loader.frontImageSrc
+            source: visible ? loader.frontImageSrc : ""
             face: loader.frontCubeFace
             onFaceChanged: loadMarkers()
             brightness: loader.brightness
@@ -590,7 +590,7 @@ Loader {
 
             Timer {
                 id: showHighResolutionFaceTimer
-                interval: 30
+                interval: 100
                 onTriggered: {
                     highResolutionFace.visible = true
                     markerModel.updateMarkersVisibility([highResolutionFace])
