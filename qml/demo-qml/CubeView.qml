@@ -308,26 +308,36 @@ Loader {
             frontFaceLoader.sourceComponent: CubeFace {
                 source: loader.frontImageSrc
                 face: loader.frontCubeFace
+                brightness: loader.brightness
+                contrast: loader.contrast
             }
 
             leftFaceLoader.sourceComponent: CubeFace {
                 source: loader.leftImageSrc
                 face: loader.leftCubeFace
+                brightness: loader.brightness
+                contrast: loader.contrast
             }
 
             rightFaceLoader.sourceComponent: CubeFace {
                 source: loader.rightImageSrc
                 face: loader.rightCubeFace
+                brightness: loader.brightness
+                contrast: loader.contrast
             }
 
             topFaceLoader.sourceComponent: CubeFace {
                 source: loader.topImageSrc
                 face: loader.topCubeFace
+                brightness: loader.brightness
+                contrast: loader.contrast
             }
 
             bottomFaceLoader.sourceComponent: CubeFace {
                 source: loader.bottomImageSrc
                 face: loader.bottomCubeFace
+                brightness: loader.brightness
+                contrast: loader.contrast
             }
 
             onFaceSelected: {
@@ -549,6 +559,8 @@ Loader {
         source: loader.frontImageSrc
         face: loader.frontCubeFace
         onFaceChanged: loadMarkers()
+        brightness: loader.brightness
+        contrast: loader.contrast
 
         Connections {
             target: staticFace
