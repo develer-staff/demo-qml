@@ -450,23 +450,29 @@ Image {
         }
     }
 
-    Rectangle {
+    Image {
         id: markerBackground
-        anchors {
-            left: parent.left
-            leftMargin: 10
-            right: parent.right
-            rightMargin: 10
-        }
+        source: "../../resources/icons/bg_edit_marker.png"
         opacity: 0
-        height: 84
-        color: "#f5f6f8"
-        y: (hasEmbeddedKeyboard ? keyboardLoader.item.keyboardY : 768)- 84
+        y: (hasEmbeddedKeyboard ? keyboardLoader.item.keyboardY : 768) - height
+        z: 3
+
+        Rectangle {
+            anchors.bottom: parent.bottom
+            height: 10
+            width: parent.width
+            visible: keyboardLoader.visible
+        }
 
         Image {
             id: markerDescription
             property alias text: textInput.text
             property int markerId: -1
+
+            anchors.top: parent.top
+            anchors.topMargin: 8
+            anchors.left: parent.left
+            anchors.leftMargin: 10
 
             source: "../../resources/icons/descrizione_bg.png"
             opacity: markerBackground.opacity
@@ -491,6 +497,7 @@ Image {
                 leftMargin: 10
                 right: parent.right
                 rightMargin: 10
+                verticalCenter: markerDescription.verticalCenter
             }
 
             border.left: 38; border.top: 39
@@ -499,11 +506,11 @@ Image {
 
             Row {
                 visible: background.state == "editMarker"
-                spacing: 13
+                spacing: 17
                 anchors {
                     verticalCenter: parent.verticalCenter
                     left: parent.left
-                    leftMargin:6
+                    leftMargin: 6
                 }
 
                 Button {
