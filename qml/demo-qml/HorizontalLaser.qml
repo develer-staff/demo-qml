@@ -23,14 +23,36 @@ Image {
     }
 
 
-    Image {
+    BorderImage {
         id: cursor
+        border.left: 14
+        border.right: 64
+
         source: mouseArea.pressed ? "../../resources/icons/laser_orizontale_on.png" : "../../resources/icons/laser_orizontale_off.png"
         anchors {
             right: parent.right
             rightMargin: -25 + parent.width / 2 // to align the center of the cursor circle to the center of the laser bar.
         }
-        visible: laser.cursorVisible
+
+        state: laser.cursorVisible ? "" : "hidden"
+
+        states: State {
+            name: "hidden"
+            PropertyChanges { target: cursor; width: cursor.border.left + cursor.border.right }
+            PropertyChanges { target: cursor; opacity: 0 }
+        }
+
+        transitions: [
+            Transition {
+                from: ""
+                to: "hidden"
+                reversible: true
+                SequentialAnimation {
+                    NumberAnimation { property: "width"; duration: 200 }
+                    NumberAnimation { property: "opacity"; duration: 200 }
+                }
+            }
+        ]
 
         MouseArea {
             id: mouseArea
@@ -46,6 +68,8 @@ Image {
                     percentageChangedByUser(privateProps.recalculatePercentage(cursor.y))
             }
         }
+
+
     }
 
     onPercentageChanged: cursor.y = privateProps.recalculateCursorPos(laser.percentage)

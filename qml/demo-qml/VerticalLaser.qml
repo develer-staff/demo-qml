@@ -28,59 +28,115 @@ Image {
         }
     }
 
-    Image {
+    BorderImage {
         id: cursorImage
+
+        border.top: laser.cursorOnTop ? 64 : 14
+        border.bottom: laser.cursorOnTop ? 14:  64
+
+        height: sourceSize.height // Why is this required?
         source: {
             if (laser.cursorOnTop)
                 return mouseArea.pressed ? "../../resources/icons/laser_verticale_d_on.png" : "../../resources/icons/laser_verticale_d_off.png"
             else
                 return mouseArea.pressed ? "../../resources/icons/laser_verticale_u_on.png" : "../../resources/icons/laser_verticale_u_off.png"
         }
+
         anchors {
             top: parent.top
             // to align the center of the cursor circle to the center of the laser bar.
             topMargin: -25 + parent.height/ 2
         }
-        visible: laser.cursorVisible && !laser.doubleCursor
 
-        MouseArea {
-            id: mouseArea
-            anchors.fill: parent
+        state: laser.cursorVisible && !laser.doubleCursor ? "" : "hidden"
+        states: State {
+            name: "hidden"
+            PropertyChanges { target: cursorImage; height: cursorImage.border.top + cursorImage.border.bottom }
+            PropertyChanges { target: cursorImage; opacity: 0 }
+        }
 
-            drag.target: parent
-            drag.axis: Drag.XAxis
-            drag.minimumX: 0
-            drag.maximumX: laser.width - cursorImage.width
-
-            onPositionChanged: {
-                if (drag.active)
-                    percentageChangedByUser(privateProps.recalculatePercentage(cursorImage.x))
+        transitions: [
+            Transition {
+                from: ""
+                to: "hidden"
+                reversible: true
+                SequentialAnimation {
+                    NumberAnimation { property: "height"; duration: 200 }
+                    NumberAnimation { property: "opacity"; duration: 200 }
+                }
             }
+        ]
+    }
+
+    MouseArea {
+        id: mouseArea
+        anchors.fill: cursorImage
+        enabled: laser.cursorVisible && !laser.doubleCursor
+
+        drag.target: cursorImage
+        drag.axis: Drag.XAxis
+        drag.minimumX: 0
+        drag.maximumX: laser.width - cursorImage.width
+
+        onPositionChanged: {
+            if (drag.active)
+                percentageChangedByUser(privateProps.recalculatePercentage(cursorImage.x))
         }
     }
 
-    Image {
+    Column {
         id: doubleCursorImage
-        source: mouseAreaDouble.pressed ? "../../resources/icons/laser_verticale_xl_on.png" : "../../resources/icons/laser_verticale_xl_off.png"
-        visible: laser.cursorVisible && laser.doubleCursor
+        anchors.verticalCenter: parent.verticalCenter
 
-        anchors {
-            verticalCenter: parent.verticalCenter
+        BorderImage {
+            id: topImage
+            border.top: 14
+            border.bottom: 38
+            source: mouseAreaDouble.pressed ? "../../resources/icons/laser_verticale_xl_top_on.png" : "../../resources/icons/laser_verticale_xl_top_off.png"
         }
 
-        MouseArea {
-            id: mouseAreaDouble
-            anchors.fill: parent
+        BorderImage {
+            id: bottomImage
+            border.top: 36
+            border.bottom: 14
+            source: mouseAreaDouble.pressed ? "../../resources/icons/laser_verticale_xl_bottom_on.png" : "../../resources/icons/laser_verticale_xl_bottom_off.png"
+        }
 
-            drag.target: parent
-            drag.axis: Drag.XAxis
-            drag.minimumX: 0
-            drag.maximumX: laser.width - doubleCursorImage.width
+        state: laser.cursorVisible && laser.doubleCursor ? "" : "hidden"
+        states: State {
+            name: "hidden"
+            PropertyChanges { target: topImage; height: topImage.border.top + topImage.border.bottom }
+            PropertyChanges { target: topImage; opacity: 0 }
+            PropertyChanges { target: bottomImage; height: bottomImage.border.top + bottomImage.border.bottom }
+            PropertyChanges { target: bottomImage; opacity: 0 }
+        }
 
-            onPositionChanged: {
-                if (drag.active)
-                    percentageChangedByUser(privateProps.recalculatePercentage(doubleCursorImage.x))
+        transitions: [
+            Transition {
+                from: ""
+                to: "hidden"
+                reversible: true
+                SequentialAnimation {
+                    NumberAnimation { property: "height"; duration: 200 }
+                    NumberAnimation { property: "opacity"; duration: 200 }
+                }
             }
+        ]
+    }
+
+    MouseArea {
+        id: mouseAreaDouble
+        anchors.fill: doubleCursorImage
+        enabled: laser.cursorVisible && laser.doubleCursor
+
+        drag.target: doubleCursorImage
+        drag.axis: Drag.XAxis
+        drag.minimumX: 0
+        drag.maximumX: laser.width - doubleCursorImage.width
+
+        onPositionChanged: {
+            if (drag.active)
+                percentageChangedByUser(privateProps.recalculatePercentage(doubleCursorImage.x))
         }
     }
 
