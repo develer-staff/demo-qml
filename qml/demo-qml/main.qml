@@ -263,7 +263,7 @@ Image {
         visible: false
         anchors.fill: view1
         gradient: Gradient {
-            GradientStop { position: 0.50; color: "#b6b7bd" }
+            GradientStop { position: 0.50; color: "#e2e4e8" }
             GradientStop { position: 1.0; color: "transparent" }
         }
     }
@@ -275,7 +275,7 @@ Image {
         anchors.fill: view1
         gradient: Gradient {
             GradientStop { position: 0.0; color: "transparent" }
-            GradientStop { position: 0.50; color: "#dee0e5" }
+            GradientStop { position: 0.50; color: "#e2e4e8" }
         }
     }
 
