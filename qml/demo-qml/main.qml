@@ -9,6 +9,8 @@ Image {
     id: background
 
     property real currentIndex: 0.5
+
+    property int globalTopMargin: 128
     source: "../../resources/icons/bg.png"
 
     Image {
@@ -110,9 +112,9 @@ Image {
             right: view1.left
             rightMargin: 10
             top: background.top
-            topMargin: 100
+            topMargin: globalTopMargin
         }
-        spacing: 20
+        spacing: 40
         Knob {
             id: brightnessKnob
             label: "Brigthness"
@@ -156,10 +158,11 @@ Image {
         source: "../../resources/icons/bigbox.png"
         anchors {
             top: background.top
-            topMargin: 100
+            topMargin: globalTopMargin
             left: background.left
             leftMargin: 150
         }
+        z: 1
 
         CubeView {
             id: cube
@@ -227,22 +230,22 @@ Image {
                 if (rotationDirection === Cube.DIRECTION_X) {
                     start_gradient.visible = true;
                     start_gradient.start = Qt.point(0, 0);
-                    start_gradient.end = Qt.point(rotationPosition, 0);
+                    start_gradient.end = Qt.point(rotationPosition * 0.66, 0);
                     start_gradient.gradient.stops[0].color.a = alpha_start;
 
                     end_gradient.visible = true;
-                    end_gradient.start = Qt.point(rotationPosition, 0);
+                    end_gradient.start = Qt.point(rotationPosition + (view1.width - rotationPosition) * 0.66, 0);
                     end_gradient.end = Qt.point(view1.width, 0);
                     end_gradient.gradient.stops[1].color.a = alpha_end;
                 }
                 else if (rotationDirection === Cube.DIRECTION_Y) {
                     start_gradient.visible = true;
                     start_gradient.start = Qt.point(0, 0);
-                    start_gradient.end = Qt.point(0, rotationPosition);
+                    start_gradient.end = Qt.point(0, rotationPosition * 0.66);
                     start_gradient.gradient.stops[0].color.a = alpha_start;
 
                     end_gradient.visible = true;
-                    end_gradient.start = Qt.point(0, rotationPosition);
+                    end_gradient.start = Qt.point(0, rotationPosition + (view1.width - rotationPosition) * 0.66);
                     end_gradient.end = Qt.point(0, view1.width);
                     end_gradient.gradient.stops[1].color.a = alpha_end;
                 }
@@ -256,30 +259,29 @@ Image {
 
     LinearGradient {
         id: start_gradient
-        z: 100
+        z: 10
         visible: false
         anchors.fill: view1
         gradient: Gradient {
-            GradientStop { position: 0.50; color: "#b6b7bd" }
+            GradientStop { position: 0.50; color: "#e2e4e8" }
             GradientStop { position: 1.0; color: "transparent" }
         }
     }
 
     LinearGradient {
         id: end_gradient
-        z: 100
+        z: 10
         visible: false
         anchors.fill: view1
         gradient: Gradient {
             GradientStop { position: 0.0; color: "transparent" }
-            GradientStop { position: 0.50; color: "#dee0e5" }
+            GradientStop { position: 0.50; color: "#e2e4e8" }
         }
     }
 
     Image {
         source: "../../resources/icons/bigbox_bg.png"
         anchors.centerIn: view1
-        anchors.verticalCenterOffset: 2
         z: view1.z - 1
     }
 
@@ -287,10 +289,10 @@ Image {
         anchors {
             top: background.top
             right: background.right
-            topMargin: 100
+            topMargin: globalTopMargin
             rightMargin: 50
         }
-        spacing: 18
+        spacing: 21
 
         // Visibility conditions for lasers
         // - When TOP is in big box => 2 horizontal lasers
@@ -448,23 +450,29 @@ Image {
         }
     }
 
-    Rectangle {
+    Image {
         id: markerBackground
-        anchors {
-            left: parent.left
-            leftMargin: 10
-            right: parent.right
-            rightMargin: 10
-        }
+        source: "../../resources/icons/bg_edit_marker.png"
         opacity: 0
-        height: 84
-        color: "#f5f6f8"
-        y: (hasEmbeddedKeyboard ? keyboardLoader.item.keyboardY : 768)- 84
+        y: (hasEmbeddedKeyboard ? keyboardLoader.item.keyboardY : 768) - height
+        z: 3
+
+        Rectangle {
+            anchors.bottom: parent.bottom
+            height: 10
+            width: parent.width
+            visible: keyboardLoader.visible
+        }
 
         Image {
             id: markerDescription
             property alias text: textInput.text
             property int markerId: -1
+
+            anchors.top: parent.top
+            anchors.topMargin: 8
+            anchors.left: parent.left
+            anchors.leftMargin: 10
 
             source: "../../resources/icons/descrizione_bg.png"
             opacity: markerBackground.opacity
@@ -489,6 +497,7 @@ Image {
                 leftMargin: 10
                 right: parent.right
                 rightMargin: 10
+                verticalCenter: markerDescription.verticalCenter
             }
 
             border.left: 38; border.top: 39
@@ -497,11 +506,11 @@ Image {
 
             Row {
                 visible: background.state == "editMarker"
-                spacing: 15
+                spacing: 17
                 anchors {
                     verticalCenter: parent.verticalCenter
                     left: parent.left
-                    leftMargin: 10
+                    leftMargin: 6
                 }
 
                 Button {

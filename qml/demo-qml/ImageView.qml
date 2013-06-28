@@ -18,12 +18,17 @@ Image {
     Image {
         source: "../../resources/icons/box_bg.png"
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: 2
         z: parent.z - 1
     }
 
-    Image {
-        anchors.fill: parent
+    BorderImage {
+        border.left: 6
+        border.right: 6
+        border.bottom: 6
+        border.top: 6
+        width: 208
+        height: 208
+        anchors.centerIn: parent
         source: verticalLaser ? "../../resources/icons/notches_vert.png" : "../../resources/icons/notches_oriz.png"
     }
 }
