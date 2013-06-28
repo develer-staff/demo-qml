@@ -9,6 +9,8 @@ Image {
     id: background
 
     property real currentIndex: 0.5
+
+    property int globalTopMargin: 128
     source: "../../resources/icons/bg.png"
 
     Image {
@@ -110,9 +112,9 @@ Image {
             right: view1.left
             rightMargin: 10
             top: background.top
-            topMargin: 100
+            topMargin: globalTopMargin
         }
-        spacing: 20
+        spacing: 40
         Knob {
             id: brightnessKnob
             label: "Brigthness"
@@ -156,10 +158,11 @@ Image {
         source: "../../resources/icons/bigbox.png"
         anchors {
             top: background.top
-            topMargin: 100
+            topMargin: globalTopMargin
             left: background.left
             leftMargin: 150
         }
+        z: 1
 
         CubeView {
             id: cube
@@ -256,7 +259,7 @@ Image {
 
     LinearGradient {
         id: start_gradient
-        z: 100
+        z: 10
         visible: false
         anchors.fill: view1
         gradient: Gradient {
@@ -267,7 +270,7 @@ Image {
 
     LinearGradient {
         id: end_gradient
-        z: 100
+        z: 10
         visible: false
         anchors.fill: view1
         gradient: Gradient {
@@ -279,7 +282,6 @@ Image {
     Image {
         source: "../../resources/icons/bigbox_bg.png"
         anchors.centerIn: view1
-        anchors.verticalCenterOffset: 2
         z: view1.z - 1
     }
 
@@ -287,10 +289,10 @@ Image {
         anchors {
             top: background.top
             right: background.right
-            topMargin: 100
+            topMargin: globalTopMargin
             rightMargin: 50
         }
-        spacing: 18
+        spacing: 21
 
         // Visibility conditions for lasers
         // - When TOP is in big box => 2 horizontal lasers

@@ -18,7 +18,6 @@ Image {
     Image {
         source: "../../resources/icons/box_bg.png"
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: 2
         z: parent.z - 1
     }
 

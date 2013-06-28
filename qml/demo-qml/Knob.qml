@@ -43,7 +43,6 @@ Item {
 
         anchors {
             top: knobBase.bottom
-            topMargin: 6
             horizontalCenter: knobBase.horizontalCenter
         }
 
