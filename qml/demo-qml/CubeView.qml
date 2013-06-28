@@ -252,9 +252,17 @@ Loader {
                                         "x": model.x, "y": model.y, "index": model.index, "opacity": model.index == loader.currentIndex ? 1 : 0}
 
                 for (var j = 0; j < faces.length; j++)
-                    if (model.face == faces[j].face)
+                    if (model.face == faces[j].face) {
                         markerComponent.createObject(faces[j], markerProperties)
+                    }
             }
+        }
+
+        function updateMarkersVisibility(faces) {
+            for (var j = 0; j < faces.length; j++)
+                for (var k = 0; k < faces[j].children.length; k++)
+                    if (faces[j].children[k].__markerComponent)
+                        faces[j].children[k].opacity = (faces[j].children[k].index == loader.currentIndex) ? 1 : 0
         }
 
         onCountChanged: {
@@ -262,6 +270,7 @@ Loader {
                 loader.item.loadMarkers()
 
             staticFace.loadMarkers()
+            highResolutionFace.loadMarkers()
         }
     }
 
@@ -273,18 +282,11 @@ Loader {
 
             Connections {
                 target: loader
-                onCurrentIndexChanged: updateMarkersVisibility()
-            }
-
-            function updateMarkersVisibility() {
-
-                var faces = [frontFaceLoader.item, leftFaceLoader.item, rightFaceLoader.item,
-                             topFaceLoader.item, bottomFaceLoader.item]
-
-                for (var j = 0; j < faces.length; j++)
-                    for (var k = 0; k < faces[j].children.length; k++)
-                        if (faces[j].children[k].__markerComponent)
-                            faces[j].children[k].opacity = (faces[j].children[k].index == loader.currentIndex) ? 1 : 0
+                onCurrentIndexChanged: {
+                    var faces = [frontFaceLoader.item, leftFaceLoader.item, rightFaceLoader.item,
+                                 topFaceLoader.item, bottomFaceLoader.item]
+                    markerModel.updateMarkersVisibility(faces)
+                }
             }
 
             function loadMarkers() {
@@ -300,7 +302,7 @@ Loader {
                     }
 
                 markerModel.createMarkers(faces)
-                updateMarkersVisibility()
+                markerModel.updateMarkersVisibility(faces)
             }
 
             frontFaceLoader.sourceComponent: CubeFace {
@@ -374,6 +376,7 @@ Loader {
         }
     }
 
+
     Item {
         id: staticFace
         anchors.fill: parent
@@ -395,7 +398,7 @@ Loader {
                 }
 
             markerModel.createMarkers([item])
-            staticFace.updateMarkersVisibility()
+            markerModel.updateMarkersVisibility([item])
         }
 
         function updateCurrentFrame() {
@@ -408,19 +411,11 @@ Loader {
             loadMarkers()
         }
 
-        function updateMarkersVisibility() {
-            var item = getCurrentItem()
-            for (var k = 0; k < item.children.length; k++)
-                if (item.children[k].__markerComponent) {
-                    item.children[k].opacity = (item.children[k].index == loader.currentIndex) ? 1 : 0
-                }
-        }
-
         Connections {
             target: loader
             onCurrentIndexChanged: {
                 staticFace.updateCurrentFrame()
-                staticFace.updateMarkersVisibility()
+                markerModel.updateMarkersVisibility([staticFace.getCurrentItem()])
             }
         }
 
@@ -459,7 +454,6 @@ Loader {
             }
             Component.onCompleted: parent.preLoadFrames(topAnimatedItem)
         }
-
 
         Item {
             id: sideAnimatedItem
@@ -535,6 +529,56 @@ Loader {
         Component.onCompleted: updateStaticFace()
     }
 
+
+    CubeFace {
+        id: highResolutionFace
+        z: 1
+        visible: true
+        anchors.fill: staticFace
+        source: loader.frontImageSrc
+        face: loader.frontCubeFace
+        onFaceChanged: loadMarkers()
+
+        Connections {
+            target: staticFace
+            onVisibleChanged: {
+                highResolutionFace.visible = staticFace.visible
+                if (highResolutionFace.visible)
+                    markerModel.updateMarkersVisibility([highResolutionFace])
+            }
+        }
+
+        Connections {
+            target: loader
+            onCurrentIndexChanged: {
+                if (highResolutionFace.visible)
+                    highResolutionFace.visible = false
+                showHighResolutionFaceTimer.restart()
+            }
+        }
+
+        Timer {
+            id: showHighResolutionFaceTimer
+            interval: 30
+            onTriggered: {
+                highResolutionFace.visible = true
+                markerModel.updateMarkersVisibility([highResolutionFace])
+            }
+        }
+
+        function loadMarkers() {
+            for (var k = 0; k < highResolutionFace.children.length; k++)
+                if (highResolutionFace.children[k].__markerComponent) {
+                    highResolutionFace.children[k].destroy()
+                }
+
+            markerModel.createMarkers([highResolutionFace])
+            markerModel.updateMarkersVisibility([highResolutionFace])
+        }
+
+        Component.onCompleted: loadMarkers()
+    }
+
     BrightnessContrast {
         source: staticFace
         anchors.fill: staticFace
@@ -558,7 +602,6 @@ Loader {
         }
 
         onReleased: {
-            staticFace.visible = true
             loader.item.finishRotation(mouse)
         }
     }
