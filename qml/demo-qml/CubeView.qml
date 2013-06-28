@@ -455,6 +455,7 @@ Loader {
                 anchors.verticalCenterOffset: 20
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.horizontalCenterOffset: -42
+                scale: 2
             }
             Component.onCompleted: parent.preLoadFrames(topAnimatedItem)
         }
@@ -476,6 +477,7 @@ Loader {
                 anchors.verticalCenterOffset: 20
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.horizontalCenterOffset: -42
+                scale: 2
             }
             Component.onCompleted: parent.preLoadFrames(sideAnimatedItem)
         }
@@ -496,6 +498,7 @@ Loader {
                 anchors.verticalCenterOffset: 20
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.horizontalCenterOffset: -42
+                scale: 2
             }
             Component.onCompleted: parent.preLoadFrames(frontAnimatedItem)
         }
