@@ -551,55 +551,64 @@ Loader {
     }
 
 
-    CubeFace {
-        id: highResolutionFace
-        z: 1
-        visible: true
+    // clipping container to avoid double shadow
+    Item {
         anchors.fill: staticFace
-        source: loader.frontImageSrc
-        face: loader.frontCubeFace
-        onFaceChanged: loadMarkers()
-        brightness: loader.brightness
-        contrast: loader.contrast
+        anchors.margins: 3
+        z: 1
+        clip: true
 
-        Connections {
-            target: staticFace
-            onVisibleChanged: {
-                highResolutionFace.visible = staticFace.visible
-                if (highResolutionFace.visible)
+        CubeFace {
+            id: highResolutionFace
+            anchors.fill: parent
+            anchors.margins: -parent.anchors.margins
+
+            visible: true
+            source: loader.frontImageSrc
+            face: loader.frontCubeFace
+            onFaceChanged: loadMarkers()
+            brightness: loader.brightness
+            contrast: loader.contrast
+
+            Connections {
+                target: staticFace
+                onVisibleChanged: {
+                    highResolutionFace.visible = staticFace.visible
+                    if (highResolutionFace.visible)
+                        markerModel.updateMarkersVisibility([highResolutionFace])
+                }
+            }
+
+            Connections {
+                target: loader
+                onCurrentIndexChanged: {
+                    if (highResolutionFace.visible)
+                        highResolutionFace.visible = false
+                    showHighResolutionFaceTimer.restart()
+                }
+            }
+
+            Timer {
+                id: showHighResolutionFaceTimer
+                interval: 30
+                onTriggered: {
+                    highResolutionFace.visible = true
                     markerModel.updateMarkersVisibility([highResolutionFace])
+                }
             }
-        }
 
-        Connections {
-            target: loader
-            onCurrentIndexChanged: {
-                if (highResolutionFace.visible)
-                    highResolutionFace.visible = false
-                showHighResolutionFaceTimer.restart()
-            }
-        }
+            function loadMarkers() {
+                for (var k = 0; k < highResolutionFace.children.length; k++)
+                    if (highResolutionFace.children[k].__markerComponent) {
+                        highResolutionFace.children[k].destroy()
+                    }
 
-        Timer {
-            id: showHighResolutionFaceTimer
-            interval: 30
-            onTriggered: {
-                highResolutionFace.visible = true
+                markerModel.createMarkers([highResolutionFace])
                 markerModel.updateMarkersVisibility([highResolutionFace])
             }
+
+            Component.onCompleted: loadMarkers()
         }
-
-        function loadMarkers() {
-            for (var k = 0; k < highResolutionFace.children.length; k++)
-                if (highResolutionFace.children[k].__markerComponent) {
-                    highResolutionFace.children[k].destroy()
-                }
-
-            markerModel.createMarkers([highResolutionFace])
-            markerModel.updateMarkersVisibility([highResolutionFace])
-        }
-
-        Component.onCompleted: loadMarkers()
     }
 
     BrightnessContrast {

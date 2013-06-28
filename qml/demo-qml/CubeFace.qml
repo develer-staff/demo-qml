@@ -9,6 +9,7 @@ Image {
     property real contrast: 0
 
     source: "../../resources/icons/bigbox.png"
+
     Image {
         id: image
         width: 500
