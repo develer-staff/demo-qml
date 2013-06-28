@@ -138,6 +138,7 @@ Image {
         }
 
         Pad {
+            enabled: background.state == ""
             anchors.horizontalCenter: parent.horizontalCenter
             onTopClicked: cube.selectCubeFace(Cube.TOP)
             onLeftClicked: cube.selectCubeFace(Cube.LEFT)

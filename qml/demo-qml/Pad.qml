@@ -2,6 +2,7 @@ import QtQuick 2.0
 
 Image {
     id: pad
+    property bool enabled: true
     signal topClicked()
     signal bottomClicked()
     signal leftClicked()
@@ -41,6 +42,7 @@ Image {
     }
 
     MouseArea {
+        enabled: pad.enabled
         width: privateProps.mouseAreaWidth
         height: privateProps.mouseAreaHeight
         anchors.verticalCenter: parent.verticalCenter
@@ -50,6 +52,7 @@ Image {
     }
 
     MouseArea {
+        enabled: pad.enabled
         width: privateProps.mouseAreaWidth
         height: privateProps.mouseAreaHeight
         anchors.horizontalCenter: parent.horizontalCenter
@@ -59,6 +62,7 @@ Image {
     }
 
     MouseArea {
+        enabled: pad.enabled
         width: privateProps.mouseAreaWidth
         height: privateProps.mouseAreaHeight
         anchors {
@@ -71,6 +75,7 @@ Image {
     }
 
     MouseArea {
+        enabled: pad.enabled
         width: privateProps.mouseAreaWidth
         height: privateProps.mouseAreaHeight
         anchors {
