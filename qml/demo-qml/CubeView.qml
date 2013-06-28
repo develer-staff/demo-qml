@@ -424,6 +424,18 @@ Loader {
             }
         }
 
+        function preLoadFrames(item) {
+            // load all the frames to avoid lag on the first loading
+            var oldCurrentFrame = item.currentFrame
+            for (var i = 0; i < item.frameCount; i++) {
+                if (item.currentFrame < item.frameCount -1)
+                    item.currentFrame += 1
+                else
+                    item.currentFrame = 0
+            }
+            item.currentFrame = oldCurrentFrame
+        }
+
         Item {
             id: topAnimatedItem
             property int face: CubeView.TOP
@@ -444,6 +456,7 @@ Loader {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.horizontalCenterOffset: -42
             }
+            Component.onCompleted: parent.preLoadFrames(topAnimatedItem)
         }
 
 
@@ -464,6 +477,7 @@ Loader {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.horizontalCenterOffset: -42
             }
+            Component.onCompleted: parent.preLoadFrames(sideAnimatedItem)
         }
 
         Item {
@@ -483,6 +497,7 @@ Loader {
                 anchors.horizontalCenter: parent.horizontalCenter
                 anchors.horizontalCenterOffset: -42
             }
+            Component.onCompleted: parent.preLoadFrames(frontAnimatedItem)
         }
 
         Image {
