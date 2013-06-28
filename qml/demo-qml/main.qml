@@ -499,11 +499,11 @@ Image {
 
             Row {
                 visible: background.state == "editMarker"
-                spacing: 15
+                spacing: 13
                 anchors {
                     verticalCenter: parent.verticalCenter
                     left: parent.left
-                    leftMargin: 10
+                    leftMargin:6
                 }
 
                 Button {
