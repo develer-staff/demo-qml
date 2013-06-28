@@ -107,6 +107,9 @@ function rotate(mouse) {
         var dx = Math.abs(coords[0] - origin[0])
         var dy = Math.abs(coords[1] - origin[1])
 
+        if (Math.max(dy, dx) < 20)
+            return
+
         if (dy > dx)
             direction = DIRECTION_Y
         else
