@@ -198,7 +198,7 @@ Loader {
 
         for (var k = 0; k < highResolutionFace.children.length; k++)
             if (highResolutionFace.children[k].__markerComponent)
-                highResolutionFace.children[k].opacity = (highResolutionFace.children[k].index == loader.currentIndex) ? 1 : 0
+                highResolutionFace.children[k].opacity = markerIsVisible(highResolutionFace.children[k].index) ? 1 : 0
     }
 
     function deleteMarker() {
@@ -212,6 +212,10 @@ Loader {
                 _editMarker = null
                 return
             }
+    }
+
+    function markerIsVisible(index) {
+        return Math.abs((index - loader.currentIndex)) < 0.05
     }
 
     Component {
@@ -246,7 +250,7 @@ Loader {
             for (var i = 0; i < count; i++) {
                 var model = get(i)
                 var markerProperties = {"markerId": model.markerId, "source": typeToImage(model.type),
-                                        "x": model.x, "y": model.y, "index": model.index, "opacity": model.index == loader.currentIndex ? 1 : 0}
+                                        "x": model.x, "y": model.y, "index": model.index, "opacity": markerIsVisible(model.index) ? 1 : 0}
 
                 for (var j = 0; j < faces.length; j++)
                     if (model.face == faces[j].face) {
@@ -259,7 +263,7 @@ Loader {
             for (var j = 0; j < faces.length; j++)
                 for (var k = 0; k < faces[j].children.length; k++)
                     if (faces[j].children[k].__markerComponent)
-                        faces[j].children[k].opacity = (faces[j].children[k].index == loader.currentIndex) ? 1 : 0
+                        faces[j].children[k].opacity = markerIsVisible(faces[j].children[k].index) ? 1 : 0
         }
 
         onCountChanged: {
