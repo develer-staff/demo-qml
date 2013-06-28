@@ -70,7 +70,7 @@ Image {
             anchors.top: patientInfo.top
             anchors.topMargin: 5
             color: "#939393"
-            text: Qt.formatDate(new Date(2013, 7, 8), "dddd, MMMM d, yyyy")
+            text: Qt.formatDate(new Date(2013, 6, 8), "dddd, MMMM d, yyyy")
             font.pointSize: 16
         }
 
