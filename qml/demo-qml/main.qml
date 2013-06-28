@@ -230,22 +230,22 @@ Image {
                 if (rotationDirection === Cube.DIRECTION_X) {
                     start_gradient.visible = true;
                     start_gradient.start = Qt.point(0, 0);
-                    start_gradient.end = Qt.point(rotationPosition, 0);
+                    start_gradient.end = Qt.point(rotationPosition * 0.66, 0);
                     start_gradient.gradient.stops[0].color.a = alpha_start;
 
                     end_gradient.visible = true;
-                    end_gradient.start = Qt.point(rotationPosition, 0);
+                    end_gradient.start = Qt.point(rotationPosition + (view1.width - rotationPosition) * 0.66, 0);
                     end_gradient.end = Qt.point(view1.width, 0);
                     end_gradient.gradient.stops[1].color.a = alpha_end;
                 }
                 else if (rotationDirection === Cube.DIRECTION_Y) {
                     start_gradient.visible = true;
                     start_gradient.start = Qt.point(0, 0);
-                    start_gradient.end = Qt.point(0, rotationPosition);
+                    start_gradient.end = Qt.point(0, rotationPosition * 0.66);
                     start_gradient.gradient.stops[0].color.a = alpha_start;
 
                     end_gradient.visible = true;
-                    end_gradient.start = Qt.point(0, rotationPosition);
+                    end_gradient.start = Qt.point(0, rotationPosition + (view1.width - rotationPosition) * 0.66);
                     end_gradient.end = Qt.point(0, view1.width);
                     end_gradient.gradient.stops[1].color.a = alpha_end;
                 }
