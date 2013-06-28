@@ -462,6 +462,7 @@ Image {
             height: 10
             width: parent.width
             visible: keyboardLoader.visible
+            color: "#f5f6f8"
         }
 
         Image {
