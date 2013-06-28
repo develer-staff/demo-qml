@@ -144,15 +144,14 @@ Loader {
     function editMarker(markerId, newMarker) {
         _newMarker = (newMarker === true)
 
-        var item = staticFace.getCurrentItem()
-        for (var k = 0; k < item.children.length; k++)
-            if (item.children[k].__markerComponent) {
-                if (item.children[k].markerId != markerId) {
-                    if (item.children[k].opacity == 1)
-                        item.children[k].opacity = .25
+        for (var k = 0; k < highResolutionFace.children.length; k++)
+            if (highResolutionFace.children[k].__markerComponent) {
+                if (highResolutionFace.children[k].markerId != markerId) {
+                    if (highResolutionFace.children[k].opacity == 1)
+                        highResolutionFace.children[k].opacity = .25
                 }
                 else {
-                    _editMarker = item.children[k]
+                    _editMarker = highResolutionFace.children[k]
                     _editMarker.movable = true
                 }
             }
@@ -182,10 +181,9 @@ Loader {
         _editMarker.movable = false
         _editMarker = null
 
-        var item = staticFace.getCurrentItem()
-        for (var k = 0; k < item.children.length; k++)
-            if (item.children[k].__markerComponent)
-                item.children[k].opacity = (item.children[k].index == loader.currentIndex) ? 1 : 0
+        for (var k = 0; k < highResolutionFace.children.length; k++)
+            if (highResolutionFace.children[k].__markerComponent)
+                highResolutionFace.children[k].opacity = (highResolutionFace.children[k].index == loader.currentIndex) ? 1 : 0
     }
 
     function confirmEditMarker() {
@@ -198,10 +196,9 @@ Loader {
         _editMarker.movable = false
         _editMarker = null
 
-        var item = staticFace.getCurrentItem()
-        for (var k = 0; k < item.children.length; k++)
-            if (item.children[k].__markerComponent)
-                item.children[k].opacity = (item.children[k].index == loader.currentIndex) ? 1 : 0
+        for (var k = 0; k < highResolutionFace.children.length; k++)
+            if (highResolutionFace.children[k].__markerComponent)
+                highResolutionFace.children[k].opacity = (highResolutionFace.children[k].index == loader.currentIndex) ? 1 : 0
     }
 
     function deleteMarker() {
