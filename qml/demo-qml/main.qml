@@ -164,6 +164,7 @@ Image {
         width: 516
         height: 516
         z: 1
+        clip: true
 
         CubeView {
             id: cube
