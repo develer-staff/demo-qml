@@ -589,13 +589,6 @@ Image {
         }
     ]
 
-    KeyboardLauncher {
-        id: kbdLauncher
-        anchors { horizontalCenter: parent.horizontalCenter; bottom: parent.bottom }
-        width: parent.width
-        height: parent.height / 2
-    }
-
     Loader {
         id: keyboardLoader
         visible: false
