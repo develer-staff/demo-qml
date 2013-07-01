@@ -15,6 +15,9 @@ var orientation = 0
 var angle = 0
 var origin = undefined
 var moving = false
+var startTime
+var startPoint
+var thresholdVelocity = 1000
 var selectedFace
 var lock = false
 
@@ -91,6 +94,8 @@ function initRotation(mouse) {
         return
 
     origin = mapToOrigin(mouse)
+    startTime = new Date()
+    startPoint = origin.slice()
 }
 
 function animate(mouse) {
@@ -200,6 +205,7 @@ function rotate(mouse, forced) {
             reset()
         }
         else {
+
             if (direction == DIRECTION_X) {
                 face.x += delta
                 nextFace.x += delta
@@ -219,14 +225,19 @@ function rotate(mouse, forced) {
 }
 
 /** Call this function when the rotation is done. Returns the selected face */
-function finishRotation() {
+function finishRotation(mouse) {
     if (lock)
         return
     else
         lock = true
 
+    var dest = mapToOrigin(mouse)
+    var elapsedTime = (new Date().getTime() - startTime.getTime()) / 1000
+    var deltaPos = Math.max(Math.abs(dest[0] - startPoint[0]), Math.abs(dest[1] - startPoint[1]))
+
     moving = false
-    if (Math.abs(angle) > 45) {
+
+    if (Math.abs(angle) > 45 || deltaPos / elapsedTime > thresholdVelocity) {
         if (direction == DIRECTION_X) {
             if (orientation == 1)
                 return RIGHT

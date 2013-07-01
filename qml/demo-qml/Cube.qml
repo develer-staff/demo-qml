@@ -66,8 +66,9 @@ Item {
         container.state = state
     }
 
-    function finishRotation() {
-        Cube.selectedFace = Cube.finishRotation()
+    function finishRotation(mousePos) {
+        Cube.selectedFace = Cube.finishRotation(mousePos)
+
         switch(Cube.selectedFace) {
         case Cube.FRONT:
             container.state = "showFrontFace"
