@@ -14,6 +14,7 @@ var direction = 0
 var orientation = 0
 var angle = 0
 var origin = undefined
+var moving = false
 var selectedFace
 var lock = false
 
@@ -92,11 +93,19 @@ function initRotation(mouse) {
     origin = mapToOrigin(mouse)
 }
 
+function animate(mouse) {
+    var fakeMouse = {"y": mouse.y, "x": mouse.x} // mouse properties are read-only
+    for (var i = 0; i < 5; i++) {
+        fakeMouse.y -= 1
+        rotate(fakeMouse, true)
+    }
+}
+
 /** Rotates the cube based on current mouse position. Once the cube rotation
 axis is selected, the cube will rotate only around that given axis. */
-function rotate(mouse) {
+function rotate(mouse, forced) {
     if (lock)
-        return
+        return moving
 
     // first we need to map cursor's (0,0) coordinate, which points to top-left
     // corner cube's origin
@@ -107,8 +116,8 @@ function rotate(mouse) {
         var dx = Math.abs(coords[0] - origin[0])
         var dy = Math.abs(coords[1] - origin[1])
 
-        if (Math.max(dy, dx) < 20)
-            return
+        if (Math.max(dy, dx) < 20 && !forced)
+            return moving
 
         if (dy > dx)
             direction = DIRECTION_Y
@@ -119,6 +128,7 @@ function rotate(mouse) {
     }
     // the actual rotation is performed in this section
     else {
+        moving = true
         var face = frontFaceContainer
         var faceRot = frontFaceRot
         var nextFace, nextFaceRot, a, o, delta
@@ -181,7 +191,7 @@ function rotate(mouse) {
         // check if we have reached the maximum rotation angle skip any
         // processing
         if (Math.abs(angle + a) >= 90)
-            return
+            return moving
 
         angle += a
 
@@ -205,6 +215,7 @@ function rotate(mouse) {
             nextFaceRot.angle += a
         }
     }
+    return moving
 }
 
 /** Call this function when the rotation is done. Returns the selected face */
@@ -214,6 +225,7 @@ function finishRotation() {
     else
         lock = true
 
+    moving = false
     if (Math.abs(angle) > 45) {
         if (direction == DIRECTION_X) {
             if (orientation == 1)

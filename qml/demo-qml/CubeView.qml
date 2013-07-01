@@ -627,6 +627,7 @@ Loader {
     }
 
     MouseArea {
+        property bool cubeMoving: false
         anchors.fill: parent
         visible: !loader._editMarker
 
@@ -634,14 +635,21 @@ Loader {
             loader.sourceComponent = cubeComponent
             staticFace.visible = false
             loader.item.initRotation(mouse)
+            cubeMoving = false
         }
 
         onPositionChanged: {
-            loader.item.rotate(mouse)
+            cubeMoving = loader.item.rotate(mouse)
         }
 
         onReleased: {
-            loader.item.finishRotation(mouse)
+            if (loader.item) {
+                if (!cubeMoving)
+                    loader.item.animate(mouse)
+
+                loader.item.finishRotation(mouse)
+            }
+            cubeMoving = false
         }
     }
 }

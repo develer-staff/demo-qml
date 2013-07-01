@@ -19,7 +19,11 @@ Item {
     }
 
     function rotate(mousePos) {
-        Cube.rotate(mousePos)
+        return Cube.rotate(mousePos)
+    }
+
+    function animate(mousePos) {
+        Cube.animate(mousePos)
     }
 
     function goToFace(cubeFace) {
