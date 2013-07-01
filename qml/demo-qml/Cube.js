@@ -95,7 +95,7 @@ function initRotation(mouse) {
 
 function animate(mouse) {
     var fakeMouse = {"y": mouse.y, "x": mouse.x} // mouse properties are read-only
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 20; i++) {
         fakeMouse.y -= 1
         rotate(fakeMouse, true)
     }
