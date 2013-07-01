@@ -191,8 +191,9 @@ Image {
             currentView: CubeView.TOP
             currentIndex: 1 - background.currentIndex
 
-            brightness: brightnessKnob.percentage
-            contrast: contrastKnob.percentage
+            property real strengthFactor: .33
+            brightness: brightnessKnob.percentage * strengthFactor
+            contrast: contrastKnob.percentage * strengthFactor
 
             NumberAnimation {
                 id: currentIndexAnimation
