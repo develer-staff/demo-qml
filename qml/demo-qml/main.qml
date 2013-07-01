@@ -85,6 +85,7 @@ Image {
             horizontalAlignment: TextInput.AlignHCenter
             width: parent.width - 46
             clip: true
+            readOnly: background.state == "editMarker"
 
             Connections {
                 target: Qt.inputMethod
