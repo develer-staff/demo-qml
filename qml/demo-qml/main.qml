@@ -85,6 +85,15 @@ Image {
             horizontalAlignment: TextInput.AlignHCenter
             width: parent.width - 46
             clip: true
+
+            Connections {
+                target: Qt.inputMethod
+                onVisibleChanged: {
+                    // Quick & Dirty solution to hide the cursor when the virtual keyboard disappears.
+                    // I don't know if there is a "right" way to do this.
+                    text2.cursorVisible = Qt.inputMethod.visible
+                }
+            }
         }
     }
 
