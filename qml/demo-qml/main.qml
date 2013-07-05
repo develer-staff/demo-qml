@@ -95,6 +95,11 @@ Image {
                     text2.cursorVisible = Qt.inputMethod.visible
                 }
             }
+
+            onAccepted: {
+                if (Qt.inputMethod.visible)
+                    Qt.inputMethod.hide()
+            }
         }
     }
 
