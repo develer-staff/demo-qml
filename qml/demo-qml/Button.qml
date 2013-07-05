@@ -27,6 +27,7 @@ Item {
     MouseArea {
         id: mouseArea
         anchors.fill: parent
+        anchors.margins: -10
         onClicked: button.clicked()
     }
 }
