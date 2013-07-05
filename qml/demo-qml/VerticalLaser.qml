@@ -71,6 +71,7 @@ Image {
     MouseArea {
         id: mouseArea
         anchors.fill: cursorImage
+        anchors.margins: -20 // enlarge the mouse area to make it more friendly
         enabled: laser.cursorVisible && !laser.doubleCursor
 
         drag.target: cursorImage
@@ -127,6 +128,7 @@ Image {
     MouseArea {
         id: mouseAreaDouble
         anchors.fill: doubleCursorImage
+        anchors.margins: -20 // enlarge the mouse area to make it more friendly
         enabled: laser.cursorVisible && laser.doubleCursor
 
         drag.target: doubleCursorImage

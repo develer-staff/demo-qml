@@ -57,6 +57,8 @@ Image {
         MouseArea {
             id: mouseArea
             anchors.fill: parent
+            anchors.margins: -20 // enlarge the mouse area to make it more friendly
+            enabled: laser.cursorVisible
 
             drag.target: parent
             drag.axis: Drag.YAxis
