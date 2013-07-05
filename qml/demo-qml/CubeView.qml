@@ -144,26 +144,28 @@ Loader {
     function editMarker(markerId, newMarker) {
         _newMarker = (newMarker === true)
 
-        for (var k = 0; k < highResolutionFace.children.length; k++)
-            if (highResolutionFace.children[k].__markerComponent) {
-                if (highResolutionFace.children[k].markerId != markerId) {
-                    if (highResolutionFace.children[k].opacity == 1) {
-                        highResolutionFace.children[k].opacityAnimation.enabled = true
-                        highResolutionFace.children[k].opacity = .5
-                        highResolutionFace.children[k].opacityAnimation.enabled = false
-                    }
-                }
-                else {
-                    _editMarker = highResolutionFace.children[k]
-                    _editMarker.movable = true
-                }
-            }
-
         for (var i = 0; i < markerModel.count; i++)
-            if (markerModel.get(i).markerId == _editMarker.markerId) {
+            if (markerModel.get(i).markerId == markerId) {
                 loader.gotoCurrentIndex(markerModel.get(i).index)
                 break
             }
+
+        for (var k = 0; k < highResolutionFace.children.length; k++)
+            if (highResolutionFace.children[k].__markerComponent && highResolutionFace.children[k].markerId == markerId) {
+                _editMarker = highResolutionFace.children[k]
+                _editMarker.movable = true
+                break
+            }
+
+        markerModel.updateMarkersVisibility([highResolutionFace])
+    }
+
+    function _editDone() {
+        if (_editMarker)
+            _editMarker.movable = false
+        _editMarker = null
+
+        markerModel.updateMarkersVisibility([highResolutionFace])
     }
 
     function cancelEditMarker() {
@@ -181,12 +183,7 @@ Loader {
             }
         }
 
-        _editMarker.movable = false
-        _editMarker = null
-
-        for (var k = 0; k < highResolutionFace.children.length; k++)
-            if (highResolutionFace.children[k].__markerComponent)
-                highResolutionFace.children[k].opacity = markerIsVisible(highResolutionFace.children[k].index) ? 1 : 0
+        _editDone()
     }
 
     function confirmEditMarker() {
@@ -196,12 +193,7 @@ Loader {
                 markerModel.setProperty(i, "y", _editMarker.y)
             }
 
-        _editMarker.movable = false
-        _editMarker = null
-
-        for (var k = 0; k < highResolutionFace.children.length; k++)
-            if (highResolutionFace.children[k].__markerComponent)
-                highResolutionFace.children[k].opacity = markerIsVisible(highResolutionFace.children[k].index) ? 1 : 0
+        _editDone()
     }
 
     function deleteMarker() {
@@ -212,7 +204,7 @@ Loader {
             if (markerModel.get(i).markerId == _editMarker.markerId) {
                 markerModel.remove(i)
                 _editMarker.destroy()
-                _editMarker = null
+                _editDone()
                 return
             }
     }
@@ -228,13 +220,6 @@ Loader {
             property int markerId: -1
             property bool movable: false
             property real index
-            property alias opacityAnimation: opacityBehavior
-
-            Behavior on opacity {
-                id: opacityBehavior
-                enabled: false
-                NumberAnimation { duration: 100 }
-            }
 
             MouseArea {
                 anchors.fill: parent
@@ -268,8 +253,16 @@ Loader {
         function updateMarkersVisibility(faces) {
             for (var j = 0; j < faces.length; j++)
                 for (var k = 0; k < faces[j].children.length; k++)
-                    if (faces[j].children[k].__markerComponent)
-                        faces[j].children[k].opacity = markerIsVisible(faces[j].children[k].index) ? 1 : 0
+                    if (faces[j].children[k].__markerComponent) {
+                        if (_editMarker) {
+                            if (!markerIsVisible(faces[j].children[k].index))
+                                faces[j].children[k].opacity = 0
+                            else
+                                faces[j].children[k].opacity = (faces[j].children[k].markerId == _editMarker.markerId) ? 1 : .5
+                        }
+                        else
+                            faces[j].children[k].opacity = markerIsVisible(faces[j].children[k].index) ? 1 : 0
+                    }
         }
 
         onCountChanged: {
