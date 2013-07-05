@@ -462,6 +462,13 @@ Image {
     }
 
     Image {
+        source: "../../resources/icons/bg_edit_name.png"
+        opacity: keyboardLoader.visible && background.state !== "editMarker" ? 1 : 0
+        y: (hasEmbeddedKeyboard ? keyboardLoader.item.keyboardY : 768) - height
+        z: 3
+    }
+
+    Image {
         id: markerBackground
         source: "../../resources/icons/bg_edit_marker.png"
         opacity: 0
