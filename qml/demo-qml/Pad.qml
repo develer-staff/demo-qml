@@ -26,8 +26,8 @@ Image {
 
     QtObject {
         id: privateProps
-        readonly property int mouseAreaWidth: 40
-        readonly property int mouseAreaHeight: 40
+        readonly property int mouseAreaWidth: 50
+        readonly property int mouseAreaHeight: 50
 
         readonly property int idLeftButton: 1
         readonly property int idTopButton: 2
@@ -45,17 +45,26 @@ Image {
         enabled: pad.enabled
         width: privateProps.mouseAreaWidth
         height: privateProps.mouseAreaHeight
-        anchors.verticalCenter: parent.verticalCenter
+        anchors {
+            verticalCenter: parent.verticalCenter
+            left: parent.left
+            leftMargin: -10
+        }
         onClicked: pad.leftClicked()
         onPressed: privateProps.currentId = privateProps.idLeftButton
         onReleased: if (privateProps.currentId == privateProps.idLeftButton) privateProps.currentId = -1
     }
 
+
     MouseArea {
         enabled: pad.enabled
         width: privateProps.mouseAreaWidth
         height: privateProps.mouseAreaHeight
-        anchors.horizontalCenter: parent.horizontalCenter
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            top: parent.top
+            topMargin: -10
+        }
         onClicked: pad.topClicked()
         onPressed: privateProps.currentId = privateProps.idTopButton
         onReleased: if (privateProps.currentId == privateProps.idTopButton) privateProps.currentId = -1
@@ -68,6 +77,7 @@ Image {
         anchors {
             verticalCenter: parent.verticalCenter
             right: parent.right
+            rightMargin: -10
         }
         onClicked: pad.rightClicked()
         onPressed: privateProps.currentId = privateProps.idRightButton
@@ -81,6 +91,7 @@ Image {
         anchors {
             horizontalCenter: parent.horizontalCenter
             bottom: parent.bottom
+            bottomMargin: -10
         }
         onClicked: pad.bottomClicked()
         onPressed: privateProps.currentId = privateProps.idBottomButton
