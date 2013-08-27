@@ -15,6 +15,5 @@ demo-qml is a standard QtQuick project, so you can simply load the project throu
 
 
 
-	[1]: http://qt.digia.com
-	[2]: https://github.com/develersrl/demo-qml/raw/master/LICENSE.bsd
-
+  [1]: http://qt.digia.com
+  [2]: https://github.com/develersrl/demo-qml/raw/master/LICENSE.bsd
