@@ -6,7 +6,7 @@ The demo is released under the New BSD license (see [LICENSE.bsd][2]) by [Devele
 
 This is a preview of the demo:
 
-![Preview](https://github.com/develersrl/demo-qml/raw/master/preview.gif)
+![Preview](https://raw.github.com/develersrl/demo-qml/master/preview.gif)
 
 ### How to run it
 demo-qml is a standard QtQuick project, so you can simply load the project through Qt Creator and run it (or use qmake from the command line).
