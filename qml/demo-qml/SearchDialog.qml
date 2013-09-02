@@ -2,12 +2,34 @@ import QtQuick 2.0
 
 Rectangle {
     id: root
+    signal closeRequest()
+
     color: "white"
     border {
         width: 1
         color: "grey"
     }
     clip: true
+
+    Item {
+        id: titleBar
+        width: parent.width; height: 50
+
+        Text {
+            anchors { left: parent.left; leftMargin: 20; verticalCenter: parent.verticalCenter }
+            text: "Patients"
+        }
+
+        Image {
+            anchors { right: parent.right; verticalCenter: parent.verticalCenter }
+            source: "../../resources/icons/annulla.png"
+
+            MouseArea {
+                anchors.fill: parent
+                onClicked: closeRequest()
+            }
+        }
+    }
 
     ListView {
         id: listView
@@ -38,7 +60,9 @@ Rectangle {
             }
         }
 
-        anchors.fill: parent
+        anchors { top: titleBar.bottom; bottom: parent.bottom }
+        width: parent.width
+
         boundsBehavior: Flickable.StopAtBounds
         model: ListModel {
             ListElement { name: "Mario Rossi" }

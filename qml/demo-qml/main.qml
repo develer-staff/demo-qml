@@ -628,6 +628,8 @@ Image {
         state: show ? "" : "hidden"
         visible: opacity > 0
 
+        onCloseRequest: show = false
+
         states: [
             State {
                 name: "hidden"
