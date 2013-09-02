@@ -629,6 +629,9 @@ Image {
         visible: opacity > 0
 
         onCloseRequest: show = false
+        onProfileChangeRequest: {
+            console.log("TODO: profile change")
+        }
 
         states: [
             State {

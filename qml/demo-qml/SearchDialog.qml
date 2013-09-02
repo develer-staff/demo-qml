@@ -3,6 +3,8 @@ import QtQuick 2.0
 BorderImage {
     id: root
     signal closeRequest()
+    signal profileChangeRequest(string name, string view, int imageIndex)
+
     border {
         top: 8
         left: 8
@@ -81,7 +83,8 @@ BorderImage {
                 text: "Lorem ipsum dolor sit amet, consectetur adipisicing
                     elit, sed do eiusmod tempor incididunt ut labore et dolore
                     magna aliqua."
-                image: "rear/rear043.png"
+                view: "rear"
+                imageIndex: 43
             }
             ListElement {
                 name: "Francesco Bianchi"
@@ -89,14 +92,16 @@ BorderImage {
                     accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
                     quae ab illo inventore veritatis et quasi architecto beatae vitae
                     dicta sunt explicabo."
-                image: "top/top043.png"
+                view: "top"
+                imageIndex: 43
             }
             ListElement {
                 name: "Giuseppe Verdi"
                 text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur
                     aut odit aut fugit, sed quia consequuntur magni dolores eos qui
                     ratione voluptatem sequi nesciunt."
-                image: "side/side043.png"
+                view: "side"
+                imageIndex: 43
             }
             ListElement {
                 name: "Pippo Inzaghi"
@@ -104,13 +109,15 @@ BorderImage {
                     amet, consectetur, adipisci velit, sed quia non numquam eius modi
                     tempora incidunt ut labore et dolore magnam aliquam quaerat
                     voluptatem"
-                image: "rear/rear020.png"
+                view: "rear"
+                imageIndex: 20
             }
             ListElement {
                 name: "Stevan Jovetic"
                 text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco
                     laboris nisi ut aliquip ex ea commodo consequat."
-                image: "top/top060.png"
+                view: "top"
+                imageIndex: 60
             }
         }
 
@@ -166,8 +173,17 @@ BorderImage {
 
                     Image {
                         anchors.fill: parent
-                        source: "../../resources/" + image
+                        source: "../../resources/" + view + "/" + view + "0" + imageIndex + ".png"
+
+                        MouseArea {
+                            anchors.fill: parent
+                            onClicked: {
+                                profileChangeRequest(name, view, imageIndex);
+                                closeRequest()
+                            }
+                        }
                     }
+
                 }
 
                 Text {
