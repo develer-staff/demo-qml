@@ -626,6 +626,7 @@ Image {
         height: parent.height * 0.9
         transformOrigin: Item.TopRight
         state: show ? "" : "hidden"
+        visible: opacity > 0
 
         MouseArea {
             anchors.fill: parent
