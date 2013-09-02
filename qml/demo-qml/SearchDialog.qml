@@ -11,6 +11,33 @@ Rectangle {
 
     ListView {
         id: listView
+
+        /* This array contains booleans which indicate the state
+        (opened/closed) of delegates. Modifying this array (by calling
+        setOpened()) will fold or expand the delegate at given position. The
+        setOpened() function also guarantees that there's only one opened
+        delegate at the moment. */
+        property var opened: {
+            var arr = []
+            for (var i = 0; i < count; i++)
+                arr.push(false)
+
+            return arr
+        }
+
+        function setOpened(index, state) {
+            if (opened[index] !== state) {
+                // close any currently opened element
+                var idx = opened.indexOf(true)
+                if (idx !== -1)
+                    opened[idx] = false
+
+                // update
+                opened[index] = state
+                openedChanged()
+            }
+        }
+
         anchors.fill: parent
         boundsBehavior: Flickable.StopAtBounds
         model: ListModel {
@@ -23,10 +50,9 @@ Rectangle {
 
         delegate: Item {
             id: element
-            property bool expanded
             width: listView.width; height: header.height + content.height
             clip: true
-            state: expanded ? "" : "folded"
+            state: listView.opened[index] ? "" : "folded"
 
             Rectangle {
                 id: header
@@ -49,7 +75,7 @@ Rectangle {
 
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: element.expanded = !element.expanded
+                    onClicked: listView.setOpened(index, !listView.opened[index])
                 }
             }
 
