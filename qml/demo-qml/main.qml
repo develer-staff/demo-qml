@@ -6,7 +6,7 @@ import "Cube.js" as Cube
 import "Util.js" as Util
 
 Image {
-    id: background
+    id: root
 
     property real currentIndex: 0.5
 
@@ -17,9 +17,9 @@ Image {
         id: logoDeveler
         source: "../../resources/icons/logo01.png"
         anchors {
-            top: background.top
+            top: root.top
             topMargin: 25
-            left: background.left
+            left: root.left
             leftMargin: 10
         }
 
@@ -33,21 +33,17 @@ Image {
     }
 
     Image {
-        id: logoEngicam
-        source: "../../resources/icons/logo02.png"
+        source: "../../resources/icons/search.png"
         anchors {
-            top: background.top
+            top: root.top
             topMargin: 25
-            right: background.right
+            right: root.right
             rightMargin: 20
         }
 
-        Text {
-            x: 71
-            y: -14
-            text: "Hardware design"
-            font.pointSize: 10
-            color: "#babbc0"
+        MouseArea {
+            anchors.fill: parent
+            onClicked: searchDialog.show = !searchDialog.show
         }
     }
 
@@ -56,7 +52,7 @@ Image {
         source: "../../resources/icons/s.png"
         anchors {
             horizontalCenter: parent.horizontalCenter
-            top: background.top
+            top: root.top
             topMargin: 6
         }
 
@@ -85,7 +81,7 @@ Image {
             horizontalAlignment: TextInput.AlignHCenter
             width: parent.width - 46
             clip: true
-            readOnly: background.state == "editMarker"
+            readOnly: root.state == "editMarker"
 
             Connections {
                 target: Qt.inputMethod
@@ -122,11 +118,11 @@ Image {
     Column {
         id: imageControls
         anchors {
-            left: background.left
+            left: root.left
             leftMargin: 10
             right: view1.left
             rightMargin: 10
-            top: background.top
+            top: root.top
             topMargin: globalTopMargin
         }
         spacing: 40
@@ -146,14 +142,14 @@ Image {
     Column {
         anchors {
             bottom: view1.bottom
-            left: background.left
+            left: root.left
             leftMargin: 10
             right: view1.left
             rightMargin: 10
         }
 
         Pad {
-            enabled: background.state == ""
+            enabled: root.state == ""
             anchors.horizontalCenter: parent.horizontalCenter
             onTopClicked: cube.selectCubeFace(Cube.TOP)
             onLeftClicked: cube.selectCubeFace(Cube.LEFT)
@@ -172,9 +168,9 @@ Image {
         id: view1
 
         anchors {
-            top: background.top
+            top: root.top
             topMargin: globalTopMargin
-            left: background.left
+            left: root.left
             leftMargin: 150
         }
         width: 516
@@ -194,7 +190,7 @@ Image {
             frontAnimatedImage: "../../resources/rear/rear.mng"
 
             currentView: CubeView.TOP
-            currentIndex: 1 - background.currentIndex
+            currentIndex: 1 - root.currentIndex
 
             property real strengthFactor: .33
             brightness: brightnessKnob.percentage * strengthFactor
@@ -202,19 +198,19 @@ Image {
 
             NumberAnimation {
                 id: currentIndexAnimation
-                target: background
+                target: root
                 property: "currentIndex"
             }
 
             onGotoCurrentIndex: {
                 currentIndexAnimation.to = 1 - index
-                currentIndexAnimation.duration = Math.abs(index - (1 - background.currentIndex)) * 400
+                currentIndexAnimation.duration = Math.abs(index - (1 - root.currentIndex)) * 400
                 currentIndexAnimation.start()
             }
 
             onViewUpdateRequest: {
                 var viewports = [view2, view3]
-                background.currentIndex = 1 - newIndex
+                root.currentIndex = 1 - newIndex
 
                 for (var v = 0; v < 2; v++) {
                     if (viewports[v].currentView === currView) {
@@ -303,8 +299,8 @@ Image {
 
     Column {
         anchors {
-            top: background.top
-            right: background.right
+            top: root.top
+            right: root.right
             topMargin: globalTopMargin
             rightMargin: 50
         }
@@ -335,8 +331,8 @@ Image {
                 }
 
                 anchors.verticalCenter: view2.verticalCenter
-                percentage: background.currentIndex
-                onPercentageChangedByUser: background.currentIndex = newPercentage
+                percentage: root.currentIndex
+                onPercentageChangedByUser: root.currentIndex = newPercentage
             }
         }
 
@@ -348,8 +344,8 @@ Image {
             doubleCursor: cube.currentView === CubeView.SIDE
             anchors.left: parent.left
             anchors.leftMargin: 14.5
-            percentage: background.currentIndex
-            onPercentageChangedByUser: background.currentIndex = newPercentage
+            percentage: root.currentIndex
+            onPercentageChangedByUser: root.currentIndex = newPercentage
         }
 
         Row {
@@ -373,8 +369,8 @@ Image {
                 }
 
                 anchors.verticalCenter: view3.verticalCenter
-                percentage: background.currentIndex
-                onPercentageChangedByUser: background.currentIndex = newPercentage
+                percentage: root.currentIndex
+                onPercentageChangedByUser: root.currentIndex = newPercentage
             }
         }
     }
@@ -415,7 +411,7 @@ Image {
                             cube.editMarker(modelData.markerId)
                             markerDescription.markerId = modelData.markerId
                             markerDescription.text = cube.markerModel.getMarkerDescription(modelData.markerId)
-                            background.state = "editMarker"
+                            root.state = "editMarker"
                         }
                     }
                 }
@@ -459,7 +455,7 @@ Image {
                         cube.editMarker(markerId, true)
                         markerDescription.markerId = markerId
                         markerDescription.text = cube.markerModel.getMarkerDescription(markerId)
-                        background.state = "editMarker"
+                        root.state = "editMarker"
                     }
                 }
             }
@@ -468,7 +464,7 @@ Image {
 
     Image {
         source: "../../resources/icons/bg_edit_name.png"
-        opacity: keyboardLoader.visible && background.state !== "editMarker" ? 1 : 0
+        opacity: keyboardLoader.visible && root.state !== "editMarker" ? 1 : 0
         y: (hasEmbeddedKeyboard ? keyboardLoader.item.keyboardY : 768) - height
         z: 3
     }
@@ -504,7 +500,7 @@ Image {
 
             TextEdit {
                 id: textInput
-                visible: background.state == "editMarker"
+                visible: root.state == "editMarker"
                 anchors.fill: parent
                 anchors.margins: 8
                 font.pixelSize: 16
@@ -529,7 +525,7 @@ Image {
             opacity: markerDescription.opacity
 
             Row {
-                visible: background.state == "editMarker"
+                visible: root.state == "editMarker"
                 spacing: 17
                 anchors {
                     verticalCenter: parent.verticalCenter
@@ -542,7 +538,7 @@ Image {
                     onClicked: {
                         cube.deleteMarker()
                         Qt.inputMethod.hide()
-                        background.state = ""
+                        root.state = ""
                     }
                 }
 
@@ -558,7 +554,7 @@ Image {
                         markerDescription.markerId = -1
                         cube.cancelEditMarker()
                         Qt.inputMethod.hide()
-                        background.state = ""
+                        root.state = ""
                     }
                 }
 
@@ -569,11 +565,94 @@ Image {
                         markerDescription.markerId = -1
                         cube.confirmEditMarker()
                         Qt.inputMethod.hide()
-                        background.state = ""
+                        root.state = ""
                     }
                 }
             }
         }
+    }
+
+    Rectangle {
+        id: modalBackground
+
+        z: 10
+        anchors.fill: parent
+        color: Qt.rgba(0, 0, 0, 0.2)
+        visible: opacity > 0
+        state: searchDialog.show ? "" : "hidden"
+
+        Image {
+            anchors.fill: parent
+            fillMode: Image.Tile
+            source: "../../resources/icons/background.png"
+
+            MouseArea {
+                anchors.fill: parent
+            }
+        }
+
+        states: [
+            State {
+                name: "hidden"
+                PropertyChanges {
+                    target: modalBackground
+                    opacity: 0
+                }
+            }
+        ]
+
+        transitions: [
+            Transition {
+                reversible: true
+                PropertyAnimation {
+                    property: "opacity"
+                    duration: 300
+                }
+            }
+        ]
+    }
+
+    SearchDialog {
+        id: searchDialog
+        property bool show
+
+        anchors {
+            horizontalCenter: parent.horizontalCenter
+            verticalCenter: parent.verticalCenter
+        }
+
+        z: 11
+        width: parent.width / 2
+        height: parent.height * 0.9
+        transformOrigin: Item.TopRight
+        state: show ? "" : "hidden"
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: parent.show = !parent.show
+        }
+
+        states: [
+            State {
+                name: "hidden"
+                PropertyChanges {
+                    target: searchDialog
+                    opacity: 0
+                    scale: 0
+                    anchors.horizontalCenterOffset: root.width / 4
+                }
+            }
+        ]
+
+        transitions: [
+            Transition {
+                reversible: true
+                PropertyAnimation {
+                    properties: "opacity,scale,anchors.horizontalCenterOffset"
+                    duration: 300
+                }
+            }
+        ]
     }
 
     states: State {
