@@ -135,8 +135,8 @@ BorderImage {
                     width: parent.width
                     elide: Text.ElideRight
                     color: "black"
-                    font.pointSize: 16
-                    font.weight: Font.Bold
+                    font { pointSize: 16; weight: Font.Bold }
+                    textFormat: Text.PlainText
                     text: name
                 }
 
