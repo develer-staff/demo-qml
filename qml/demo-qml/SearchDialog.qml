@@ -1,14 +1,16 @@
 import QtQuick 2.0
 
-Rectangle {
+BorderImage {
     id: root
     signal closeRequest()
-
-    color: "white"
     border {
-        width: 1
-        color: "grey"
+        top: 8
+        left: 8
+        right: 8
+        bottom: 8
     }
+    source: "../../resources/icons/bigbox.png"
+
     clip: true
 
     Item {
@@ -22,13 +24,16 @@ Rectangle {
 
         Image {
             anchors { right: parent.right; verticalCenter: parent.verticalCenter }
-            source: "../../resources/icons/annulla.png"
+            source: "../../resources/icons/s.png"
+            scale: 0.5
 
-            MouseArea {
-                anchors.fill: parent
+            Button {
+                anchors.centerIn: parent
+                icon: "../../resources/icons/annulla.png"
                 onClicked: closeRequest()
             }
         }
+
     }
 
     ListView {
