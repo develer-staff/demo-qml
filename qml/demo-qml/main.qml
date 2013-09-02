@@ -33,19 +33,21 @@ Image {
     }
 
     Image {
-        source: "../../resources/icons/search.png"
         anchors {
-            top: root.top
-            topMargin: 25
-            right: root.right
-            rightMargin: 20
+            top: parent.top
+            topMargin: 8
+            right: parent.right
+            rightMargin: 10
         }
+        source: "../../resources/icons/s.png"
 
-        MouseArea {
-            anchors.fill: parent
+        Button {
+            anchors.centerIn: parent
+            icon: "../../resources/icons/search.png"
             onClicked: searchDialog.show = !searchDialog.show
         }
     }
+
 
     BorderImage {
         id: patientInfo
@@ -572,23 +574,18 @@ Image {
         }
     }
 
-    Rectangle {
+    Image {
         id: modalBackground
 
         z: 10
         anchors.fill: parent
-        color: Qt.rgba(0, 0, 0, 0.2)
+        fillMode: Image.Tile
+        source: "../../resources/icons/background.png"
         visible: opacity > 0
         state: searchDialog.show ? "" : "hidden"
 
-        Image {
+        MouseArea {
             anchors.fill: parent
-            fillMode: Image.Tile
-            source: "../../resources/icons/background.png"
-
-            MouseArea {
-                anchors.fill: parent
-            }
         }
 
         states: [

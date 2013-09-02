@@ -21,6 +21,8 @@ BorderImage {
         Text {
             anchors { left: parent.left; leftMargin: 20; verticalCenter: parent.verticalCenter }
             text: "Patients"
+            color: "gray"
+            font.pointSize: 16
         }
 
         Image {
@@ -141,7 +143,7 @@ BorderImage {
                     }
                     width: parent.width
                     elide: Text.ElideRight
-                    color: "black"
+                    color: "gray"
                     font { pointSize: 16; weight: Font.Bold }
                     textFormat: Text.PlainText
                     text: name
@@ -190,6 +192,7 @@ BorderImage {
                     width: parent.width
                     text: String(model.text).replace(/\s+/g, ' ')
                     wrapMode: Text.Wrap
+                    color: "gray"
                 }
 
                 Item { height: 20; width: 20}
