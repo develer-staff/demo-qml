@@ -628,11 +628,6 @@ Image {
         state: show ? "" : "hidden"
         visible: opacity > 0
 
-        MouseArea {
-            anchors.fill: parent
-            onClicked: parent.show = !parent.show
-        }
-
         states: [
             State {
                 name: "hidden"
