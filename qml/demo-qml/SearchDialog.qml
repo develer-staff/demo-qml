@@ -27,10 +27,10 @@ BorderImage {
         height: 50
 
         Text {
-            anchors { left: parent.left; leftMargin: 20; verticalCenter: parent.verticalCenter }
+            anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
             text: "Patients"
             color: "gray"
-            font.pointSize: 16
+            font { pointSize: 14; weight: Font.DemiBold }
         }
 
         Image {
