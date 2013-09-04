@@ -6,17 +6,25 @@ BorderImage {
     signal profileChangeRequest(string name, string view, int imageIndex)
 
     border {
-        top: 8
-        left: 8
-        right: 8
-        bottom: 8
+        top: 20
+        left: 20
+        right: 20
+        bottom: 20
     }
-    source: "../../resources/icons/bigbox.png"
+    source: "../../resources/icons/dialog_box.png"
     clip: true
 
     Item {
         id: titleBar
-        width: parent.width; height: 50
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: parent.right
+            leftMargin: 10
+            rightMargin: 10
+            topMargin: 15
+        }
+        height: 50
 
         Text {
             anchors { left: parent.left; leftMargin: 20; verticalCenter: parent.verticalCenter }
@@ -27,16 +35,38 @@ BorderImage {
 
         Image {
             anchors { right: parent.right; verticalCenter: parent.verticalCenter }
-            source: "../../resources/icons/s.png"
-            scale: 0.5
+            source: "../../resources/icons/annulla.png"
 
-            Button {
-                anchors.centerIn: parent
-                icon: "../../resources/icons/annulla.png"
+            MouseArea {
+                anchors.fill: parent
                 onClicked: closeRequest()
             }
         }
 
+        Image {
+            source: "../../resources/icons/separator.png"
+            anchors.bottom: parent.bottom
+            width: parent.width
+        }
+    }
+
+    Item {
+        id: searchBar
+        anchors {
+            top: titleBar.bottom
+            left: parent.left
+            leftMargin: 10
+            right: parent.right
+            rightMargin: 10
+        }
+
+        height: 50
+
+        Image {
+            source: "../../resources/icons/separator.png"
+            anchors.bottom: parent.bottom
+            width: parent.width
+        }
     }
 
     ListView {
@@ -69,14 +99,14 @@ BorderImage {
         }
 
         anchors {
-            top: titleBar.bottom
+            top: searchBar.bottom
             bottom: parent.bottom
             left: parent.left
             right: parent.right
-            margins: 10
+            leftMargin: 10
+            rightMargin: 10
+            bottomMargin: 20
         }
-        spacing: 5
-        boundsBehavior: Flickable.StopAtBounds
         clip: true
 
         model: ListModel {
@@ -123,11 +153,9 @@ BorderImage {
             }
         }
 
-        delegate: BorderImage {
+        delegate: Item {
             id: element
             width: listView.width; height: header.height + content.height
-            source: "../../resources/icons/box.png"
-            border { top: 8; left: 8; right: 8; bottom: 8 }
             clip: true
             state: listView.opened[index] ? "" : "folded"
 
@@ -149,6 +177,12 @@ BorderImage {
                     text: name
                 }
 
+                Image {
+                    source: "../../resources/icons/separator.png"
+                    anchors.bottom: parent.bottom
+                    width: parent.width
+                }
+
                 MouseArea {
                     anchors.fill: parent
                     onClicked: listView.setOpened(index, !listView.opened[index])
@@ -160,42 +194,72 @@ BorderImage {
                 anchors {
                     top: header.bottom
                     left: parent.left
-                    leftMargin: 10
                     right: parent.right
-                    rightMargin: 10
                 }
                 spacing: 5
 
                 Rectangle {
-                    anchors.horizontalCenter: parent.horizontalCenter
                     width: parent.width
-                    height: width
-                    color: "white"
-                    radius: 8
+                    height: image.height + text.height + sep.height * 2
+                    color: "#fdfdfe"
 
                     Image {
-                        anchors.fill: parent
+                        id: image
+                        anchors {
+                            top: parent.top
+                            horizontalCenter: parent.horizontalCenter
+                        }
+                        width: 325; height: 325
                         source: "../../resources/" + view + "/" + view + "0" + imageIndex + ".png"
+                    }
 
-                        MouseArea {
-                            anchors.fill: parent
-                            onClicked: {
-                                profileChangeRequest(name, view, imageIndex);
-                                closeRequest()
-                            }
+                    Image {
+                        id: sep
+                        source: "../../resources/icons/separator.png"
+                        anchors.top: image.bottom
+                        width: parent.width
+                    }
+
+                    Column {
+                        id: text
+                        anchors {
+                            top: sep.bottom
+                            left: parent.left
+                            right: parent.right
+                            leftMargin: 20
+                            rightMargin: 20
+                        }
+                        spacing: 5
+
+                        Item { width: parent.width; height: 1 }
+
+                        Text {
+                            width: parent.width
+                            text: String(model.text).replace(/\s+/g, ' ')
+                            wrapMode: Text.Wrap
+                            font.pointSize: 12
+                            textFormat: Text.PlainText
+                            color: "dimgray"
+                        }
+
+                        Item { width: parent.width; height: 3 }
+                    }
+
+
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: {
+                            profileChangeRequest(name, view, imageIndex);
+                            closeRequest()
                         }
                     }
 
+                    Image {
+                        source: "../../resources/icons/separator.png"
+                        anchors.bottom: parent.bottom
+                        width: parent.width
+                    }
                 }
-
-                Text {
-                    width: parent.width
-                    text: String(model.text).replace(/\s+/g, ' ')
-                    wrapMode: Text.Wrap
-                    color: "gray"
-                }
-
-                Item { height: 20; width: 20}
             }
 
             states: State {
