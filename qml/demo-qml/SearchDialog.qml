@@ -3,7 +3,7 @@ import QtQuick 2.0
 BorderImage {
     id: root
     signal closeRequest()
-    signal profileChangeRequest(string name, string view, int imageIndex)
+    signal profileChangeRequest(string name, var date, string view, int imageIndex)
 
     border {
         top: 20
@@ -219,14 +219,7 @@ BorderImage {
                         rightMargin: 15
                         verticalCenter: parent.verticalCenter
                     }
-                    text: {
-                        var dateValues = date.split("-")
-                        var year = Number(dateValues[0])
-                        var month = Number(dateValues[1])
-                        var day = Number(dateValues[2])
-
-                        return Qt.formatDate(new Date(year, month, day), "MMMM d, yyyy")
-                    }
+                    text: Qt.formatDate(date, "MMMM d, yyyy")
                     color: "gray"
                     font.pointSize: 16
                 }
@@ -303,7 +296,7 @@ BorderImage {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            profileChangeRequest(name, view, imageIndex);
+                            profileChangeRequest(name, date, view, imageIndex);
                             closeRequest()
                         }
                     }

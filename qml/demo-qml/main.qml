@@ -654,6 +654,9 @@ Image {
                 cube.setConfiguration(CubeView.SIDE, imageIndex / sideImagesDir.count)
             else
                 cube.setConfiguration(CubeView.FRONT, imageIndex / frontImagesDir.count)
+
+            text1.text = Qt.formatDate(date, "dddd, MMMM d, yyyy")
+            text2.text = name
         }
 
         states: [
