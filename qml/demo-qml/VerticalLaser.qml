@@ -88,6 +88,7 @@ Image {
     Column {
         id: doubleCursorImage
         anchors.verticalCenter: parent.verticalCenter
+        x: privateProps.recalculateCursorPos(percentage)
 
         BorderImage {
             id: topImage
