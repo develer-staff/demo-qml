@@ -207,7 +207,7 @@ BorderImage {
                     }
                     width: parent.width
                     elide: Text.ElideRight
-                    color: "gray"
+                    color: element.state == "" ? "#0053cd" : "gray"
                     font { pointSize: 16; weight: Font.Bold }
                     textFormat: Text.PlainText
                     text: name
