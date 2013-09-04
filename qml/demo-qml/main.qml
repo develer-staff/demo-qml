@@ -22,6 +22,7 @@ Image {
             left: root.left
             leftMargin: 10
         }
+        z: 13
 
         Text {
             x: 13
@@ -587,13 +588,20 @@ Image {
         }
     }
 
-    Image {
+    Rectangle {
         id: modalBackground
-
         z: 10
-        anchors.fill: parent
-        fillMode: Image.Tile
-        source: "../../resources/icons/background.png"
+        anchors.centerIn: parent
+        width: parent.width - 2
+        height: parent.height - 2
+        radius: 10
+        gradient: Gradient {
+            stops: [
+                GradientStop { color: "#f6f7f9"; position: 0 },
+                GradientStop { color: "#fdfdfe"; position: 1 }
+            ]
+        }
+
         visible: opacity > 0
         state: searchDialog.show ? "" : "hidden"
 
