@@ -86,7 +86,7 @@ BorderImage {
                     elit, sed do eiusmod tempor incididunt ut labore et dolore
                     magna aliqua."
                 view: "rear"
-                imageIndex: 43
+                imageIndex: 20
             }
             ListElement {
                 name: "Francesco Bianchi"
@@ -95,7 +95,7 @@ BorderImage {
                     quae ab illo inventore veritatis et quasi architecto beatae vitae
                     dicta sunt explicabo."
                 view: "top"
-                imageIndex: 43
+                imageIndex: 85
             }
             ListElement {
                 name: "Giuseppe Verdi"
@@ -103,7 +103,7 @@ BorderImage {
                     aut odit aut fugit, sed quia consequuntur magni dolores eos qui
                     ratione voluptatem sequi nesciunt."
                 view: "side"
-                imageIndex: 43
+                imageIndex: 30
             }
             ListElement {
                 name: "Pippo Inzaghi"
@@ -112,14 +112,14 @@ BorderImage {
                     tempora incidunt ut labore et dolore magnam aliquam quaerat
                     voluptatem"
                 view: "rear"
-                imageIndex: 20
+                imageIndex: 75
             }
             ListElement {
                 name: "Stevan Jovetic"
                 text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco
                     laboris nisi ut aliquip ex ea commodo consequat."
                 view: "top"
-                imageIndex: 60
+                imageIndex: 40
             }
         }
 

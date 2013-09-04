@@ -225,6 +225,19 @@ Image {
                 start_gradient.visible = false
             }
 
+            onViewResetRequest: {
+                root.currentIndex = 1 - index
+
+                view2.currentView = v1
+                view2.image = image1
+
+                view3.currentView = v2
+                view3.image = image2
+
+                end_gradient.visible = false
+                start_gradient.visible = false
+            }
+
             onRotationPositionChanged: {
                 // Adjust the amount if negative (movement bottom -> top or right -> left)
                 if (rotationPosition < 0) {
@@ -627,7 +640,12 @@ Image {
 
         onCloseRequest: show = false
         onProfileChangeRequest: {
-            console.log("TODO: profile change")
+            if (view == "top")
+                cube.setConfiguration(CubeView.TOP, imageIndex / topImagesDir.count)
+            else if (view == "side")
+                cube.setConfiguration(CubeView.SIDE, imageIndex / sideImagesDir.count)
+            else
+                cube.setConfiguration(CubeView.FRONT, imageIndex / frontImagesDir.count)
         }
 
         states: [

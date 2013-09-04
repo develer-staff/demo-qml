@@ -12,6 +12,7 @@ Loader {
     property real currentIndex
     signal gotoCurrentIndex(real index)
     signal viewUpdateRequest(int prevView, int currView, string image, real newIndex)
+    signal viewResetRequest(int v1, int v2, string image1, string image2, real index)
 
     property real brightness: 0
     property real contrast: 0
@@ -57,6 +58,27 @@ Loader {
     property int rightCubeFace: CubeView.SIDE
     property int topCubeFace: CubeView.TOP
     property int bottomCubeFace: CubeView.TOP
+
+
+    function setConfiguration(view, index) {
+        // find complementary views
+        var views = []
+        for (var v = 0; v <= 2; v++) {
+            if (v !== view)
+                views.push(v)
+        }
+
+        var img1 = Util.getImgFile(CubeView._imagesData[views[0]], 0.5)
+        var img2 = Util.getImgFile(CubeView._imagesData[views[1]], 0.5)
+
+        // reset indices
+        CubeView._facesData = [0.5, 0.5, 0.5]
+        CubeView._facesData[view] = index
+
+        // update
+        currentView = view
+        viewResetRequest(views[0], views[1], img1, img2, index)
+    }
 
     function selectCubeFace(face) {
         loader.sourceComponent = cubeComponent
