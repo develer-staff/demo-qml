@@ -63,6 +63,37 @@ BorderImage {
         height: 50
 
         Image {
+            source: "../../resources/icons/search_bar.png"
+            anchors.centerIn: parent
+
+            Image {
+                id: magIcon
+                source: "../../resources/icons/search.png"
+                anchors { left: parent.left; verticalCenter: parent.verticalCenter; leftMargin: 12 }
+            }
+
+            Image {
+                id: delIcon
+                source: "../../resources/icons/delete.png"
+                anchors { right: parent.right; verticalCenter: parent.verticalCenter; rightMargin: 13 }
+            }
+
+            TextInput {
+                id: searchInput
+                anchors {
+                    left: magIcon.right
+                    leftMargin: 5
+                    right: delIcon.left
+                    rightMargin: 5
+                    verticalCenter: parent.verticalCenter
+                }
+                clip: true
+                font { pointSize: 14; weight: Font.Bold }
+                color: "dimgray"
+            }
+        }
+
+        Image {
             source: "../../resources/icons/separator.png"
             anchors.bottom: parent.bottom
             width: parent.width
