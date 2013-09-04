@@ -148,6 +148,7 @@ BorderImage {
                     magna aliqua."
                 view: "rear"
                 imageIndex: 20
+                date: "2013-04-25"
             }
             ListElement {
                 name: "Francesco Bianchi"
@@ -157,6 +158,7 @@ BorderImage {
                     dicta sunt explicabo."
                 view: "top"
                 imageIndex: 85
+                date: "2009-11-10"
             }
             ListElement {
                 name: "Giuseppe Verdi"
@@ -165,6 +167,7 @@ BorderImage {
                     ratione voluptatem sequi nesciunt."
                 view: "side"
                 imageIndex: 30
+                date: "2012-02-22"
             }
             ListElement {
                 name: "Pippo Inzaghi"
@@ -174,6 +177,7 @@ BorderImage {
                     voluptatem"
                 view: "rear"
                 imageIndex: 75
+                date: "2013-09-03"
             }
             ListElement {
                 name: "Stevan Jovetic"
@@ -181,6 +185,7 @@ BorderImage {
                     laboris nisi ut aliquip ex ea commodo consequat."
                 view: "top"
                 imageIndex: 40
+                date: "2007-08-15"
             }
         }
 
@@ -206,6 +211,24 @@ BorderImage {
                     font { pointSize: 16; weight: Font.Bold }
                     textFormat: Text.PlainText
                     text: name
+                }
+
+                Text {
+                    anchors {
+                        right: parent.right
+                        rightMargin: 15
+                        verticalCenter: parent.verticalCenter
+                    }
+                    text: {
+                        var dateValues = date.split("-")
+                        var year = Number(dateValues[0])
+                        var month = Number(dateValues[1])
+                        var day = Number(dateValues[2])
+
+                        return Qt.formatDate(new Date(year, month, day), "MMMM d, yyyy")
+                    }
+                    color: "gray"
+                    font.pointSize: 16
                 }
 
                 Image {
