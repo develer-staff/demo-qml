@@ -3,7 +3,7 @@ import QtQuick 2.0
 BorderImage {
     id: root
     signal closeRequest()
-    signal profileChangeRequest(string name, var date, string view, int imageIndex)
+    signal profileChangeRequest(string name, var date, string view, int imageIndex, url image, var geometry)
 
     border {
         top: 20
@@ -296,8 +296,14 @@ BorderImage {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
-                            profileChangeRequest(name, date, view, imageIndex);
-                            closeRequest()
+                            var geometry = {
+                                x: parent.mapToItem(null, 0, 0).x,
+                                y: image.mapToItem(null, 0, 0).y,
+                                w: parent.width,
+                                h: image.height
+                            }
+
+                            profileChangeRequest(name, date, view, imageIndex, image.source, geometry);
                         }
                     }
 

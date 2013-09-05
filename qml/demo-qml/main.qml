@@ -596,7 +596,7 @@ Image {
         radius: 10
         color: Qt.rgba(1, 1, 1, 0.7)
         visible: opacity > 0
-        state: searchDialog.show ? "" : "hidden"
+        state: "hidden"
 
         MouseArea {
             anchors.fill: parent
@@ -623,6 +623,70 @@ Image {
         ]
     }
 
+    Item {
+        id: floater
+        property url image
+        property var updateFunc
+
+        z: 20
+
+        BorderImage {
+            source: "../../resources/icons/box.png"
+            border { top: 8; left: 8; right: 8; bottom: 8 }
+            anchors.fill: parent
+        }
+
+        Image {
+            source: floater.image
+            anchors.fill: parent
+            fillMode: Image.PreserveAspectFit
+        }
+
+        states: [
+            State {
+                name: ""
+                PropertyChanges {
+                    target: floater
+                    opacity: 1
+                    visible: false
+                }
+            },
+
+            State {
+                name: "attached"
+                PropertyChanges {
+                    target: floater
+                    visible: true
+                    opacity: 0
+                    x: cube.mapToItem(null, cube.width / 2 - floater.width / 2).x
+                    y: cube.mapToItem(null, cube.height / 2 - floater.height / 2).y
+                    width: 516
+                    height: 516
+                }
+            }
+        ]
+
+        transitions: [
+            Transition {
+                to: "attached"
+                SequentialAnimation {
+                    PropertyAnimation {
+                        properties: "x,y,width,height"
+                        duration: 300
+                        easing.type: Easing.InExpo
+                    }
+
+                    ScriptAction { script: floater.updateFunc() }
+
+                    PropertyAnimation {
+                        property: "opacity"
+                        duration: 100
+                    }
+                }
+            }
+        ]
+    }
+
     SearchDialog {
         id: searchDialog
         property bool show
@@ -636,20 +700,44 @@ Image {
         width: parent.width / 2
         height: parent.height * 0.9
         transformOrigin: Item.TopRight
-        state: show ? "" : "hidden"
         visible: opacity > 0
+        state: "hidden"
+
+        onShowChanged: {
+            modalBackground.state = show ? "" : "hidden"
+            state = show ? "" : "hidden"
+        }
 
         onCloseRequest: show = false
-        onProfileChangeRequest: {
-            if (view == "top")
-                cube.setConfiguration(CubeView.TOP, imageIndex / topImagesDir.count)
-            else if (view == "side")
-                cube.setConfiguration(CubeView.SIDE, imageIndex / sideImagesDir.count)
-            else
-                cube.setConfiguration(CubeView.FRONT, imageIndex / frontImagesDir.count)
 
-            text1.text = Qt.formatDate(date, "dddd, MMMM d, yyyy")
-            text2.text = name
+        onProfileChangeRequest: {
+            floater.updateFunc = function() {
+                if (view == "top")
+                    cube.setConfiguration(CubeView.TOP, imageIndex / topImagesDir.count)
+                else if (view == "side")
+                    cube.setConfiguration(CubeView.SIDE, imageIndex / sideImagesDir.count)
+                else
+                    cube.setConfiguration(CubeView.FRONT, imageIndex / frontImagesDir.count)
+
+                text1.text = Qt.formatDate(date, "dddd, MMMM d, yyyy")
+                text2.text = name
+
+                show = false
+                floater.state = ""
+            }
+
+            // resize and position the floater on top of the selected image
+            floater.width = geometry.w
+            floater.height = geometry.h
+            floater.x = geometry.x
+            floater.y = geometry.y
+            floater.visible = true
+            floater.image = image
+
+            // trigger transitions
+            state = "fadeOut"
+            floater.state = "attached"
+            modalBackground.state = "hidden"
         }
 
         states: [
@@ -661,6 +749,11 @@ Image {
                     scale: 0
                     anchors.horizontalCenterOffset: root.width / 4
                 }
+            },
+
+            State {
+                name: "fadeOut"
+                PropertyChanges { target: searchDialog; opacity: 0 }
             }
         ]
 
