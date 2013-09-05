@@ -91,8 +91,8 @@ BorderImage {
         Text {
             anchors { horizontalCenter: parent.horizontalCenter; verticalCenter: parent.verticalCenter }
             text: "Patients"
-            color: "gray"
-            font { pointSize: 14; weight: Font.DemiBold }
+            color: "darkslategray"
+            font.pointSize: 15
         }
 
         Image {
@@ -236,8 +236,8 @@ BorderImage {
                     }
                     width: parent.width
                     elide: Text.ElideRight
-                    color: element.state == "" ? "#0053cd" : "gray"
-                    font { pointSize: 16; weight: Font.Bold }
+                    color: element.state == "" ? "#0053cd" : "dimgray"
+                    font.pointSize: 15
                     textFormat: Text.PlainText
                     text: modelData.name
                 }
@@ -250,7 +250,7 @@ BorderImage {
                     }
                     text: Qt.formatDate(modelData.date, "MMMM d, yyyy")
                     color: "gray"
-                    font.pointSize: 16
+                    font.pointSize: 14
                 }
 
                 Image {
