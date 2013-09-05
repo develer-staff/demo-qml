@@ -34,7 +34,7 @@ BorderImage {
         }
 
         Image {
-            anchors { right: parent.right; verticalCenter: parent.verticalCenter }
+            anchors { right: parent.right; rightMargin: -6; verticalCenter: parent.verticalCenter }
             source: "../../resources/icons/annulla.png"
 
             MouseArea {
@@ -69,13 +69,13 @@ BorderImage {
             Image {
                 id: magIcon
                 source: "../../resources/icons/search.png"
-                anchors { left: parent.left; verticalCenter: parent.verticalCenter; leftMargin: 12 }
+                anchors { left: parent.left; verticalCenter: parent.verticalCenter; leftMargin: 10 }
             }
 
             Image {
                 id: delIcon
                 source: "../../resources/icons/delete.png"
-                anchors { right: parent.right; verticalCenter: parent.verticalCenter; rightMargin: 13 }
+                anchors { right: parent.right; verticalCenter: parent.verticalCenter; rightMargin: 7 }
             }
 
             TextInput {
