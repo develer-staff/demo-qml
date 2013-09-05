@@ -138,6 +138,13 @@ BorderImage {
                 id: delIcon
                 source: "../../resources/icons/delete.png"
                 anchors { right: parent.right; verticalCenter: parent.verticalCenter; rightMargin: 7 }
+                opacity: searchInput.text.length ? 1 : 0.5
+
+                MouseArea {
+                    enabled: searchInput.text.length
+                    anchors.fill: parent
+                    onClicked: searchInput.text = ""
+                }
             }
 
             TextInput {
