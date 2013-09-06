@@ -63,6 +63,12 @@ BorderImage {
         }
     ]
 
+    function hideKeyboard() {
+        searchDialog.forceActiveFocus()
+        if (hasEmbeddedKeyboard)
+            MInputMethodQuick.userHide()
+    }
+
     function updateDataModel(pattern) {
         var result = []
 
@@ -101,7 +107,10 @@ BorderImage {
 
             MouseArea {
                 anchors.fill: parent
-                onClicked: closeRequest()
+                onClicked: {
+                    hideKeyboard()
+                    closeRequest()
+                }
             }
         }
 
@@ -261,7 +270,10 @@ BorderImage {
 
                 MouseArea {
                     anchors.fill: parent
-                    onClicked: listView.setOpened(index, !listView.opened[index])
+                    onClicked: {
+                        hideKeyboard()
+                        listView.setOpened(index, !listView.opened[index])
+                    }
                 }
             }
 
@@ -325,6 +337,8 @@ BorderImage {
                     MouseArea {
                         anchors.fill: parent
                         onClicked: {
+                            hideKeyboard()
+
                             var geometry = {
                                 x: parent.mapToItem(null, 0, 0).x,
                                 y: image.mapToItem(null, 0, 0).y,
