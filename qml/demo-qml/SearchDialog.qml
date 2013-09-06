@@ -18,50 +18,67 @@ BorderImage {
 
     readonly property var staticDataModel: [
         {
-            name: "Mario Rossi",
-            text: "Lorem ipsum dolor sit amet, consectetur adipisicing
-                elit, sed do eiusmod tempor incididunt ut labore et dolore
-                magna aliqua.",
+            name: "Brian Johnson",
+            text: "Ophthalmoplegic migraine. Unenhanced images reveal smooth
+            enlargement and homogeneous enhancement of cisternal segment of
+            left oculomotor.",
             view: "rear",
             imageIndex: 20,
             date: "2013-04-25"
         },
         {
-            name: "Francesco Bianchi",
-            text: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-                accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-                quae ab illo inventore veritatis et quasi architecto beatae vitae
-                dicta sunt explicabo.",
+            name: "Jim Morrison",
+            text: "Metastatic melanoma and meningeal carcinomatosis.
+            Contrast-enhanced axial and coronal T1-weighted images show
+            enhancement and involvement of multiple cranial nerves: oculomotor
+            nerves, trigeminal nerves, complex of seventh and eighth cranial
+            nerves, complex of ninth, tenth, and eleventh cranial nerves,
+            hypoglossal nerves.",
             view: "top",
             imageIndex: 85,
             date: "2009-11-10"
         },
         {
-            name: "Giuseppe Verdi",
-            text: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur
-                aut odit aut fugit, sed quia consequuntur magni dolores eos qui
-                ratione voluptatem sequi nesciunt.",
+            name: "Eric Adams",
+            text: "Patient after resection of adenoid cystic carcinoma of right
+            hard palate. Axial bone image shows widening of right
+            pterygopalatine fossa.",
             view: "side",
             imageIndex: 30,
             date: "2012-02-22"
         },
         {
-            name: "Pippo Inzaghi",
-            text: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit
-                amet, consectetur, adipisci velit, sed quia non numquam eius modi
-                tempora incidunt ut labore et dolore magnam aliquam quaerat
-                voluptatem",
+            name: "James Hetfield",
+            text: "Acute lymphoblastic leukemia. Axial image reveals leukemic
+            infiltrate of left pons and brachium pontis. Contrast-enhanced
+            axial images show antegrade perineural extension along course of
+            left spinal trigeminal tract and nuclei into preganglionic segment
+            of left trigeminal nerve.",
             view: "rear",
             imageIndex: 75,
             date: "2013-09-03"
         },
         {
-            name: "Stevan Jovetic",
-            text: "Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                laboris nisi ut aliquip ex ea commodo consequat.",
+            name: "Bruce Dickinson",
+            text: "Tuberculous meningitis. Contrast-enhanced axial and coronal
+            images show abnormal peripheral enhancement of oculomotor nerves.
+            In addition, there is leptomeningeal enhancement of anterior
+            surface of brainstem.",
             view: "top",
             imageIndex: 40,
             date: "2007-08-15"
+        },
+        {
+            name: "Howard Wolowitz",
+            text: "Patient with perineural spread of rhinocerebral mucormycosis who
+            presented for follow-up after right orbital exenteration. Axial images
+            show recurrence of infection with invasion of right cavernous sinus and
+            retrograde involvement of trigeminal nerve along cavernous, ganglionic,
+            and cisternal segments. Abnormal signal within right pons indicates
+            edema.",
+            view: "side",
+            imageIndex: 80,
+            date: "2005-04-03"
         }
     ]
 
