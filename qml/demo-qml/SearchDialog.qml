@@ -64,7 +64,8 @@ BorderImage {
     ]
 
     function hideKeyboard() {
-        searchDialog.forceActiveFocus()
+        root.forceActiveFocus()
+
         if (hasEmbeddedKeyboard)
             MInputMethodQuick.userHide()
     }
