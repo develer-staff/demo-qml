@@ -691,9 +691,14 @@ Image {
         id: searchDialog
         property bool show
 
+        /*** private ***/
+        property string prevState
+        /***************/
+
         anchors {
             horizontalCenter: parent.horizontalCenter
-            verticalCenter: parent.verticalCenter
+            top: parent.top
+            topMargin: 20
         }
 
         z: 11
@@ -702,6 +707,22 @@ Image {
         transformOrigin: Item.TopRight
         visible: opacity > 0
         state: "hidden"
+
+        onSearchInputFocusedChanged: {
+            // it doesn't make sense to resize the dialog if there's no
+            // keyboard to make room for
+            if (!hasEmbeddedKeyboard)
+                return
+
+            if (searchInputFocused) {
+                prevState = state
+                state = "resized"
+            }
+            else {
+                state = prevState
+                prevState = ""
+            }
+        }
 
         onShowChanged: {
             modalBackground.state = show ? "" : "hidden"
@@ -754,14 +775,20 @@ Image {
             State {
                 name: "fadeOut"
                 PropertyChanges { target: searchDialog; opacity: 0 }
+            },
+
+            State {
+                name: "resized"
+                PropertyChanges { target: searchDialog; height: 450 }
             }
+
         ]
 
         transitions: [
             Transition {
                 reversible: true
                 PropertyAnimation {
-                    properties: "opacity,scale,anchors.horizontalCenterOffset"
+                    properties: "height,opacity,scale,anchors.horizontalCenterOffset"
                     duration: 300
                 }
             }

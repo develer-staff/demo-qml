@@ -5,6 +5,8 @@ BorderImage {
     signal closeRequest()
     signal profileChangeRequest(string name, var date, string view, int imageIndex, url image, var geometry)
 
+    property alias searchInputFocused: searchInput.focus
+
     border {
         top: 20
         left: 20
