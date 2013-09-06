@@ -44,7 +44,17 @@ Image {
         Button {
             anchors.centerIn: parent
             icon: "../../resources/icons/search.png"
-            onClicked: searchDialog.show = !searchDialog.show
+            onClicked: {
+                // ensure keyboard is hidden and reset any states before
+                // showing the dialog
+                if (!searchDialog.show) {
+                    Qt.inputMethod.hide()
+                    root.state = ""
+                }
+
+                // toggle the dialog
+                searchDialog.show = !searchDialog.show
+            }
         }
     }
 
