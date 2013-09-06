@@ -25,17 +25,27 @@ Image {
         contrast: bg.contrast
     }
 
+    // left and right ticks
     Image {
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 16
-        anchors.horizontalCenter: parent.horizontalCenter
-        source: "../../resources/icons/notches_oriz_xl.png"
+        anchors { left: parent.left; leftMargin: 5; verticalCenter: parent.verticalCenter }
+        source: "../../resources/icons/ticks.png"
     }
 
     Image {
-        anchors.right: parent.right
-        anchors.rightMargin: 26
-        anchors.verticalCenter: parent.verticalCenter
-        source: "../../resources/icons/notches_vert_xl.png"
+        anchors { right: parent.right; rightMargin: 5; verticalCenter: parent.verticalCenter }
+        source: "../../resources/icons/ticks.png"
+    }
+
+    // top and bottom ticks
+    Image {
+        anchors { top: parent.top; topMargin: -6; horizontalCenter: parent.horizontalCenter }
+        rotation: 90
+        source: "../../resources/icons/ticks.png"
+    }
+
+    Image {
+        anchors { bottom: parent.bottom; bottomMargin: -4; horizontalCenter: parent.horizontalCenter }
+        rotation: 90
+        source: "../../resources/icons/ticks.png"
     }
 }

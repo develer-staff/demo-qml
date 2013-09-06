@@ -556,23 +556,6 @@ Loader {
         Component.onCompleted: updateStaticFace()
     }
 
-    Image {
-        anchors.bottom: staticFaceBg.bottom
-        anchors.bottomMargin: 16
-        anchors.horizontalCenter: staticFaceBg.horizontalCenter
-        source: "../../resources/icons/notches_oriz_xl.png"
-        visible: staticFace.visible
-    }
-
-    Image {
-        anchors.right: staticFaceBg.right
-        anchors.rightMargin: 26
-        anchors.verticalCenter: staticFaceBg.verticalCenter
-        source: "../../resources/icons/notches_vert_xl.png"
-        visible: staticFace.visible
-    }
-
-
     // clipping container to avoid double shadow
     Item {
         anchors.fill: staticFace
