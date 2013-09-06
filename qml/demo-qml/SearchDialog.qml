@@ -172,7 +172,11 @@ BorderImage {
                 clip: true
                 font { pointSize: 14; weight: Font.Bold }
                 color: "dimgray"
+
                 onTextChanged: updateTimer.restart()
+
+                // when the input box gains focus, close currently opened element (if any)
+                onFocusChanged: if (focus) listView.setOpened(listView.opened.indexOf(true), false)
 
                 Timer {
                     id: updateTimer
