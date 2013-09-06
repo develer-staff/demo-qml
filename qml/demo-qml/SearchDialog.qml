@@ -71,6 +71,7 @@ BorderImage {
 
     function updateDataModel(pattern) {
         var result = []
+        pattern = pattern.toLowerCase()
 
         for (var i = 0; i < staticDataModel.length; i++) {
             var itemName = staticDataModel[i].name.toLowerCase()
