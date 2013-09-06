@@ -779,7 +779,7 @@ Image {
 
             State {
                 name: "resized"
-                PropertyChanges { target: searchDialog; height: 450 }
+                PropertyChanges { target: searchDialog; height: 430 }
             }
 
         ]
