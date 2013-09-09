@@ -6,6 +6,7 @@ Image {
 
     property bool cursorOnTop: true
     property bool cursorVisible: true
+    property bool enabled: true
     property bool doubleCursor: false
 
     property var cursor: doubleCursor ? doubleCursorImage : cursorImage
@@ -72,7 +73,7 @@ Image {
         id: mouseArea
         anchors.fill: cursorImage
         anchors.margins: -20 // enlarge the mouse area to make it more friendly
-        enabled: laser.cursorVisible && !laser.doubleCursor
+        enabled: laser.cursorVisible && !laser.doubleCursor && laser.enabled
 
         drag.target: cursorImage
         drag.axis: Drag.XAxis
@@ -130,7 +131,7 @@ Image {
         id: mouseAreaDouble
         anchors.fill: doubleCursorImage
         anchors.margins: -20 // enlarge the mouse area to make it more friendly
-        enabled: laser.cursorVisible && laser.doubleCursor
+        enabled: laser.cursorVisible && laser.doubleCursor && laser.enabled
 
         drag.target: doubleCursorImage
         drag.axis: Drag.XAxis

@@ -346,6 +346,7 @@ Image {
 
             HorizontalLaser {
                 id: topLaser
+                enabled: root.state == ""
                 cursorVisible: {
                     if (cube.currentView === CubeView.TOP ||
                             (verticalLaser.cursorVisible && verticalLaser.cursorOnTop) &&
@@ -364,6 +365,7 @@ Image {
         VerticalLaser {
             id: verticalLaser
             z:1
+            enabled: root.state == ""
             cursorOnTop: view3.currentView === CubeView.SIDE ? true : false
             cursorVisible: cube.currentView === CubeView.SIDE || cube.currentView === CubeView.FRONT
             doubleCursor: cube.currentView === CubeView.SIDE
@@ -384,6 +386,7 @@ Image {
 
             HorizontalLaser {
                 id: bottomLaser
+                enabled: root.state == ""
                 cursorVisible: {
                     if (cube.currentView === CubeView.TOP ||
                             (verticalLaser.cursorVisible && !verticalLaser.cursorOnTop) &&

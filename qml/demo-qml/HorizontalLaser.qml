@@ -4,6 +4,7 @@ Image {
     id: laser
     property real percentage: .5
     property bool cursorVisible: true
+    property bool enabled: true
 
     // do not use the percentage property to avoid breaking bindings
     signal percentageChangedByUser(real newPercentage)
@@ -58,7 +59,7 @@ Image {
             id: mouseArea
             anchors.fill: parent
             anchors.margins: -20 // enlarge the mouse area to make it more friendly
-            enabled: laser.cursorVisible
+            enabled: laser.cursorVisible && laser.enabled
 
             drag.target: parent
             drag.axis: Drag.YAxis
