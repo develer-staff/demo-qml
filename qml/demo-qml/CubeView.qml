@@ -78,6 +78,7 @@ Loader {
         // update
         currentView = view
         viewResetRequest(views[0], views[1], img1, img2, index)
+        updateView()
     }
 
     function selectCubeFace(face) {
