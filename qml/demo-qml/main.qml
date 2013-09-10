@@ -564,9 +564,17 @@ Image {
                 Button {
                     icon: "../../resources/icons/remove.png"
                     onClicked: {
-                        cube.deleteMarker()
+                        deleteDialog.show(mapToItem(null, width / 2, height / 2))
                         Qt.inputMethod.hide()
-                        root.state = ""
+                    }
+
+                    Connections {
+                        target: deleteDialog
+                        onAccepted: {
+                            deleteDialog.hide()
+                            root.state = ""
+                            cube.deleteMarker()
+                        }
                     }
                 }
 
@@ -806,6 +814,53 @@ Image {
                 }
             }
         ]
+    }
+
+    MarkerDeleteDialog {
+        id: deleteDialog
+
+        z: 11
+        transformOrigin: Item.BottomRight
+        width: 400
+        height: 200
+        opacity: 0
+        scale: 0
+
+        function show(origin) {
+            x = origin.x
+            y = origin.y
+
+            state = "visible"
+            modalBackground.state = "show"
+        }
+
+        function hide() {
+            state = ""
+            modalBackground.state = "hidden"
+        }
+
+        onRejected: hide()
+
+        states: [
+            State {
+                name: "visible"
+                PropertyChanges {
+                    target: deleteDialog
+                    opacity: 1
+                    scale: 1
+                    x: root.width / 2 - deleteDialog.width / 2
+                    y: root.height / 2 - deleteDialog.height / 2
+                }
+            }
+        ]
+
+        transitions: Transition {
+            reversible: true
+            PropertyAnimation {
+                duration: 300;
+                properties: "opacity,scale,x,y"
+            }
+        }
     }
 
     states: State {
