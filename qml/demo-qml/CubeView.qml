@@ -569,6 +569,7 @@ Loader {
             anchors.fill: parent
             anchors.margins: -parent.anchors.margins
 
+            active: visible
             visible: true
             source: visible ? loader.frontImageSrc : ""
             face: loader.frontCubeFace
