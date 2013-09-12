@@ -231,8 +231,8 @@ Image {
                     }
                 }
 
-                end_gradient.visible = false
-                start_gradient.visible = false
+//                end_gradient.visible = false
+//                start_gradient.visible = false
             }
 
             onViewResetRequest: {
@@ -244,10 +244,10 @@ Image {
                 view3.currentView = v2
                 view3.image = image2
 
-                end_gradient.visible = false
-                start_gradient.visible = false
+//                end_gradient.visible = false
+//                start_gradient.visible = false
             }
-
+/*
             onRotationPositionChanged: {
                 // Adjust the amount if negative (movement bottom -> top or right -> left)
                 if (rotationPosition < 0) {
@@ -291,9 +291,11 @@ Image {
                     end_gradient.visible = false;
                 }
             }
+*/
         }
     }
 
+/*
     LinearGradient {
         id: start_gradient
         z: 10
@@ -315,7 +317,7 @@ Image {
             GradientStop { position: 0.50; color: "#e2e4e8" }
         }
     }
-
+*/
     Image {
         source: "../../resources/icons/bigbox_bg.png"
         anchors.centerIn: view1
