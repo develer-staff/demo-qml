@@ -161,9 +161,10 @@ Loader {
 
         // find the greatest marker id
         var markerId = 0
-        for (var k = 0; k < existentMarkers.length; k++) {
-            if (existentMarkers[k].markerId > markerId)
-                markerId = existentMarkers[k].markerId
+        for (var k = 0; k < markerModel.count; k++) {
+            var marker = markerModel.get(k)
+            if (marker.markerId > markerId)
+                markerId = marker.markerId
         }
         markerId += 1
 
