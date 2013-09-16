@@ -68,6 +68,11 @@ int main(int argc, char *argv[])
 #endif
 
     viewer.setMainQmlFile(QStringLiteral("qml/demo-qml/main.qml"));
+
+#ifdef __APPLE__
+    // FIXME: explicit resize needed under Mac OS X
+    viewer.resize(1024, 768);
+#endif
     viewer.showExpanded();
 
     return app.exec();
