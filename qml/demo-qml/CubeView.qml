@@ -138,23 +138,36 @@ Loader {
                      markerModel.type5, markerModel.type6, markerModel.type7, markerModel.type8,
                      markerModel.type9, markerModel.type10, markerModel.type11]
 
-        var availableTypes = types.slice()
-        for (var i = 0; i < existentMarkers.length; i++) {
-            var index = availableTypes.indexOf(existentMarkers[i].type)
-            if (index != -1)
-                availableTypes.splice(index, 1)
+        // find the marker type which is free to use
+        var type
+        for (var i = 0; i < types.length; i++) {
+            var typeIndex = -1
+
+            for (var j = 0; j < existentMarkers.length; j++) {
+                if (existentMarkers[j].type == types[i])
+                    typeIndex = j
+            }
+
+            if (typeIndex == -1) {
+                type = types[i]
+                break
+            }
         }
 
-        var type
-        if (availableTypes.length > 0)
-            type = availableTypes[0]
-        else {
+        if (!type) {
             console.warn("No available marker colors")
             return -1
         }
 
+        // find the greatest marker id
+        var markerId = 0
+        for (var k = 0; k < existentMarkers.length; k++) {
+            if (existentMarkers[k].markerId > markerId)
+                markerId = existentMarkers[k].markerId
+        }
+        markerId += 1
+
         // 52 is the size of the marker
-        var markerId = markerModel.count + 1
         markerModel.append({"markerId": markerId, "face": loader.currentView, "type": type,
                             "description": "", "index": loader.currentIndex,
                             "x": (loader.width - 52) / 2, "y": (loader.height - 52) / 2})
@@ -167,11 +180,13 @@ Loader {
     function editMarker(markerId, newMarker) {
         _newMarker = (newMarker === true)
 
-        for (var i = 0; i < markerModel.count; i++)
-            if (markerModel.get(i).markerId == markerId) {
-                loader.gotoCurrentIndex(markerModel.get(i).index)
-                break
-            }
+        if (!_newMarker) {
+            for (var i = 0; i < markerModel.count; i++)
+                if (markerModel.get(i).markerId == markerId) {
+                    loader.gotoCurrentIndex(markerModel.get(i).index)
+                    break
+                }
+        }
 
         for (var k = 0; k < highResolutionFace.children.length; k++)
             if (highResolutionFace.children[k].__markerComponent && highResolutionFace.children[k].markerId == markerId) {
@@ -214,6 +229,7 @@ Loader {
             if (markerModel.get(i).markerId == _editMarker.markerId) {
                 markerModel.setProperty(i, "x", _editMarker.x)
                 markerModel.setProperty(i, "y", _editMarker.y)
+                markerModel.setProperty(i, "index", _editMarker.index)
             }
 
         _editDone()

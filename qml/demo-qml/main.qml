@@ -482,7 +482,7 @@ Image {
                     if (markerId > 0) {
                         cube.editMarker(markerId, true)
                         markerDescription.markerId = markerId
-                        markerDescription.text = cube.markerModel.getMarkerDescription(markerId)
+                        markerDescription.text = ""
                         root.state = "editMarker"
                     }
                 }
