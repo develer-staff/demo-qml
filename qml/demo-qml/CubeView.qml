@@ -81,12 +81,6 @@ Loader {
         updateView()
     }
 
-    function selectCubeFace(face) {
-        loader.sourceComponent = cubeComponent
-        staticFace.visible = false
-        loader.item.goToFace(face)
-    }
-
     Component.onCompleted: updateView()
 
     function updateView() {

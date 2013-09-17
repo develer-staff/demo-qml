@@ -151,31 +151,6 @@ Image {
         }
     }
 
-    Column {
-        anchors {
-            bottom: view1.bottom
-            left: root.left
-            leftMargin: 10
-            right: view1.left
-            rightMargin: 10
-        }
-
-        Pad {
-            enabled: root.state == ""
-            anchors.horizontalCenter: parent.horizontalCenter
-            onTopClicked: cube.selectCubeFace(Cube.TOP)
-            onLeftClicked: cube.selectCubeFace(Cube.LEFT)
-            onBottomClicked: cube.selectCubeFace(Cube.BOTTOM)
-            onRightClicked: cube.selectCubeFace(Cube.RIGHT)
-        }
-        Text {
-            anchors.horizontalCenter: parent.horizontalCenter
-            text: qsTr("Rotation")
-            font.pixelSize: 16
-            color: "#939393"
-        }
-    }
-
     Item {
         id: view1
 
