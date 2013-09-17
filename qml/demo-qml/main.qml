@@ -8,7 +8,7 @@ import "Util.js" as Util
 Image {
     id: root
 
-    property real currentIndex: 0.5
+    property real currentIndex: 0.55
 
     property int globalTopMargin: 128
     source: "../../resources/icons/bg.png"
@@ -78,7 +78,7 @@ Image {
             anchors.top: patientInfo.top
             anchors.topMargin: 5
             color: "#939393"
-            text: Qt.formatDate(new Date(2013, 6, 8), "dddd, MMMM d, yyyy")
+            text: Qt.formatDate(new Date(2007, 7, 15), "dddd, MMMM d, yyyy")
             font.pointSize: 16
         }
 
@@ -88,7 +88,7 @@ Image {
             anchors.bottom: patientInfo.bottom
             anchors.bottomMargin: 5
             color: "#0254cd"
-            text: "John Smith"
+            text: "Bruce Dickinson"
             font.pixelSize: 28
             horizontalAlignment: TextInput.AlignHCenter
             width: parent.width - 46
