@@ -16,19 +16,64 @@ Image {
     Image {
         id: logoDeveler
         source: "../../resources/icons/logo01.png"
+        opacity: 1
         anchors {
             top: root.top
-            topMargin: 25
+            topMargin: 10
             left: root.left
             leftMargin: 10
         }
 
         Text {
-            x: 13
-            y: -18
+            x: 27
+            y: 55
             text: "Software design"
             font.pointSize: 10
-            color: "#babbc0"
+            color: "#939393"
+        }
+        Behavior on opacity {
+            NumberAnimation { duration: 300 }
+        }
+    }
+
+    Image {
+        id: logoEngicam
+        source: "../../resources/icons/logo02.png"
+        opacity: 0
+        anchors {
+            top: root.top
+            topMargin: 10
+            left: root.left
+            leftMargin: 10
+        }
+
+        Text {
+            x: 40
+            y: 36
+            text: "Hardware design"
+            font.pointSize: 10
+            color: "#939393"
+        }
+
+        Behavior on opacity {
+            NumberAnimation { duration: 300 }
+        }
+    }
+
+    Timer {
+        id: logoAnimationTimer
+        interval: 10000
+        running: true
+        repeat: true
+        onTriggered: {
+            if (logoDeveler.opacity == 1) {
+                logoEngicam.opacity = 1
+                logoDeveler.opacity = 0
+            }
+            else {
+                logoEngicam.opacity = 0
+                logoDeveler.opacity = 1
+            }
         }
     }
 
